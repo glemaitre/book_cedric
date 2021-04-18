@@ -62,7 +62,7 @@ indices = rng.choice(
 )
 
 # %%
-subset = bike_sharing.iloc[indices]
+subset = bike_sharing.iloc[indices, :].copy()
 # Quantize the target and keep the midpoint for each interval
 subset["nombre de locations"] = pd.qcut(
     subset["nombre de locations"], 6, retbins=False,
