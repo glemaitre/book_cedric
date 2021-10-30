@@ -1,0 +1,7 @@
+name: book
+dependencies:
+  - jupyter-book
+  - pycodestyle
+  - scikit-learn
+  - pandas
+  - seaborn

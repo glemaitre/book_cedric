@@ -1,0 +1,45 @@
+#######################################################################################
+# Book settings
+title: Cédric's book
+author: Cédric Lemaître
+
+# Information about where the book exists on the web
+description: >-
+  Une introduction à la science des donnéees
+exclude_patterns:
+  -  _build
+  - Thumbs.db
+  - .DS_Store
+  - "**.ipynb_checkpoints"
+  - "datasets"
+
+#######################################################################################
+# Execution settings
+execute:
+  execute_notebooks           : cache
+  timeout                     : 300
+
+#######################################################################################
+# Parse and render settings
+parse:
+  myst_enable_extensions:
+    - colon_fence
+    - dollarmath
+    - linkify
+    - substitution
+
+
+# #######################################################################################
+# Interact link settings
+notebook_interface            : "notebook"
+
+sphinx:
+  config:
+    nb_custom_formats:
+      .py:
+        - jupytext.reads
+        - fmt: py:percent
+    # Needed for plotly rendering:
+    # https://jupyterbook.org/interactive/interactive.html#plotly
+    html_js_files:
+      - https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js

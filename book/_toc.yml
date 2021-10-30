@@ -1,0 +1,5 @@
+format: jb-book
+root: landing-page
+chapters:
+- file: chapter_00/file_00
+- file: chapter_00/file_01
