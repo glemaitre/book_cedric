@@ -175,6 +175,18 @@
   <a class="reference internal nav-link" href="#analyse-des-donnees-d-interet">
    Analyse des données d’intérêt
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#analyse-des-variables-numeriques">
+     Analyse des variables numériques
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#analyse-des-variables-liees-a-la-date-et-l-heure">
+     Analyse des variables liées à la date et l’heure
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -511,15 +523,11 @@ de locations de vélos pour une heure donnée. Nous pouvons d’ores et déjà
 exclure l’information liée aux abonnements et se focaliser seulement à la
 prédiction du nombre de locations globale.</p>
 <p>Il est donc temps de sélectionner les variables à inclure dans notre analyse
-statistique. Pour le moment nous pouvons exclure les variables suivantes :</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">date</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">nombre</span> <span class="pre">de</span> <span class="pre">location</span> <span class="pre">sans</span> <span class="pre">abonnement</span></code> et <code class="docutils literal notranslate"><span class="pre">nombre</span> <span class="pre">de</span> <span class="pre">locations</span> <span class="pre">avec</span> <span class="pre">abonnement</span></code></p></li>
-</ul>
+statistique. Pour le moment nous pouvons exclure les variables suivantes :
+<code class="docutils literal notranslate"><span class="pre">nombre</span> <span class="pre">de</span> <span class="pre">location</span> <span class="pre">sans</span> <span class="pre">abonnement</span></code> et <code class="docutils literal notranslate"><span class="pre">nombre</span> <span class="pre">de</span> <span class="pre">locations</span> <span class="pre">avec</span> <span class="pre">abonnement</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">variable_a_exclure</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;date&quot;</span><span class="p">,</span>
     <span class="s2">&quot;nombre de locations sans abonnement&quot;</span><span class="p">,</span>
     <span class="s2">&quot;nombre de locations avec abonnement&quot;</span><span class="p">,</span>
 <span class="p">]</span>
@@ -531,6 +539,8 @@ statistique. Pour le moment nous pouvons exclure les variables suivantes :</p>
 </div>
 <div class="section" id="analyse-des-donnees-d-interet">
 <h2>Analyse des données d’intérêt<a class="headerlink" href="#analyse-des-donnees-d-interet" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="analyse-des-variables-numeriques">
+<h3>Analyse des variables numériques<a class="headerlink" href="#analyse-des-variables-numeriques" title="Permalink to this headline">¶</a></h3>
 <p>Nous allons maintenant analyser les données que nous venons de sélectionner
 en utilisant des statistiques de base.</p>
 <p>Une première analyse assez simple consiste à regarder des statistiques tels
@@ -828,6 +838,224 @@ représentant les deux plus petits nombres de locations pour la variable
 <code class="docutils literal notranslate"><span class="pre">humidite</span></code>.</p>
 <p>En revanche, il semble que nous ne pouvons pas observer un impact de la
 vitesse du vent sur le nombre de locations.</p>
+</div>
+<div class="section" id="analyse-des-variables-liees-a-la-date-et-l-heure">
+<h3>Analyse des variables liées à la date et l’heure<a class="headerlink" href="#analyse-des-variables-liees-a-la-date-et-l-heure" title="Permalink to this headline">¶</a></h3>
+<p>Maintenant, nous allons nous intéresser aux variables liées au temps.
+Rappelons dans un premier temps les variables que nous avons dans notre jeu
+de données.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">location_velo</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>date</th>
+      <th>saison</th>
+      <th>annee</th>
+      <th>mois</th>
+      <th>heure</th>
+      <th>vacances</th>
+      <th>jour de la semaine</th>
+      <th>jour travaille</th>
+      <th>meteo</th>
+      <th>temperature</th>
+      <th>temperature ressentie</th>
+      <th>humidite</th>
+      <th>vitesse du vent</th>
+      <th>nombre de locations</th>
+    </tr>
+    <tr>
+      <th>ID</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>2011-01-01</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>6</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0.24</td>
+      <td>0.2879</td>
+      <td>0.81</td>
+      <td>0.0</td>
+      <td>16</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2011-01-01</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>6</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0.22</td>
+      <td>0.2727</td>
+      <td>0.80</td>
+      <td>0.0</td>
+      <td>40</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2011-01-01</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>2</td>
+      <td>0</td>
+      <td>6</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0.22</td>
+      <td>0.2727</td>
+      <td>0.80</td>
+      <td>0.0</td>
+      <td>32</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2011-01-01</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>3</td>
+      <td>0</td>
+      <td>6</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0.24</td>
+      <td>0.2879</td>
+      <td>0.75</td>
+      <td>0.0</td>
+      <td>13</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2011-01-01</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>4</td>
+      <td>0</td>
+      <td>6</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0.24</td>
+      <td>0.2879</td>
+      <td>0.75</td>
+      <td>0.0</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Une première analyse qui sera intéressante sera de combiner la variable
+<code class="docutils literal notranslate"><span class="pre">date</span></code> et <code class="docutils literal notranslate"><span class="pre">heure</span></code> pour avoir une variable de type <code class="docutils literal notranslate"><span class="pre">datetime</span></code> ou nous pourrons
+analyser un eventuelle relation entre ces périodes et le nombre de locations.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">location_velo</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">({</span>
+    <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="n">location_velo</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="p">,</span>
+    <span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="n">location_velo</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">month</span><span class="p">,</span>
+    <span class="s2">&quot;day&quot;</span><span class="p">:</span> <span class="n">location_velo</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">day</span><span class="p">,</span>
+    <span class="s2">&quot;hour&quot;</span><span class="p">:</span> <span class="n">location_velo</span><span class="p">[</span><span class="s2">&quot;heure&quot;</span><span class="p">],</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">location_velo</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;date&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s2">&quot;3D&quot;</span><span class="p">)[</span><span class="s2">&quot;nombre de locations&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Nombre de locations&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/file_00_33_0.png" src="../_images/file_00_33_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">variable_date</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;saison&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;mois&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;heure&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;jour de la semaine&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;jour travaille&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;meteo&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="n">variable_date</span><span class="p">:</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">variable</span><span class="p">,</span>
+        <span class="n">y</span><span class="o">=</span><span class="s2">&quot;nombre de locations&quot;</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">location_velo</span><span class="p">,</span>
+        <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/file_00_35_0.png" src="../_images/file_00_35_0.png" />
+<img alt="../_images/file_00_35_1.png" src="../_images/file_00_35_1.png" />
+<img alt="../_images/file_00_35_2.png" src="../_images/file_00_35_2.png" />
+<img alt="../_images/file_00_35_3.png" src="../_images/file_00_35_3.png" />
+<img alt="../_images/file_00_35_4.png" src="../_images/file_00_35_4.png" />
+<img alt="../_images/file_00_35_5.png" src="../_images/file_00_35_5.png" />
+</div>
+</div>
+</div>
 </div>
 </div>
 

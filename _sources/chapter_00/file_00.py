@@ -111,14 +111,11 @@ location_velo.head()
 #
 # Il est donc temps de sélectionner les variables à inclure dans notre analyse
 # statistique. Pour le moment nous pouvons exclure les variables suivantes :
-#
-# - `date`
-# - `nombre de location sans abonnement` et `nombre de locations avec
-#   abonnement`
+# `nombre de location sans abonnement` et `nombre de locations avec
+# abonnement`.
 
 # %%
 variable_a_exclure = [
-    "date",
     "nombre de locations sans abonnement",
     "nombre de locations avec abonnement",
 ]
@@ -127,6 +124,8 @@ location_velo = location_velo.drop(columns=variable_a_exclure)
 # %% [markdown]
 #
 # ## Analyse des données d'intérêt
+#
+# ### Analyse des variables numériques
 #
 # Nous allons maintenant analyser les données que nous venons de sélectionner
 # en utilisant des statistiques de base.
@@ -323,3 +322,53 @@ _ = sns.pairplot(
 #
 # En revanche, il semble que nous ne pouvons pas observer un impact de la
 # vitesse du vent sur le nombre de locations.
+#
+# ### Analyse des variables liées à la date et l'heure
+#
+# Maintenant, nous allons nous intéresser aux variables liées au temps.
+# Rappelons dans un premier temps les variables que nous avons dans notre jeu
+# de données.
+
+# %%
+location_velo.head()
+
+# %% [markdown]
+#
+# Une première analyse qui sera intéressante sera de combiner la variable
+# `date` et `heure` pour avoir une variable de type `datetime` ou nous pourrons
+# analyser un eventuelle relation entre ces périodes et le nombre de locations.
+
+# %%
+location_velo["date"] = pd.to_datetime({
+    "year": location_velo["date"].dt.year,
+    "month": location_velo["date"].dt.month,
+    "day": location_velo["date"].dt.day,
+    "hour": location_velo["heure"],
+})
+
+# %%
+_, ax = plt.subplots(figsize=(6, 4))
+location_velo.set_index("date").resample("3D")["nombre de locations"].mean().plot(ax=ax)
+_ = ax.set_ylabel("Nombre de locations")
+
+# %%
+variable_date = [
+    "saison",
+    "mois",
+    "heure",
+    "jour de la semaine",
+    "jour travaille",
+    "meteo",
+]
+
+# %%
+for variable in variable_date:
+    _, ax = plt.subplots(figsize=(6, 4))
+    sns.boxplot(
+        x=variable,
+        y="nombre de locations",
+        data=location_velo,
+        ax=ax,
+    )
+
+# %%
