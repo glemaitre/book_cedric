@@ -1,0 +1,5 @@
+jupyter-book
+pycodestyle
+scikit-learn
+pandas
+seaborn
