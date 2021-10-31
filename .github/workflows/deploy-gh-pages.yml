@@ -26,11 +26,6 @@ jobs:
       run: |
         pip install -r requirements.txt
 
-    - name: Cache jupyter-cache folder
-      uses: actions/cache@v2
-      env:
-        cache-name: jupyter-cache
-
     - name: Build the JupyterBook
       run: |
         jupyter-book build book
