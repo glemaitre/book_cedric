@@ -1,0 +1,906 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Analyse de statistique tradionnelle &#8212; Cédric&#39;s book</title>
+    
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="&lt;no title&gt;" href="file_01.html" />
+    <link rel="prev" title="Landing page" href="../landing-page.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">Cédric's book</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../landing-page.html">
+   Landing page
+  </a>
+ </li>
+</ul>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Analyse de statistique tradionnelle
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/chapter_00/file_00.py"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.py</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#notre-jeu-de-donnees">
+   Notre jeu de données
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#analyse-des-donnees-d-interet">
+   Analyse des données d’intérêt
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="analyse-de-statistique-tradionnelle">
+<h1>Analyse de statistique tradionnelle<a class="headerlink" href="#analyse-de-statistique-tradionnelle" title="Permalink to this headline">¶</a></h1>
+<p>Dans cet exercice, nous allons étudier la base de données que nous
+réutiliserons dans les exercices suivants. Pour cela, nous pratiquerons une
+analyse statistique traditionelle, ne faisant pas appel à des outils de
+machine learning. Le but de l’exercice sera donc avant tout d’acquérir des
+connaissances sur les données.</p>
+<div class="section" id="notre-jeu-de-donnees">
+<h2>Notre jeu de données<a class="headerlink" href="#notre-jeu-de-donnees" title="Permalink to this headline">¶</a></h2>
+<p>Pour cet exercice, nous allons utiliser un jeu de données structuré. En
+effet, ces données peuvent être représentées sous la forme d’un tableau de
+données. Dans les chapitres précédents, nous avons vu utilisé la librairie
+<code class="docutils literal notranslate"><span class="pre">pandas</span></code> et la classe <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> pour stocker ce type de données.</p>
+<p>Les données sont stockées dans fichier CSV et nous pouvons utiliser
+spécifiquement la fonction <code class="docutils literal notranslate"><span class="pre">read_csv</span></code> pour charger les données.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">location_velo</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;../datasets/bike_sharing/hour.csv&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Une bonne pratique avant d’effectuer une analyse statistique est de
+comprendre quelles sont les variables stockées. Pour cela, nous allons
+utiliser la method <code class="docutils literal notranslate"><span class="pre">.info()</span></code> de la classe <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">location_velo</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 17379 entries, 0 to 17378
+Data columns (total 17 columns):
+ #   Column                               Non-Null Count  Dtype  
+---  ------                               --------------  -----  
+ 0   ID                                   17379 non-null  int64  
+ 1   date                                 17379 non-null  object 
+ 2   saison                               17379 non-null  int64  
+ 3   annee                                17379 non-null  int64  
+ 4   mois                                 17379 non-null  int64  
+ 5   heure                                17379 non-null  int64  
+ 6   vacances                             17379 non-null  int64  
+ 7   jour de la semaine                   17379 non-null  int64  
+ 8   jour travaille                       17379 non-null  int64  
+ 9   meteo                                17379 non-null  int64  
+ 10  temperature                          17379 non-null  float64
+ 11  temperature ressentie                17379 non-null  float64
+ 12  humidite                             17379 non-null  float64
+ 13  vitesse du vent                      17379 non-null  float64
+ 14  nombre de locations sans abonnement  17379 non-null  int64  
+ 15  nombre de locations avec abonnement  17379 non-null  int64  
+ 16  nombre de locations                  17379 non-null  int64  
+dtypes: float64(4), int64(12), object(1)
+memory usage: 2.3+ MB
+</pre></div>
+</div>
+</div>
+</div>
+<p>Cette méthode est particulièrement utile pour comprendre :</p>
+<ul class="simple">
+<li><p>le noms des variables stockées dans le fichier CSV</p></li>
+<li><p>le type de données de chaque variable inféré par <code class="docutils literal notranslate"><span class="pre">pandas</span></code></p></li>
+<li><p>la présence ou non de valeurs manquantes pour chaque variable</p></li>
+</ul>
+<p>Comme précédemment présenté, <code class="docutils literal notranslate"><span class="pre">pandas</span></code> généralement stocke les chaînes de
+caractères en utilisant le type <code class="docutils literal notranslate"><span class="pre">obj</span></code>. Pour le jeu de données que nous
+utilisons, la colonne <code class="docutils literal notranslate"><span class="pre">date</span></code> est stockée de cette manière. En revanche, il
+serait mieux de donner à <code class="docutils literal notranslate"><span class="pre">pandas</span></code> cette information au moment de la lecture
+pour qu’il puisse caster les chaînes de caractères en dates.</p>
+<p>Nous allons donc utiliser l’option <code class="docutils literal notranslate"><span class="pre">parse_date</span></code> de la fonction <code class="docutils literal notranslate"><span class="pre">read_csv</span></code>
+pour convertir la colonne <code class="docutils literal notranslate"><span class="pre">date</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">location_velo</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+    <span class="s2">&quot;../datasets/bike_sharing/hour.csv&quot;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">location_velo</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 17379 entries, 0 to 17378
+Data columns (total 17 columns):
+ #   Column                               Non-Null Count  Dtype         
+---  ------                               --------------  -----         
+ 0   ID                                   17379 non-null  int64         
+ 1   date                                 17379 non-null  datetime64[ns]
+ 2   saison                               17379 non-null  int64         
+ 3   annee                                17379 non-null  int64         
+ 4   mois                                 17379 non-null  int64         
+ 5   heure                                17379 non-null  int64         
+ 6   vacances                             17379 non-null  int64         
+ 7   jour de la semaine                   17379 non-null  int64         
+ 8   jour travaille                       17379 non-null  int64         
+ 9   meteo                                17379 non-null  int64         
+ 10  temperature                          17379 non-null  float64       
+ 11  temperature ressentie                17379 non-null  float64       
+ 12  humidite                             17379 non-null  float64       
+ 13  vitesse du vent                      17379 non-null  float64       
+ 14  nombre de locations sans abonnement  17379 non-null  int64         
+ 15  nombre de locations avec abonnement  17379 non-null  int64         
+ 16  nombre de locations                  17379 non-null  int64         
+dtypes: datetime64[ns](1), float64(4), int64(12)
+memory usage: 2.3 MB
+</pre></div>
+</div>
+</div>
+</div>
+<p>Nous pouvons donc observer que la conversion en date a bien été effectuée.
+Il semblerait également que la colonne <code class="docutils literal notranslate"><span class="pre">ID</span></code> ne soit pas pertinente. Nous
+pourrions nous attendre à ce quelle contienne des entiers uniques. Nous
+allons le vérifier en utilisant la méthode <code class="docutils literal notranslate"><span class="pre">.nunique()</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">location_velo</span><span class="p">[</span><span class="s2">&quot;ID&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">location_velo</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+<p>Il est donc possible d’utiliser pour le moment cette colonne comme l’index
+de notre dataframe.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">location_velo</span> <span class="o">=</span> <span class="n">location_velo</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;ID&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Maintenant, il est temps de regarder les données. Nous allons afficher les
+cinq premières lignes de notre jeu de données.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">location_velo</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>date</th>
+      <th>saison</th>
+      <th>annee</th>
+      <th>mois</th>
+      <th>heure</th>
+      <th>vacances</th>
+      <th>jour de la semaine</th>
+      <th>jour travaille</th>
+      <th>meteo</th>
+      <th>temperature</th>
+      <th>temperature ressentie</th>
+      <th>humidite</th>
+      <th>vitesse du vent</th>
+      <th>nombre de locations sans abonnement</th>
+      <th>nombre de locations avec abonnement</th>
+      <th>nombre de locations</th>
+    </tr>
+    <tr>
+      <th>ID</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>2011-01-01</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>6</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0.24</td>
+      <td>0.2879</td>
+      <td>0.81</td>
+      <td>0.0</td>
+      <td>3</td>
+      <td>13</td>
+      <td>16</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2011-01-01</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>6</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0.22</td>
+      <td>0.2727</td>
+      <td>0.80</td>
+      <td>0.0</td>
+      <td>8</td>
+      <td>32</td>
+      <td>40</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2011-01-01</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>2</td>
+      <td>0</td>
+      <td>6</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0.22</td>
+      <td>0.2727</td>
+      <td>0.80</td>
+      <td>0.0</td>
+      <td>5</td>
+      <td>27</td>
+      <td>32</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2011-01-01</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>3</td>
+      <td>0</td>
+      <td>6</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0.24</td>
+      <td>0.2879</td>
+      <td>0.75</td>
+      <td>0.0</td>
+      <td>3</td>
+      <td>10</td>
+      <td>13</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2011-01-01</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>4</td>
+      <td>0</td>
+      <td>6</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0.24</td>
+      <td>0.2879</td>
+      <td>0.75</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Il apparaît que les données associées à la notion de date sont présentes dans
+plusieurs colonnes : <code class="docutils literal notranslate"><span class="pre">date</span></code>, <code class="docutils literal notranslate"><span class="pre">annee</span></code>, <code class="docutils literal notranslate"><span class="pre">mois</span></code>. De plus, des informations
+concernant l’heure (colonne <code class="docutils literal notranslate"><span class="pre">heure</span></code>), la saison (colonne <code class="docutils literal notranslate"><span class="pre">saison</span></code>), le jour
+de la semaine (colonne <code class="docutils literal notranslate"><span class="pre">jour</span> <span class="pre">de</span> <span class="pre">la</span> <span class="pre">semaine</span></code>) et le type de jour (colonnes
+<code class="docutils literal notranslate"><span class="pre">jour</span> <span class="pre">travaille</span></code> et <code class="docutils literal notranslate"><span class="pre">vacances</span></code>) sont également présentes.</p>
+<p>Il sera donc important de décider quelles variables à inclure lorsque nous
+définirons le type de problème à résoudre. Nous devons également noter que la
+majorité de ces données sont encodées de manière ordinale. Ceci est
+particulièrement important et doit être pris en compte lorsque nous
+choisirons notre modèle prédictif de machine learning.</p>
+<p>Ensuite, nous pouvons observer des variables liées au condition
+météorologique : <code class="docutils literal notranslate"><span class="pre">temperature</span></code>, <code class="docutils literal notranslate"><span class="pre">temperature</span> <span class="pre">ressentie</span></code>, <code class="docutils literal notranslate"><span class="pre">humidite</span></code> et
+<code class="docutils literal notranslate"><span class="pre">vitesse</span> <span class="pre">du</span> <span class="pre">vent</span></code>. Nous pouvons donc présentir que certaines de ces variables
+pourraient être corrélées.</p>
+<p>Finalement, nous observons trois variables liées aux nombres de locations de
+vélos : <code class="docutils literal notranslate"><span class="pre">nombre</span> <span class="pre">de</span> <span class="pre">locations</span></code>, <code class="docutils literal notranslate"><span class="pre">nombre</span> <span class="pre">de</span> <span class="pre">locations</span> <span class="pre">sans</span> <span class="pre">abonnement</span></code> et
+<code class="docutils literal notranslate"><span class="pre">nombre</span> <span class="pre">de</span> <span class="pre">locations</span> <span class="pre">avec</span> <span class="pre">abonnement</span></code>.</p>
+<p>Il advient que le problème que nous allons résoudre soit de prédire le nombre
+de locations de vélos pour une heure donnée. Nous pouvons d’ores et déjà
+exclure l’information liée aux abonnements et se focaliser seulement à la
+prédiction du nombre de locations globale.</p>
+<p>Il est donc temps de sélectionner les variables à inclure dans notre analyse
+statistique. Pour le moment nous pouvons exclure les variables suivantes :</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">date</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nombre</span> <span class="pre">de</span> <span class="pre">location</span> <span class="pre">sans</span> <span class="pre">abonnement</span></code> et <code class="docutils literal notranslate"><span class="pre">nombre</span> <span class="pre">de</span> <span class="pre">locations</span> <span class="pre">avec</span> <span class="pre">abonnement</span></code></p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">variable_a_exclure</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;date&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;nombre de locations sans abonnement&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;nombre de locations avec abonnement&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">location_velo</span> <span class="o">=</span> <span class="n">location_velo</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">variable_a_exclure</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="analyse-des-donnees-d-interet">
+<h2>Analyse des données d’intérêt<a class="headerlink" href="#analyse-des-donnees-d-interet" title="Permalink to this headline">¶</a></h2>
+<p>Nous allons maintenant analyser les données que nous venons de sélectionner
+en utilisant des statistiques de base.</p>
+<p>Une première analyse assez simple consiste à regarder des statistiques tels
+que la moyenne, la variance, la quantile, la distribution des valeurs, etc.
+Cependant, ce type d’analyse n’est utile que pour obtenir des informations
+sur les variables de type numérique.</p>
+<p>Il est important de différencier les variables encodées de manière ordinale
+et donc te type numérique des variables numériques “naturelles”.
+Concrètement, les informations liées à la date dans notre jeu de données
+appartiennent à la première catégorie. Calculer par exemple la moyenne ou la
+variance sur ce type de variable n’est pas pertinent. En revanche, calculer
+la moyenne ou la variance sur des variables naturellement numériques tels que
+la vitesse du vent ou la température ressentie seront pertinent.</p>
+<p>Nous pouvons donc définir les variables de type numérique que nous voulons
+analyser dans un premier temps.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">variable_numerique</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;temperature&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;temperature ressentie&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;humidite&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;vitesse du vent&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;nombre de locations&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Nous pouvons maintenant utiliser la méthode <code class="docutils literal notranslate"><span class="pre">.describe()</span></code> sur notre dataframe
+afin de calculer les statistiques de base.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">location_velo</span><span class="p">[</span><span class="n">variable_numerique</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>temperature</th>
+      <th>temperature ressentie</th>
+      <th>humidite</th>
+      <th>vitesse du vent</th>
+      <th>nombre de locations</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>17379.000000</td>
+      <td>17379.000000</td>
+      <td>17379.000000</td>
+      <td>17379.000000</td>
+      <td>17379.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>0.496987</td>
+      <td>0.475775</td>
+      <td>0.627229</td>
+      <td>0.190098</td>
+      <td>189.463088</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.192556</td>
+      <td>0.171850</td>
+      <td>0.192930</td>
+      <td>0.122340</td>
+      <td>181.387599</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>0.020000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>0.340000</td>
+      <td>0.333300</td>
+      <td>0.480000</td>
+      <td>0.104500</td>
+      <td>40.000000</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>0.500000</td>
+      <td>0.484800</td>
+      <td>0.630000</td>
+      <td>0.194000</td>
+      <td>142.000000</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>0.660000</td>
+      <td>0.621200</td>
+      <td>0.780000</td>
+      <td>0.253700</td>
+      <td>281.000000</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>0.850700</td>
+      <td>977.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Nous pouvons observer que toutes ces variables sont comprises entre 0 et 1.
+L’ordre de grandeur des moyennes et des standard déviations est équivalent
+pour toutes ces variables, mis à part la variable <code class="docutils literal notranslate"><span class="pre">nombre</span> <span class="pre">de</span> <span class="pre">locations</span></code> ce
+qui n’est pas un problème puisque cette variable devra être prédite. Elles ne
+sont donc pas exprimées dans leurs unités naturelles. Cela nous indique
+également que nous n’aurons pas forcément besoin de normaliser (même si celà
+ne serait pas une mauvaise chose si nous utilisons un modèle lineaire ou qui
+utilise des distances Euclidienne) les données en amont dans la partie de
+prétraitement de notre modèle prédictif.</p>
+<p>En plus d’extraire ces informations, nous pouvons observer visuellement la
+distribution empirique des différentes variables. Pour cela, nous pouvons
+utiliser la méthode <code class="docutils literal notranslate"><span class="pre">.plot.hist()</span></code> de pandas.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Afin de changer le style de nos graphiques, nous pouvons utiliser seaborn</span>
+<span class="c1"># context.</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;poster&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="n">variable_numerique</span><span class="p">:</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+    <span class="n">location_velo</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">variable</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Distribution empirique de </span><span class="se">\n</span><span class="s2">&#39;</span><span class="si">{</span><span class="n">variable</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/file_00_20_0.png" src="../_images/file_00_20_0.png" />
+<img alt="../_images/file_00_20_1.png" src="../_images/file_00_20_1.png" />
+<img alt="../_images/file_00_20_2.png" src="../_images/file_00_20_2.png" />
+<img alt="../_images/file_00_20_3.png" src="../_images/file_00_20_3.png" />
+<img alt="../_images/file_00_20_4.png" src="../_images/file_00_20_4.png" />
+</div>
+</div>
+<p>En observant les graphiques, nous pouvons apprécier le type de distribution
+empirique que nous obtenons. D’ailleurs, il est intéressant de noter que ces
+distributions ne sont pas de type Gaussienne ce qui pourrait également avoir
+un impact sur le design de notre modèle prédictif.</p>
+<p>Nous pouvons aller un peu plus loin dans notre analyse statistique en
+observant le lien marginal entre chacune de ces variables. Il faut noter que
+le lien marginal est une relation entre deux variables et ne sera pas le lien
+appris par un modèle prédictif de machine learning qui apprendra un lien
+conditionnel entre ces mêmes variables. En d’autres mots, lorsque nous
+regardons l’impact d’une variable sur une autre dans un modèle prédictif,
+celle-ci sera dépendante de la valeurs de toutes les autres variables. Ici,
+en utilisant seulement deux variables à la fois, nous négligeons tous les
+liens qui pourraient exister avec les autres variables.</p>
+<p>La librairie <code class="docutils literal notranslate"><span class="pre">seaborn</span></code> nous permet de visualiser les liens marginales entre
+deux variables. Pour cela, nous pouvons utiliser la méthode <code class="docutils literal notranslate"><span class="pre">.pairplot()</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># Nous pouvons utiliser un sous échantillonnage pour accelerer la visualisation</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">index_sous_echantillons</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span>
+    <span class="n">location_velo</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1_000</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">_</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span>
+    <span class="n">location_velo</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">index_sous_echantillons</span><span class="p">,</span> <span class="n">variable_numerique</span><span class="p">],</span>
+    <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;kde&quot;</span><span class="p">,</span>
+    <span class="n">diag_kind</span><span class="o">=</span><span class="s2">&quot;kde&quot;</span><span class="p">,</span>
+    <span class="n">height</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/file_00_22_0.png" src="../_images/file_00_22_0.png" />
+</div>
+</div>
+<p>Dans ce graphique, la diagonale correspond à la distribution empirique et est
+donc équivalente aux histogrammes que nous avons vus précédemment.</p>
+<p>Nous sommes particulièrement intéressés par la dernière colonne de notre
+graphique qui correspond au nombre de locations. Une corrélation entre cet
+variable et tout autre variable pourrait nous permettre de savoir qu’un
+modèle prédictif fonctionnera. En revanche, cela nous indiquerait également
+que de simple statisque suffirait pour nous prédire cette variable.</p>
+<p>Nous pouvons observer que la distribution de la variable <code class="docutils literal notranslate"><span class="pre">nombre</span> <span class="pre">de</span> <span class="pre">locations</span></code> n’est pas Gaussienne et à une longue queue. Cela nous indique
+qu’il serait intéressant de prétraiter cette variable ou d’utiliser un modèle
+prédictif qui ne suppose pas que la variable à prédire soit Gaussienne.</p>
+<p>En ce qui concerne les liens marginales avec les autres variables, nous noter
+un effet de seuil : les valeurs sont observées au dessus ou en dessous de la
+diagonale suivant si les variables sont postivement ou négativement
+corrélées.</p>
+<p>En observant les autres graphiques, nous pouvons constater que les variables
+<code class="docutils literal notranslate"><span class="pre">temperature</span></code> et <code class="docutils literal notranslate"><span class="pre">temperature</span> <span class="pre">ressentie</span></code> sont corrélées.</p>
+<p>Au lieu de visualiser les relations en utilisant la méthode KDE (kernel
+density estimation), nous pouvons représenter graphiquement tous les points.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span>
+    <span class="n">location_velo</span><span class="p">[</span><span class="n">variable_numerique</span><span class="p">],</span>
+    <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;scatter&quot;</span><span class="p">,</span>
+    <span class="n">diag_kind</span><span class="o">=</span><span class="s2">&quot;kde&quot;</span><span class="p">,</span>
+    <span class="n">height</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/file_00_24_0.png" src="../_images/file_00_24_0.png" />
+</div>
+</div>
+<p>À partir de cette représentation, nous pouvons observer des nuages de points
+assez curieux. Dans le graphique liant <code class="docutils literal notranslate"><span class="pre">temperature</span></code> et <code class="docutils literal notranslate"><span class="pre">temperature</span> <span class="pre">ressentie</span></code>, nous pouvons observer une ligne horizontale (ou verticale suivant
+la relation considérée). Il semblerait que la température ressentie reste
+constante alors que la température augmente.</p>
+<p>Nous pouvons observer des phénomènes identiques pour d’autres variables :
+lorsque la vitesse du vent ou l’humidité sont nul. Ces échantillons
+pourraient peut-être correspondre à des données bruitées.</p>
+<p>Finalement, il pourrait être intéressant d’observer si il existe une relation
+entre le nombre de locations et un groupe à l’intérieur d’une des variables.
+Nous pouvons “discretizer” la variable <code class="docutils literal notranslate"><span class="pre">nombre</span> <span class="pre">de</span> <span class="pre">locations</span></code> en cinq groupes
+définis par des quantiles. La function <code class="docutils literal notranslate"><span class="pre">qcut()</span></code> de <code class="docutils literal notranslate"><span class="pre">pandas</span></code> nous permet de
+discretiser une variable.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">location_velo_discrete</span> <span class="o">=</span> <span class="n">location_velo</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">location_velo_discrete</span><span class="p">[</span><span class="s2">&quot;nombre de locations&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span>
+    <span class="n">location_velo_discrete</span><span class="p">[</span><span class="s2">&quot;nombre de locations&quot;</span><span class="p">],</span>
+    <span class="n">q</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Nous pouvons maintenant encoder la valeur de la variable <code class="docutils literal notranslate"><span class="pre">nombre</span> <span class="pre">de</span> <span class="pre">locations</span></code> avec une couleur.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span>
+    <span class="n">location_velo_discrete</span><span class="p">[</span><span class="n">variable_numerique</span><span class="p">],</span>
+    <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;nombre de locations&quot;</span><span class="p">,</span>
+    <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;scatter&quot;</span><span class="p">,</span>
+    <span class="n">diag_kind</span><span class="o">=</span><span class="s2">&quot;kde&quot;</span><span class="p">,</span>
+    <span class="n">height</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/file_00_28_0.png" src="../_images/file_00_28_0.png" />
+</div>
+</div>
+<p>Sur ce graphique, il est difficile d’observer une tendance quand nous
+étudions trois variables à la fois (l’axe <code class="docutils literal notranslate"><span class="pre">x</span></code> et <code class="docutils literal notranslate"><span class="pre">y</span></code> de chaque graphique
+représentent deux variables alors que la couleur représente une variable
+additionelle). En revanche, nous pouvons nous attarder sur les graphiques de
+la diagonale.</p>
+<p>Pour les graphiques de température, nous pouvons observer que les catégories
+des deux plus faibles nombres de locations sont dissociées des deux
+catégories des deux plus grand nombres de locations.</p>
+<p>Nous pouvons noter une tendance similaire pour les deux catégories
+représentant les deux plus petits nombres de locations pour la variable
+<code class="docutils literal notranslate"><span class="pre">humidite</span></code>.</p>
+<p>En revanche, il semble que nous ne pouvons pas observer un impact de la
+vitesse du vent sur le nombre de locations.</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./chapter_00"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+    <div id="prev">
+        <a class="left-prev" href="../landing-page.html" title="previous page">
+            <i class="prevnext-label fas fa-angle-left"></i>
+            <div class="prevnext-info">
+                <p class="prevnext-label">previous</p>
+                <p class="prevnext-title">Landing page</p>
+            </div>
+        </a>
+    </div>
+     <div id="next">
+        <a class="right-next" href="file_01.html" title="next page">
+            <div class="prevnext-info">
+                <p class="prevnext-label">next</p>
+                <p class="prevnext-title">&lt;no title&gt;</p>
+            </div>
+            <i class="prevnext-label fas fa-angle-right"></i>
+        </a>
+     </div>
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By Cédric Lemaître<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>
