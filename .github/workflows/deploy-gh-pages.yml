@@ -32,7 +32,7 @@ jobs:
 
     - name: Create folder for gh-pages
       run: |
-        cp -r jupyter-book/_build/html gh-pages
+        cp -r book/_build/html gh-pages
 
     - name: GitHub Pages action
       if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
