@@ -1,4 +1,4 @@
-# Real-world examples
+# Apprentisage automatique supervisé
 
 ```{tableofcontents}
 ```
