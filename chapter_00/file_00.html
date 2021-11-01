@@ -223,8 +223,8 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#example-introductif-a-l-interface-de-programmation-de-scikit-learn">
-   Example introductif à l’interface de programmation de
+  <a class="reference internal nav-link" href="#introduction-a-l-interface-de-programmation-de-scikit-learn">
+   Introduction à l’interface de programmation de
    <code class="docutils literal notranslate">
     <span class="pre">
      scikit-learn
@@ -233,8 +233,8 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#evaluation-d-un-modele-predictif">
-   Evaluation d’un modèle prédictif
+  <a class="reference internal nav-link" href="#evaluation-de-notre-modele-predictif">
+   Evaluation de notre modèle prédictif
   </a>
  </li>
 </ul>
@@ -252,20 +252,27 @@
 <h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="motivations-de-l-apprentissage-automatique">
 <h2>Motivations de l’apprentissage automatique<a class="headerlink" href="#motivations-de-l-apprentissage-automatique" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p>Créer une fonction de prédiction y = f(X)</p></li>
-<li><p>Définir y, X et f()</p></li>
-</ul>
-<p>We will start by introducing the concept of linear regression.
-First, we will not use any advanced tool as scikit-learn and instead made use
-of only NumPy. First, let’s load the dataset that we will use for this
-exercise.</p>
+<p>Avant de rentrer dans le vive du sujet et découvrir les différents modèles
+d’apprentissage automatique disponibles dans <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code>, il advient de
+motiver l’usage de telles techniques.</p>
+<p>Nous pouvons d’ores et déjà définir ce que nous appelerons un modèle
+prédictif. Un modèle prédictif correspond à une fonction prenant des données
+en entrée est capable de renvoyé une prédiction en sortie. Mathématiquement,
+nous pouvons exprimer un tel modèle comme suit :</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{y} = f(X) \,
+\]</div>
+<p>ou <span class="math notranslate nohighlight">\(X\)</span> seront nos <strong>données d’entrée</strong>, <span class="math notranslate nohighlight">\(f()\)</span> est notre <strong>modèle prédictif</strong>
+et <span class="math notranslate nohighlight">\(\hat{y}\)</span> seront nos <strong>prédictions</strong>.</p>
+<p>Nous pouvons donner un exemple concret dès maintenant. Nous allons charger un
+jeu de données minimaliste.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
-<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;../datasets/penguins_regression.csv&quot;</span><span class="p">)</span>
-<span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="n">donnees</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;../datasets/penguins_regression.csv&quot;</span><span class="p">)</span>
+<span class="n">donnees</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -288,8 +295,8 @@ exercise.</p>
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>Flipper Length (mm)</th>
-      <th>Body Mass (g)</th>
+      <th>Longueur Aileron (mm)</th>
+      <th>Masse Corporelle (g)</th>
     </tr>
   </thead>
   <tbody>
@@ -322,99 +329,50 @@ exercise.</p>
 </table>
 </div></div></div>
 </div>
-<p>We will use a dataset containing records of some penguins flipper length and
-body mass. The first task that we want to accomplish is to learn a predictive
-model where we would like to estimate the body mass of a penguins given its
-flipper length. Since the target is continuous, this problem is a regression
-problem.</p>
-<p>Let’s first have a look at the relationship between these measurements</p>
+<p>Nous venons de charger en mémoire des données contenant des informations
+de pingouins. Ce jeu de données contient deux informations : pour chaque
+pingouin, nous connaissons la longeur de son aileron ainsi que sa masse
+corporelle.</p>
+<p>Nous pouvons formuler le problème de prédiction suivant : à partir de ces
+données, nous souhaitons apprendre une fonction <span class="math notranslate nohighlight">\(f()\)</span> qui prend en entrée
+la longueur d’aileron d’un pingouin et qui renvoie sa masse corporelle.</p>
+<p>Nous pouvons dès à présent visualiser ces données.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
 <span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;poster&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Can I predict penguins&#39; body mass?&quot;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Peut-on prédire la masse corporelle </span><span class="se">\n</span><span class="s2">d&#39;un pingouin?&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/file_00_5_0.png" src="../_images/file_00_5_0.png" />
+<img alt="../_images/file_00_3_0.png" src="../_images/file_00_3_0.png" />
 </div>
 </div>
-<p>We see could see that we have a linear trend between the flipper length and
-the body mass: longer is the penguin’s flipper, heavier is the penguin. The
-first predictive model that we would like to have will model the relationship
-between these two variables as a linear relationship.</p>
-<p>Thus, in this example:</p>
-<ul class="simple">
-<li><p>the flipper length is a feature. Here, we will only use a single feature.
-In practice, we will have many features when trying to create a predictive
-model.</p></li>
-<li><p>the body mass is the variable that we would like to predict, thus it is the
-target.</p></li>
-</ul>
-<p>A pair of measurement (flipper length, body mass) is called a sample. We
-learn a predictive model from available pair of such features/target. At
-prediction time, we will only have the features available and the goal is to
-predict the potential target. To evaluate a predictive model, we can then use
-some of the features and compare the predictions given by the model with the
-true target.</p>
-<p>For the rest of this lecture, we will denote the variable <code class="docutils literal notranslate"><span class="pre">X</span></code> as the matrix
-of shape <code class="docutils literal notranslate"><span class="pre">(n_samples,</span> <span class="pre">n_features)</span></code> and the target will be denoted by the
-variable <code class="docutils literal notranslate"><span class="pre">y</span></code> as a vector of shape <code class="docutils literal notranslate"><span class="pre">(n_samples,)</span></code>.</p>
+<p>En oberservant nos données, nous pouvons constater que nous avons un jeu de
+données contenant à la fois l’entrée et la sortie de notre fonction <span class="math notranslate nohighlight">\(f()\)</span>.
+Typiquement, ceci est le cas lorsque nous sommes dans un contexte
+d’<strong>apprentissage supervisé</strong>.</p>
+<p>L’idée sera de trouver la fonction <span class="math notranslate nohighlight">\(f()\)</span> optimale à partir de ces données
+d’entrée et sortie. Par la suite, nous utiliserons cette fonction pour
+prédire la sortie à partir d’une nouvelle donnée d’entrée.</p>
+<p>Dans <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code>, les données d’entrée et de sortie sont séparées en deux
+tableaux distincts, dénotés <code class="docutils literal notranslate"><span class="pre">X</span></code> et <code class="docutils literal notranslate"><span class="pre">y</span></code> dans la documentation.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[[</span><span class="s2">&quot;Flipper Length (mm)&quot;</span><span class="p">]],</span> <span class="n">data</span><span class="p">[[</span><span class="s2">&quot;Body Mass (g)&quot;</span><span class="p">]]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">donnees</span><span class="p">[[</span><span class="s2">&quot;Longueur Aileron (mm)&quot;</span><span class="p">]]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">donnees</span><span class="p">[</span><span class="s2">&quot;Masse Corporelle (g)&quot;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="example-introductif-a-l-interface-de-programmation-de-scikit-learn">
-<h2>Example introductif à l’interface de programmation de <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code><a class="headerlink" href="#example-introductif-a-l-interface-de-programmation-de-scikit-learn" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p>Formuler le problème de least squares</p></li>
-<li><p>Résoudre avec NumPy</p></li>
-<li><p>Notre propre classe et parallèle avec <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code></p></li>
-</ul>
-<p>To start, we would like to model the relationship between <code class="docutils literal notranslate"><span class="pre">X</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> by a
-linear relationship. Thus, we can formalize it as:</p>
-<div class="math notranslate nohighlight">
-\[
-y = X \beta
-\]</div>
-<p>where <span class="math notranslate nohighlight">\(\beta\)</span> are the coefficients of our linear model. We could expand this
-equation for all available features as:</p>
-<div class="math notranslate nohighlight">
-\[
-y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + ... + \beta_n X_n
-\]</div>
-<p>Here, we only have a single feature, <span class="math notranslate nohighlight">\(\beta_1\)</span>, that is the flipper length.</p>
-<p>Finding a linear model is equivalent to find the “best possible” <span class="math notranslate nohighlight">\(\beta\)</span>.
-What is the best <span class="math notranslate nohighlight">\(\beta\)</span>? The best <span class="math notranslate nohighlight">\(\beta\)</span> would be the <span class="math notranslate nohighlight">\(\beta\)</span> that once
-used with <span class="math notranslate nohighlight">\(X\)</span> will predict <span class="math notranslate nohighlight">\(\hat{y}\)</span> such that the <span class="math notranslate nohighlight">\(\hat{y}\)</span> (i.e. the
-predicted target) is as closed as possible of <span class="math notranslate nohighlight">\(y\)</span> (i.e. the true target).
-Thus, we would like to minimize an error. We can find the <span class="math notranslate nohighlight">\(\beta\)</span> from the
-equation above:</p>
-<div class="math notranslate nohighlight">
-\[
-X^T y = X^T X \beta
-\]</div>
-<p>and thus</p>
-<div class="math notranslate nohighlight">
-\[
-\beta = (X^T X)^{-1} X^T y
-\]</div>
+<p>Nous allons nous attarder sur la structure de ces données.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;Intercept&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">X</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -437,500 +395,409 @@ X^T y = X^T X \beta
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>Flipper Length (mm)</th>
-      <th>Intercept</th>
+      <th>Longueur Aileron (mm)</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
       <td>181.0</td>
-      <td>1</td>
     </tr>
     <tr>
       <th>1</th>
       <td>186.0</td>
-      <td>1</td>
     </tr>
     <tr>
       <th>2</th>
       <td>195.0</td>
-      <td>1</td>
     </tr>
     <tr>
       <th>3</th>
       <td>193.0</td>
-      <td>1</td>
     </tr>
     <tr>
       <th>4</th>
       <td>190.0</td>
-      <td>1</td>
     </tr>
   </tbody>
 </table>
 </div></div></div>
 </div>
+<p><code class="docutils literal notranslate"><span class="pre">X</span></code> est représenté par une <strong>matrice</strong> de données en deux dimensions. Chaque
+ligne correspond à un <strong>échantillon</strong> (i.e. un pingouin) et chaque colonne
+correspond à une <strong>variable</strong> (i.e. une mesure physique). Dans notre jeu de
+données minimaliste, nous avons une seule variable d’entrée, <code class="docutils literal notranslate"><span class="pre">Longueur</span> <span class="pre">Aileron</span> <span class="pre">(mm)</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    3750.0
+1    3800.0
+2    3250.0
+3    3450.0
+4    3650.0
+Name: Masse Corporelle (g), dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">y</span></code> est représenté par un <strong>vecteur</strong> de données (i.e. une seul dimension).
+Nous avons autant d’éléments que de lignes dans <code class="docutils literal notranslate"><span class="pre">X</span></code>. Cette variable est
+communemment appellée <strong>variable cible</strong>.</p>
+<p>Il important de noter que <code class="docutils literal notranslate"><span class="pre">y</span></code> est une variable continue : elle peut prendre
+n’importe quel valeur entre moins l’infini et plus l’infini ou quasiment
+(nous somme limités par la physique puisque le masse corporelle d’un pingouin
+ne peut-être négative et trop grande). Lorsque <code class="docutils literal notranslate"><span class="pre">y</span></code> est une <strong>variable
+continue</strong> nous appelons ce problème de prédiction, un problème de
+<strong>regression</strong>.</p>
+<p>Si <code class="docutils literal notranslate"><span class="pre">y</span></code> est une variable <strong>discrète</strong>, comme par exemple l’espèce de pinguoin,
+nous appelons ce problème, un problème de <strong>classification</strong>.</p>
+<p>Donc à partir de ces données, nous aimerions apprendre une fonction de
+prédiction <code class="docutils literal notranslate"><span class="pre">f()</span></code>. La définition de telles fonctions sont le résultat de
+recherche fondamentale dans le domaine de l’apprentissage automatique. Nous
+allons présenter ces différentes fonctions dans la suite de ce livre.</p>
+<p>Mais afin d’illustrer le principe d’une fonction de prédiction, nous
+pourrions venir avec notre propre fonction de prédiction, basée sur une
+intuition. En regardant le graphique représentant notre variable d’entrée et
+notre variable de sortie, nous pourrions calculer une relation moyenne entre
+la longueur d’aileron et la masse corporelle.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="n">coef</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">X</span><span class="p">)</span> <span class="o">@</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">y</span>
-<span class="n">coef</span>
+<span class="n">relation_X_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;Longueur Aileron (mm)&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">relation_X_y</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Body Mass (g)</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>49.685566</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>-5780.831358</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.04898871471403136
+</pre></div>
 </div>
+</div>
+</div>
+<p>Maintenant nous pouvons utiliser cette relation pour prédire la masse :
+nous sommes entrain de d’utiliser le fameux “produit en croix”. Donc,
+essayons de prédire la masse du premier pingouin dans notre dataset.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">coef</span><span class="p">)</span>
-<span class="n">y_pred</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">masse_premier_pinguoin</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">relation_X_y</span>
+<span class="n">masse_premier_pinguoin</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[3212.25616143],
-       [3460.68399346],
-       [3907.85409111],
-       [3808.4829583 ],
-       [3659.42625908]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3694.728491175498
 </pre></div>
 </div>
 </div>
 </div>
+<p>Nous pouvons même estimer la différence avec sa masse réelle.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;Flipper Length (mm)&quot;</span><span class="p">],</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Can I predict penguins&#39; body mass&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;Masse réelle: </span><span class="si">{</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> grammes</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="sa">f</span><span class="s2">&quot;Masse prédite: </span><span class="si">{</span><span class="n">masse_premier_pinguoin</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> grammes</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="sa">f</span><span class="s2">&quot;Différence: </span><span class="si">{</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">masse_premier_pinguoin</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> grammes&quot;</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/file_00_13_0.png" src="../_images/file_00_13_0.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Masse réelle: 3750.0 grammes
+Masse prédite: 3694.73 grammes
+Différence: 55.27 grammes
+</pre></div>
 </div>
 </div>
 </div>
-<div class="section" id="evaluation-d-un-modele-predictif">
-<h2>Evaluation d’un modèle prédictif<a class="headerlink" href="#evaluation-d-un-modele-predictif" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p>Evaluation sur un seul jeu de donnée</p></li>
-<li><p>Définition de l’erreur empirique et de généralisation</p></li>
-<li><p>Définition de sous- et sur-apprentissage</p></li>
-<li><p>Evaluation sur un set d’entrainement et de test</p></li>
-<li><p>Introduction à la cross-validation</p></li>
-</ul>
-<p>Scikit-learn is using Python classes to give some state to Python object. In
-machine-lerning context, it is handy to have object that will “learn” some
-internal states. Once these states are learnt, the object could be used to
-make the prediction. In scikit-learn, we thus have Python class to create
-instance that will have:</p>
-<ul class="simple">
-<li><p>a <code class="docutils literal notranslate"><span class="pre">fit</span></code> method to learn the internal states</p></li>
-<li><p>a <code class="docutils literal notranslate"><span class="pre">predict</span></code> method to output some predicted values given some input data</p></li>
-</ul>
+<p>Pour pousser notre exemple plus proche de notre définition mathématique,
+nous pouvons utiliser une fonction Python pour apprendre la relation et
+une autre fonction Python pour prédire la masse.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">LinearRegression</span><span class="p">:</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">apprendre_relation</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Apprendre une relation moyenne entre la longueur d&#39;aileron et la masse</span>
+<span class="sd">    corporelle des pinguoins.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;Longueur Aileron (mm)&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">y</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">intercept</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">intercept</span> <span class="o">=</span> <span class="n">intercept</span>
 
+<span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">relation</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Function de predisant la masse corporelle d&#39;un pingouin à partir de</span>
+<span class="sd">    la longueur de son aileron.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;Longueur Aileron (mm)&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">relation</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;Masse Corporelle (g)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">relation</span> <span class="o">=</span> <span class="n">apprendre_relation</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">predictions</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">relation</span><span class="p">)</span>
+<span class="n">predictions</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0      3694.728491
+1      3796.792814
+2      3980.508595
+3      3939.682866
+4      3878.444273
+          ...     
+337    4225.462971
+338    4123.398648
+339    3939.682866
+340    4286.701564
+341    4041.747189
+Name: Masse Corporelle (g), Length: 342, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p>Nous pouvons même calculer l’erreur (absolue) de nos prédictions.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">erreur_absolue_moyenne</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">predictions</span> <span class="o">-</span> <span class="n">y</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Erreur absolue moyenne: </span><span class="si">{</span><span class="n">erreur_absolue_moyenne</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> grammes&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Erreur absolue moyenne: 467.40 grammes
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notre stratégie d’apprentissage nous permet d’obtenir un modèle prédictif
+qui commet en moyenne une erreur de 467 grammes sur le même jeu de données.
+Nous pouvons également représenter graphiquement la relation que nous avons
+appris.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">X</span><span class="p">[</span><span class="s2">&quot;Longueur Aileron (mm)&quot;</span><span class="p">],</span>
+    <span class="n">predictions</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
+    <span class="n">linewidth</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Notre fonction&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Notre premier modèle prédictif&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/file_00_22_0.png" src="../_images/file_00_22_0.png" />
+</div>
+</div>
+<p>Il est a noté que nous ne devrions pas apprendre et evaluer notre fonction de
+prédiction sur les mêmes données. Le score obtenu est potentiellement trop
+optimiste. Nous allons revenir sur ce point à la fin de cette section où nous
+présenterons les outils et la manière d’évaluer correctement un modèle
+prédictif.</p>
+</div>
+<div class="section" id="introduction-a-l-interface-de-programmation-de-scikit-learn">
+<h2>Introduction à l’interface de programmation de <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code><a class="headerlink" href="#introduction-a-l-interface-de-programmation-de-scikit-learn" title="Permalink to this headline">¶</a></h2>
+<p>Dans cette section, nous allons présenter succintement l’interface de
+programmation de <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code>. Nous utiliserons cette interface dans les
+sections et chapitres suivants lorsque nous présenterons les différents types
+de modèles prédictifs.</p>
+<p>Afin de présenter cette interface, nous allons créer nous même un modèle
+prédictif qui pourrait être utilisé en conjonction avec tous les outils de
+<code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code>. Nous allons également argumenté les choix d’interface
+réalisés par les développeurs de <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code> historiquement.</p>
+<p>Dans la précédente section, nous avons vu constaté que l’apprentissage
+automatique était consititué de deux étapes : une <strong>étape d’apprentissage</strong>
+pour obtenir la fonction de prédiction optimale et une <strong>étape de
+prédiction</strong> ou nous avons réutiliser la relation appris pour prédire la
+masse corporelle.</p>
+<p>Il advient que nous pourrions utiliser une classe Python pour stocker à
+l’intérieur de cette instance d’objet les informations utilisées pour la
+prédiction. Nous aurions seulement besoin donc d’exposer une méthode pour
+effectuer l’apprentissage et une méthode pour prédire.</p>
+<p>En résumé, nous pouvons créer la classe suivante :</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="kn">import</span> <span class="n">BaseEstimator</span>
+
+
+<span class="k">class</span> <span class="nc">ModelePredictif</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">intercept</span><span class="p">:</span>
-            <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">(</span>
-                <span class="p">[</span><span class="n">X</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">))]</span>
-            <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">coef_</span> <span class="o">=</span> <span class="n">coef</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">X</span><span class="p">)</span> <span class="o">@</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">y</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_target_name</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">columns</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coef_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;Longueur Aileron (mm)&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">y</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span>
 
     <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">intercept</span><span class="p">:</span>
-            <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">(</span>
-                <span class="p">[</span><span class="n">X</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">))]</span>
-            <span class="p">)</span>
-        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">coef</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_target_name</span>
-        <span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;Longueur Aileron (mm)&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">relation</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;Masse Corporelle (g)&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
+<p>Dans <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code>, un modèle prédictif (également appelé estimateur)
+possède deux méthodes : <code class="docutils literal notranslate"><span class="pre">fit</span></code> et <code class="docutils literal notranslate"><span class="pre">predict</span></code>. La première est en charge
+d’apprendre les éléments nécessaires à la prédiction. De plus cette méthode
+retourne <code class="docutils literal notranslate"><span class="pre">self</span></code> pour permettre de chainer les appels. La deuxième méthode est
+en charge de prédire. Nous pouvons mettre en place notre class de la façon
+suivante :</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">(</span><span class="n">intercept</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">modele</span> <span class="o">=</span> <span class="n">ModelePredictif</span><span class="p">()</span>
+<span class="n">modele</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">predictions</span> <span class="o">=</span> <span class="n">modele</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">erreur_absolue_moyenne</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">predictions</span> <span class="o">-</span> <span class="n">y</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Erreur absolue moyenne: </span><span class="si">{</span><span class="n">erreur_absolue_moyenne</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> grammes&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Body Mass (g)</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>3212.256161</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>3460.683993</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>3907.854091</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>3808.482958</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>3659.426259</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>337</th>
-      <td>4504.080888</td>
-    </tr>
-    <tr>
-      <th>338</th>
-      <td>4255.653056</td>
-    </tr>
-    <tr>
-      <th>339</th>
-      <td>3808.482958</td>
-    </tr>
-    <tr>
-      <th>340</th>
-      <td>4653.137587</td>
-    </tr>
-    <tr>
-      <th>341</th>
-      <td>4056.910790</td>
-    </tr>
-  </tbody>
-</table>
-<p>342 rows × 1 columns</p>
-</div></div></div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Erreur absolue moyenne: 467.40 grammes
+</pre></div>
 </div>
+</div>
+</div>
+<p>En plus des méthodes <code class="docutils literal notranslate"><span class="pre">fit</span></code> et <code class="docutils literal notranslate"><span class="pre">predict</span></code>, <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code> expose une méthode
+<code class="docutils literal notranslate"><span class="pre">score</span></code> qui permet de calculer le score de prédiction.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">coef_</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ModelePredictif</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coef_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;Longueur Aileron (mm)&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">y</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;Longueur Aileron (mm)&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">relation</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;Masse Corporelle (g)&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="n">predictions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">predictions</span> <span class="o">-</span> <span class="n">y</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Nous pourrions donc simplifier notre code précédent de la manière suivante :</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Erreur absolue moyenne: </span><span class="si">{</span><span class="n">ModelePredictif</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> grammes&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Body Mass (g)</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>49.685566</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>-5780.831358</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
-
-<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[[</span><span class="s2">&quot;Flipper Length (mm)&quot;</span><span class="p">]],</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;Body Mass (g)&quot;</span><span class="p">]</span>
-
-<span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
-<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-<span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-<span class="n">y_pred</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([3212.25616143, 3460.68399346, 3907.85409111, 3808.4829583 ,
-       3659.42625908])
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Erreur absolue moyenne: 467.40 grammes
 </pre></div>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;Flipper Length (mm)&quot;</span><span class="p">],</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Can I predict penguins&#39; body mass&quot;</span><span class="p">)</span>
-</pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/file_00_20_0.png" src="../_images/file_00_20_0.png" />
-</div>
-</div>
-<p>A scikit-learn predictive model will store the state of the model with
-attribute that finishes with an underscore. They are fitted attributes. For
-our linear model, they will be coef_ and intercept_.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">coef_</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">intercept_</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([49.68556641]), -5780.831358077066)
-</pre></div>
-</div>
-</div>
-</div>
-<p>As previously stated, we can compute a metric to evaluate how good our
-trained model is.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">r2_score</span>
-
-<span class="n">r2_score</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7589925193571176
-</pre></div>
-</div>
-</div>
-</div>
-<p>However, there is something wrong in what we just did. Indeed, if we would
-have a predictive model that would have memorize the training set, we would
-have obtain a perfect score. In practice, we don’t use the same dataset to
-train and test a model to get a true estimate of the capability of a model to
-predict targets on new dataset. A metric computed on the training set is also
-called empirical error while the error computed on the testing set is called
-generalization error.</p>
-<p>Thus, we could have first split our dataset into two sets: a training set to
-train our model and a testing set to check the statistical performance of our
-model.</p>
+<div class="section" id="evaluation-de-notre-modele-predictif">
+<h2>Evaluation de notre modèle prédictif<a class="headerlink" href="#evaluation-de-notre-modele-predictif" title="Permalink to this headline">¶</a></h2>
+<p>Dans la section précédente, nous avons calculé l’erreur absolue moyenne sur
+le même jeu de données utilisé pendant l’apprentissage.</p>
+<p>Cependant cette approche est réellement problématique. Nous aurions pu créer
+un modèle prédictif qui ne prend pas en compte les données d’apprentissage et
+qui mémorise tous les échantillons d’apprentissage. Nous aurions alors donc
+obtenu une erreur de prédiction de 0 grammes. En revance, en utilisant le
+même modèle sur un nouveau dataset pour seulement effectuer de la prédiction,
+nous aurions alors obtenu une erreur plus importante.</p>
+<p>C’est pour cela qu’il est nécessaire d’évaluer un modèle prédictif sur des
+données qui ne sont pas dans le jeu d’apprentissage. L’erreur obtenu sur le
+jeu d’apprentissage est appelé l’<strong>erreur empirique</strong> alors que l’erreur
+obtenu sur le jeu de test est appelé l’<strong>erreur de généralisation</strong>. En
+apprentissage automatique, les méthodes essayent en général de minimiser
+l’erreur empirique en espérant que l’erreur de généralisation soit minimale
+également.</p>
+<p>Nous pouvons utiliser notre jeu de données original et le séparer en deux
+jeux de données afin de calculer les deux types d’erreurs. <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code>
+fournit une fonction <code class="docutils literal notranslate"><span class="pre">train_test_split</span></code> qui permet de séparer un jeu de
+données.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
 
-<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
-    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span>
+<span class="n">X_apprentissage</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_apprentissage</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+    <span class="n">X</span><span class="p">,</span>
+    <span class="n">y</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+    <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
+<p>La sélection de ces jeux de données est faite de manière aléatoire. Le
+paramètre <code class="docutils literal notranslate"><span class="pre">random_state</span></code> permet d’obtenir une séparation déterministique même
+si un procédure aléatoire est utilisée. De plus, le paramètre <code class="docutils literal notranslate"><span class="pre">test_size</span></code>
+permet de définir la proportion de données qui seront utilisées pour le jeu
+de test.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">modele</span> <span class="o">=</span> <span class="n">ModelePredictif</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_apprentissage</span><span class="p">,</span> <span class="n">y_apprentissage</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Erreur empirique: </span><span class="si">{</span><span class="n">modele</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_apprentissage</span><span class="p">,</span> <span class="n">y_apprentissage</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> grammes&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Erreur de généralisation: </span><span class="si">{</span><span class="n">modele</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> grammes&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>LinearRegression()
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Erreur empirique: 473.92 grammes
+Erreur de généralisation: 441.63 grammes
 </pre></div>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">coef_</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">intercept_</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([49.31531566]), -5703.699111619691)
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">coef_</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">intercept_</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([49.31531566]), -5703.699111619691)
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r2_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7356183787802288
-</pre></div>
-</div>
-</div>
-</div>
-<p>We observe that our model is not as precise on the testing set than on the
-training set. But this is not catastrophic. We can show with another type of
-a model (decision tree) that the different can be quite drastic.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeRegressor</span>
-
-<span class="n">model</span> <span class="o">=</span> <span class="n">DecisionTreeRegressor</span><span class="p">()</span>
-<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DecisionTreeRegressor()
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r2_score</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_train</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.8427390867299657
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r2_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.6533411607974651
-</pre></div>
-</div>
-</div>
-</div>
-<p>Let’s come back to our linear model trained and tested on distinct sets. We
-observe a small difference between the training and testing scores. However,
-we are unable to know if the difference is significant, meaning that the
-difference might only be due to some random fluctuation given by our random
-initial data split. A proper evaluation should provide an estimate of the
-distribution of the different scores and not only a point-estimate.
-Cross-validation is a framework that would allow to take into account such
-variation.</p>
-<p>The idea between cross-validation is to repeat the evaluation by varying the
-train and test set. This evaluation will therefore take into account the
-fluctuation that could happen in the “fit” process as well as in the
-“predict” process.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Scikit-learn provides the sklearn.model_selection.cross_validate function to
-repeat this train-test evaluation.</p>
+<p>Nous observons que notre modèle performe moins bien sur le jeu de test que
+sur le jeu d’apprentissage.</p>
+<p>La comparaison des erreurs empérique et de généralisation permette de
+connaître de savoir si un modèle sous-apprend, généralise ou sur-apprend. Le
+sur-apprentissage est caractérisé par une erreur de géralisation plus élevée
+que l’erreur empirique. La plage de générasation est définie par lorsque la
+différence entre l’erreur de généralisation et l’erreur empirique est assez
+minimale. Un modèle sous-apprentissage est caractérisé par une erreur de
+généralisation élevée mais également une erreur empirique élevée.</p>
+<p>Bien que nous ayons maintenant une idée concernant la capacité de notre
+modèle à prédire sur un set indépendant de celui d’apprentissage, nous ne
+pouvons pas réellement savoir si la différence entre les erreurs empirique et
+de généralisation est suffisante pour déterminer si un modèle est en
+sous-apprentissage ou en sur-apprentissage ou généralise. En effet, puisque
+la procédure de séparation des jeux de données est aléatoire, nous devrions
+réaliser plusieurs essais pour obtenir une distribution des erreurs et
+evaluer si les différences sont suffisantes.</p>
+<p>Ces essais répétés sont dénommés <strong>cross-validation</strong>. <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code> fournit
+une fonction <code class="docutils literal notranslate"><span class="pre">cross_validate</span></code> permettant de réaliser ces essais. Il existe
+plusieurs méthodes de cross-validation. Nous allons utiliser la méthode
+<strong>k-fold</strong> qui permet de séparer un jeu de données en <span class="math notranslate nohighlight">\(k\)</span> sous-ensembles. A
+chaque itération de la cross-validation, un des <span class="math notranslate nohighlight">\(k\)</span> sous-ensembles est
+utilisé pour évaluer le modèle alors que les autres sous-ensembles sont
+utilisés pour l’apprentissage.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">cross_validate</span>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">KFold</span>
 
 <span class="n">cv</span> <span class="o">=</span> <span class="n">KFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">cv_results</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span>
-    <span class="n">model</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">cv</span><span class="p">,</span>
-    <span class="n">scoring</span><span class="o">=</span><span class="s2">&quot;r2&quot;</span><span class="p">,</span>
-    <span class="n">return_train_score</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="n">cv_resultats</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span>
+    <span class="n">modele</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">cv</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s2">&quot;neg_mean_absolute_error&quot;</span><span class="p">,</span> <span class="n">return_train_score</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">)</span>
+<span class="n">cv_resultats</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv_resultats</span><span class="p">)</span>
+<span class="n">cv_resultats</span><span class="p">[[</span><span class="s2">&quot;train_error&quot;</span><span class="p">,</span> <span class="s2">&quot;test_error&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="o">-</span><span class="n">cv_resultats</span><span class="p">[</span>
+    <span class="p">[</span><span class="s2">&quot;train_score&quot;</span><span class="p">,</span> <span class="s2">&quot;test_score&quot;</span><span class="p">]</span>
+<span class="p">]</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cv_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv_results</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cv_results</span><span class="p">[[</span><span class="s2">&quot;train_score&quot;</span><span class="p">,</span> <span class="s2">&quot;test_score&quot;</span><span class="p">]]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cv_resultats</span><span class="p">[[</span><span class="s2">&quot;train_error&quot;</span><span class="p">,</span> <span class="s2">&quot;test_error&quot;</span><span class="p">]]</span>
 </pre></div>
 </div>
 </div>
@@ -953,104 +820,84 @@ repeat this train-test evaluation.</p>
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>train_score</th>
-      <th>test_score</th>
+      <th>train_error</th>
+      <th>test_error</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>0.768495</td>
-      <td>0.710592</td>
+      <td>473.915845</td>
+      <td>441.630137</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>0.734377</td>
-      <td>0.836193</td>
+      <td>467.033573</td>
+      <td>468.859994</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>0.755871</td>
-      <td>0.756729</td>
+      <td>449.924529</td>
+      <td>537.826237</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>0.763002</td>
-      <td>0.736550</td>
+      <td>473.929172</td>
+      <td>441.101644</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>0.771886</td>
-      <td>0.685102</td>
+      <td>472.229617</td>
+      <td>447.949854</td>
     </tr>
   </tbody>
 </table>
 </div></div></div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cv_results</span><span class="p">[[</span><span class="s2">&quot;train_score&quot;</span><span class="p">,</span> <span class="s2">&quot;test_score&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>train_score    0.758726
-test_score     0.745033
-dtype: float64
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cv_results</span><span class="p">[[</span><span class="s2">&quot;train_score&quot;</span><span class="p">,</span> <span class="s2">&quot;test_score&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>train_score    0.014899
-test_score     0.057656
-dtype: float64
-</pre></div>
-</div>
-</div>
-</div>
-<p>We can observe that we have close result between the train and test score.
-However, the distribution of the test score is a bit larger. We could indeed
-use a repeated k-fold cross-validation to get more estimate and plot the
-distributions of the scores.</p>
+<p>Cross-validation nous permet donc d’obtenir plusieurs estimations de nos
+erreurs. Nous pouvons même répéter l’opération plusieurs fois pour obtenir
+des distributions d’erreurs que nous pourrons visualiser.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">RepeatedKFold</span>
 
-<span class="n">cv</span> <span class="o">=</span> <span class="n">RepeatedKFold</span><span class="p">(</span><span class="n">n_repeats</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">n_splits</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">cv_results</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span>
-    <span class="n">model</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">cv</span><span class="p">,</span>
-    <span class="n">scoring</span><span class="o">=</span><span class="s2">&quot;r2&quot;</span><span class="p">,</span>
-    <span class="n">return_train_score</span><span class="o">=</span><span class="kc">True</span>
+<span class="n">cv</span> <span class="o">=</span> <span class="n">RepeatedKFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_repeats</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">cv_resultats</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span>
+    <span class="n">modele</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">cv</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s2">&quot;neg_mean_absolute_error&quot;</span><span class="p">,</span> <span class="n">return_train_score</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">)</span>
-<span class="n">cv_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv_results</span><span class="p">)</span>
+<span class="n">cv_resultats</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv_resultats</span><span class="p">)</span>
+<span class="n">cv_resultats</span><span class="p">[[</span><span class="s2">&quot;train_error&quot;</span><span class="p">,</span> <span class="s2">&quot;test_error&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="o">-</span><span class="n">cv_resultats</span><span class="p">[</span>
+    <span class="p">[</span><span class="s2">&quot;train_score&quot;</span><span class="p">,</span> <span class="s2">&quot;test_score&quot;</span><span class="p">]</span>
+<span class="p">]</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">cv_results</span><span class="p">[[</span><span class="s2">&quot;train_score&quot;</span><span class="p">,</span> <span class="s2">&quot;test_score&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">cv_resultats</span><span class="p">[[</span><span class="s2">&quot;train_error&quot;</span><span class="p">,</span> <span class="s2">&quot;test_error&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Erreur moyenne absolue (grammes)&quot;</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;Distribution des erreurs</span><span class="se">\n</span><span class="s2">Std. dev. variable cible: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> (g)&quot;</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.0, 1.0)
-</pre></div>
-</div>
-<img alt="../_images/file_00_45_1.png" src="../_images/file_00_45_1.png" />
+<img alt="../_images/file_00_41_0.png" src="../_images/file_00_41_0.png" />
 </div>
 </div>
-<p>Visually, we can see that our model is behaving similarly on the training and
-testing sets with quite a small variation. This is quite a good new. Indeed,
-we can trust these results.</p>
+<p>Il est toujours bon de mettre en perspective l’erreur moyenne obtenue avec
+la variable cible. En effet, notre modèle commet une erreur de 450 grammes
+sur notre données alors que la standard deviation de la variable cible est de
+850 grammes. Notre modèle n’est donc pas un très bon modèle.</p>
+<p>Quand on compare les distributions, nous regardons si ces distributions se
+chevauchent. Si les distributions se chevauchent et que leur moyenne et leur
+standard déviation sont proches, alors le modèle est capable de généraliser.
+Une différence entre les distributions nous permet de conclure sur le sous-
+ou sur-apprentissage. En revanche, quand les standard déviations sont trop
+larges, ceci est souvent lié à un manque de données et il sera difficile de
+tirer des conclusions.</p>
 </div>
 </div>
 
