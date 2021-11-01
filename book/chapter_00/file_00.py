@@ -201,14 +201,7 @@ for variable in variable_numerique:
 # un impact sur le design de notre modèle prédictif.
 #
 # Nous pouvons aller un peu plus loin dans notre analyse statistique en
-# observant le lien marginal entre chacune de ces variables. Il faut noter que
-# le lien marginal est une relation entre deux variables et ne sera pas le lien
-# appris par un modèle prédictif de machine learning qui apprendra un lien
-# conditionnel entre ces mêmes variables. En d'autres mots, lorsque nous
-# regardons l'impact d'une variable sur une autre dans un modèle prédictif,
-# celle-ci sera dépendante de la valeurs de toutes les autres variables. Ici,
-# en utilisant seulement deux variables à la fois, nous négligeons tous les
-# liens qui pourraient exister avec les autres variables.
+# observant le lien marginal entre chacune de ces variables.
 #
 # La librairie `seaborn` nous permet de visualiser les liens marginales entre
 # deux variables. Pour cela, nous pouvons utiliser la méthode `.pairplot()`
@@ -413,4 +406,15 @@ for variable in variable_date:
 # locations est la variable `heure`. Nous pouvons observer une augmentation du
 # nombre de locations à 8 heures et entre 17 et 18 heures. Il semblerait que
 # des personnes utilisent le vélo comme moyen de déplacement pour le travail.
-
+#
+# ## Conclusion
+#
+# Nous avons effectué une analyse statistique descriptive de notre jeu de
+# données. En revanche, il est extrêmement important de noter que nous les
+# intuitions que nous avons construites sont seulement des relations marginales
+# entre deux variables. En d'autres termes, nous avons sélectionné deux
+# variables et ignoré les autres pour construire ses intuitions. Ce type
+# d'analyse est différent des interprétations que nous pourrons obtenir en
+# inspectant nos modèles prédictifs. En effet, un les interprétations seront
+# de type conditionelle puisque l'interprétation de l'effet d'une variable
+# donnée sera faite en fonction de la valeur de toutes les autres variables.
