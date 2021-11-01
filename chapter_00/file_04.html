@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Introduction &#8212; Cédric&#39;s book</title>
+    <title>Gestion des variables catégorielles &#8212; Cédric&#39;s book</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet" />
   <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -52,8 +52,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Famille des modèles paramétriques" href="file_01.html" />
-    <link rel="prev" title="Apprentisage automatique supervisé" href="chapter_00_intro.html" />
+    <link rel="next" title="Real-world examples" href="../chapter_99/chapter_99_intro.html" />
+    <link rel="prev" title="Recherche des hyperparamètres" href="file_03.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
@@ -100,8 +100,8 @@
    </i>
   </label>
   <ul class="current">
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
+   <li class="toctree-l2">
+    <a class="reference internal" href="file_00.html">
      Introduction
     </a>
    </li>
@@ -120,8 +120,8 @@
      Recherche des hyperparamètres
     </a>
    </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="file_04.html">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
      Gestion des variables catégorielles
     </a>
    </li>
@@ -185,7 +185,7 @@
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../_sources/chapter_00/file_00.py"><button type="button"
+        <a class="dropdown-buttons" href="../_sources/chapter_00/file_04.py"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
                 data-placement="left">.py</button></a>
         <!-- Download PDF via print -->
@@ -216,23 +216,28 @@
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#motivations-de-l-apprentissage-automatique">
-   Motivations de l’apprentissage automatique
+  <a class="reference internal nav-link" href="#introduction">
+   Introduction
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#example-introductif-a-l-interface-de-programmation-de-scikit-learn">
-   Example introductif à l’interface de programmation de
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     scikit-learn
-    </span>
-   </code>
+  <a class="reference internal nav-link" href="#encodage-one-hot">
+   Encodage one-hot
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#evaluation-d-un-modele-predictif">
-   Evaluation d’un modèle prédictif
+  <a class="reference internal nav-link" href="#encodage-ordinal">
+   Encodage ordinal
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#autres-methodes-existantes">
+   Autres méthodes existantes
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#quel-encodage-choisir">
+   Quel encodage choisir ?
   </a>
  </li>
 </ul>
@@ -246,32 +251,26 @@
         
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="introduction">
-<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="motivations-de-l-apprentissage-automatique">
-<h2>Motivations de l’apprentissage automatique<a class="headerlink" href="#motivations-de-l-apprentissage-automatique" title="Permalink to this headline">¶</a></h2>
+  <div class="tex2jax_ignore mathjax_ignore section" id="gestion-des-variables-categorielles">
+<h1>Gestion des variables catégorielles<a class="headerlink" href="#gestion-des-variables-categorielles" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="encodage-one-hot">
+<h2>Encodage one-hot<a class="headerlink" href="#encodage-one-hot" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="encodage-ordinal">
+<h2>Encodage ordinal<a class="headerlink" href="#encodage-ordinal" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="autres-methodes-existantes">
+<h2>Autres méthodes existantes<a class="headerlink" href="#autres-methodes-existantes" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>Créer une fonction de prédiction y = f(X)</p></li>
-<li><p>Définir y, X et f()</p></li>
+<li><p>Encoder prenant en compte la valeur cible</p></li>
+<li><p><a class="reference external" href="https://github.com/dirty-cat/dirty_cat">https://github.com/dirty-cat/dirty_cat</a></p></li>
 </ul>
 </div>
-<div class="section" id="example-introductif-a-l-interface-de-programmation-de-scikit-learn">
-<h2>Example introductif à l’interface de programmation de <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code><a class="headerlink" href="#example-introductif-a-l-interface-de-programmation-de-scikit-learn" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p>Formuler le problème de least squares</p></li>
-<li><p>Résoudre avec NumPy</p></li>
-<li><p>Notre propre classe et parallèle avec <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code></p></li>
-</ul>
-</div>
-<div class="section" id="evaluation-d-un-modele-predictif">
-<h2>Evaluation d’un modèle prédictif<a class="headerlink" href="#evaluation-d-un-modele-predictif" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p>Evaluation sur un seul jeu de donnée</p></li>
-<li><p>Définition de l’erreur empirique et de généralisation</p></li>
-<li><p>Définition de sous- et sur-apprentissage</p></li>
-<li><p>Evaluation sur un set d’entrainement et de test</p></li>
-<li><p>Introduction à la cross-validation</p></li>
-</ul>
+<div class="section" id="quel-encodage-choisir">
+<h2>Quel encodage choisir ?<a class="headerlink" href="#quel-encodage-choisir" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -305,19 +304,19 @@
 <div class='prev-next-bottom'>
     
     <div id="prev">
-        <a class="left-prev" href="chapter_00_intro.html" title="previous page">
+        <a class="left-prev" href="file_03.html" title="previous page">
             <i class="prevnext-label fas fa-angle-left"></i>
             <div class="prevnext-info">
                 <p class="prevnext-label">previous</p>
-                <p class="prevnext-title">Apprentisage automatique supervisé</p>
+                <p class="prevnext-title">Recherche des hyperparamètres</p>
             </div>
         </a>
     </div>
      <div id="next">
-        <a class="right-next" href="file_01.html" title="next page">
+        <a class="right-next" href="../chapter_99/chapter_99_intro.html" title="next page">
             <div class="prevnext-info">
                 <p class="prevnext-label">next</p>
-                <p class="prevnext-title">Famille des modèles paramétriques</p>
+                <p class="prevnext-title">Real-world examples</p>
             </div>
             <i class="prevnext-label fas fa-angle-right"></i>
         </a>
