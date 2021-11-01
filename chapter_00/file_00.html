@@ -53,7 +53,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="&lt;no title&gt;" href="file_01.html" />
-    <link rel="prev" title="Landing page" href="../landing-page.html" />
+    <link rel="prev" title="Real-world examples" href="chapter_00_intro.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
@@ -90,10 +90,22 @@
  </li>
 </ul>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   Analyse de statistique tradionnelle
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="chapter_00_intro.html">
+   Real-world examples
   </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Analyse de statistique tradionnelle
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -276,9 +288,7 @@ pour qu’il puisse caster les chaînes de caractères en dates.</p>
 pour convertir la colonne <code class="docutils literal notranslate"><span class="pre">date</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">location_velo</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
-    <span class="s2">&quot;../datasets/bike_sharing/hour.csv&quot;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span>
-<span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">location_velo</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;../datasets/bike_sharing/hour.csv&quot;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">])</span>
 <span class="n">location_velo</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -689,6 +699,7 @@ utiliser la méthode <code class="docutils literal notranslate"><span class="pre
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Afin de changer le style de nos graphiques, nous pouvons utiliser seaborn</span>
 <span class="c1"># context.</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
 <span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;poster&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -736,7 +747,9 @@ deux variables. Pour cela, nous pouvons utiliser la méthode <code class="docuti
 <span class="c1"># Nous pouvons utiliser un sous échantillonnage pour accelerer la visualisation</span>
 <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
 <span class="n">index_sous_echantillons</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span>
-    <span class="n">location_velo</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1_000</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">location_velo</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
+    <span class="n">size</span><span class="o">=</span><span class="mi">1_000</span><span class="p">,</span>
+    <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">_</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span>
@@ -997,12 +1010,14 @@ de données.</p>
 analyser un eventuelle relation entre ces périodes et le nombre de locations.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">location_velo</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">({</span>
-    <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="n">location_velo</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="p">,</span>
-    <span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="n">location_velo</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">month</span><span class="p">,</span>
-    <span class="s2">&quot;day&quot;</span><span class="p">:</span> <span class="n">location_velo</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">day</span><span class="p">,</span>
-    <span class="s2">&quot;hour&quot;</span><span class="p">:</span> <span class="n">location_velo</span><span class="p">[</span><span class="s2">&quot;heure&quot;</span><span class="p">],</span>
-<span class="p">})</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">location_velo</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="n">location_velo</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="p">,</span>
+        <span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="n">location_velo</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">month</span><span class="p">,</span>
+        <span class="s2">&quot;day&quot;</span><span class="p">:</span> <span class="n">location_velo</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">day</span><span class="p">,</span>
+        <span class="s2">&quot;hour&quot;</span><span class="p">:</span> <span class="n">location_velo</span><span class="p">[</span><span class="s2">&quot;heure&quot;</span><span class="p">],</span>
+    <span class="p">}</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1027,7 +1042,6 @@ analyser un eventuelle relation entre ces périodes et le nombre de locations.</
     <span class="s2">&quot;heure&quot;</span><span class="p">,</span>
     <span class="s2">&quot;jour de la semaine&quot;</span><span class="p">,</span>
     <span class="s2">&quot;jour travaille&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;meteo&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 </pre></div>
 </div>
@@ -1035,24 +1049,40 @@ analyser un eventuelle relation entre ces périodes et le nombre de locations.</
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">location_velo</span><span class="p">[</span><span class="n">variable_date</span><span class="p">]</span> <span class="o">=</span> <span class="n">location_velo</span><span class="p">[</span><span class="n">variable_date</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;category&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="n">variable_date</span><span class="p">:</span>
-    <span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+    <span class="n">height_axis</span> <span class="o">=</span> <span class="n">location_velo</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span> <span class="o">*</span> <span class="mf">0.5</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="n">height_axis</span><span class="p">))</span>
     <span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span>
-        <span class="n">x</span><span class="o">=</span><span class="n">variable</span><span class="p">,</span>
-        <span class="n">y</span><span class="o">=</span><span class="s2">&quot;nombre de locations&quot;</span><span class="p">,</span>
+        <span class="n">y</span><span class="o">=</span><span class="n">variable</span><span class="p">,</span>
+        <span class="n">x</span><span class="o">=</span><span class="s2">&quot;nombre de locations&quot;</span><span class="p">,</span>
         <span class="n">data</span><span class="o">=</span><span class="n">location_velo</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span>
+        <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">stripplot</span><span class="p">(</span>
+        <span class="n">y</span><span class="o">=</span><span class="n">variable</span><span class="p">,</span>
+        <span class="n">x</span><span class="o">=</span><span class="s2">&quot;nombre de locations&quot;</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">location_velo</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
         <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
     <span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/file_00_35_0.png" src="../_images/file_00_35_0.png" />
-<img alt="../_images/file_00_35_1.png" src="../_images/file_00_35_1.png" />
-<img alt="../_images/file_00_35_2.png" src="../_images/file_00_35_2.png" />
-<img alt="../_images/file_00_35_3.png" src="../_images/file_00_35_3.png" />
-<img alt="../_images/file_00_35_4.png" src="../_images/file_00_35_4.png" />
-<img alt="../_images/file_00_35_5.png" src="../_images/file_00_35_5.png" />
+<img alt="../_images/file_00_36_0.png" src="../_images/file_00_36_0.png" />
+<img alt="../_images/file_00_36_1.png" src="../_images/file_00_36_1.png" />
+<img alt="../_images/file_00_36_2.png" src="../_images/file_00_36_2.png" />
+<img alt="../_images/file_00_36_3.png" src="../_images/file_00_36_3.png" />
+<img alt="../_images/file_00_36_4.png" src="../_images/file_00_36_4.png" />
 </div>
 </div>
 </div>
@@ -1089,11 +1119,11 @@ analyser un eventuelle relation entre ces périodes et le nombre de locations.</
 <div class='prev-next-bottom'>
     
     <div id="prev">
-        <a class="left-prev" href="../landing-page.html" title="previous page">
+        <a class="left-prev" href="chapter_00_intro.html" title="previous page">
             <i class="prevnext-label fas fa-angle-left"></i>
             <div class="prevnext-info">
                 <p class="prevnext-label">previous</p>
-                <p class="prevnext-title">Landing page</p>
+                <p class="prevnext-title">Real-world examples</p>
             </div>
         </a>
     </div>
