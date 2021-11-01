@@ -4,14 +4,14 @@
 #
 # ## Introduction en utilisant le modèle du plus proche voisin
 #
-# ## Arbres de décision
+#  ## Arbres de décision
 #
 # ## Méthodes d'ensemble construite en utilisant les arbres de décision
 #
 # ### Bagging
 #
 # - Introduire le bootstrap aggregating
-# - Introduire les forêts aléatoires
+# - Introduire les forêts aléatoires
 #
 # ### Boosting
 #
