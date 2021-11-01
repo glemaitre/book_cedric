@@ -411,7 +411,7 @@ _ = ax.set_title(
 # Il est toujours bon de mettre en perspective l'erreur moyenne obtenue avec
 # la variable cible. En effet, notre modèle commet une erreur de 450 grammes
 # sur notre données alors que la standard deviation de la variable cible est de
-# 850 grammes. Notre modèle n'est donc pas un très bon modèle.
+# 800 grammes. Notre modèle n'est donc pas un très bon modèle.
 #
 # Quand on compare les distributions, nous regardons si ces distributions se
 # chevauchent. Si les distributions se chevauchent et que leur moyenne et leur
