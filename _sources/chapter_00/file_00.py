@@ -418,3 +418,6 @@ for variable in variable_date:
 # inspectant nos modèles prédictifs. En effet, un les interprétations seront
 # de type conditionelle puisque l'interprétation de l'effet d'une variable
 # donnée sera faite en fonction de la valeur de toutes les autres variables.
+#
+# Dans les examples suivants, nous utiliserons des méthodes d'apprentissage
+# automatique pour traiter ce même jeu de données.
