@@ -1025,7 +1025,7 @@ analyser un eventuelle relation entre ces périodes et le nombre de locations.</
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-<span class="n">location_velo</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;date&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s2">&quot;3D&quot;</span><span class="p">)[</span><span class="s2">&quot;nombre de locations&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">location_velo</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;date&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s2">&quot;D&quot;</span><span class="p">)[</span><span class="s2">&quot;nombre de locations&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
 <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Nombre de locations&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1034,6 +1034,18 @@ analyser un eventuelle relation entre ces périodes et le nombre de locations.</
 <img alt="../_images/file_00_33_0.png" src="../_images/file_00_33_0.png" />
 </div>
 </div>
+<p>La première observation à noter sur ce graphique est que le nombre de
+locations sur l’année 2012 est le plus élevé que pour l’année 2011. Ceci est
+un élement à prendre en compte pour notre modèle prédictif. Entraîner un
+modèle prédictif sur l’année 2011 pour prédire pour l’année 2012 résultera à
+une erreur due à cette tendance.</p>
+<p>Maintenant, nous pouvons nous attarder sur les variables catégorielles
+encodées à partir de la date. Une représentation graphique assez simple
+de ces variables peut se faire en utilisant des boîtes à moustaches.
+<code class="docutils literal notranslate"><span class="pre">seaborn</span></code> fournit une méthode <code class="docutils literal notranslate"><span class="pre">boxplot()</span></code> à cet égard.</p>
+<p>Nous allons donc représenter chacune des variables catégorielles encodée. En
+revanche, il est nécessaire de déclarer que ces variables sont des
+catégories en utilisant la méthode <code class="docutils literal notranslate"><span class="pre">astype(&quot;category&quot;)</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">variable_date</span> <span class="o">=</span> <span class="p">[</span>
@@ -1078,13 +1090,20 @@ analyser un eventuelle relation entre ces périodes et le nombre de locations.</
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/file_00_36_0.png" src="../_images/file_00_36_0.png" />
-<img alt="../_images/file_00_36_1.png" src="../_images/file_00_36_1.png" />
-<img alt="../_images/file_00_36_2.png" src="../_images/file_00_36_2.png" />
-<img alt="../_images/file_00_36_3.png" src="../_images/file_00_36_3.png" />
-<img alt="../_images/file_00_36_4.png" src="../_images/file_00_36_4.png" />
+<img alt="../_images/file_00_37_0.png" src="../_images/file_00_37_0.png" />
+<img alt="../_images/file_00_37_1.png" src="../_images/file_00_37_1.png" />
+<img alt="../_images/file_00_37_2.png" src="../_images/file_00_37_2.png" />
+<img alt="../_images/file_00_37_3.png" src="../_images/file_00_37_3.png" />
+<img alt="../_images/file_00_37_4.png" src="../_images/file_00_37_4.png" />
 </div>
 </div>
+<p>Nous pouvons observer une tendance similaire pour les variables <code class="docutils literal notranslate"><span class="pre">mois</span></code> et
+<code class="docutils literal notranslate"><span class="pre">saison</span></code>. Ceci est logique vu que les saisons sont une aggrégation des mois
+de l’année.</p>
+<p>La variable permettant de discerner une différence dans le nombre de
+locations est la variable <code class="docutils literal notranslate"><span class="pre">heure</span></code>. Nous pouvons observer une augmentation du
+nombre de locations à 8 heures et entre 17 et 18 heures. Il semblerait que
+des personnes utilisent le vélo comme moyen de déplacement pour le travail.</p>
 </div>
 </div>
 </div>

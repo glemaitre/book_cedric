@@ -351,8 +351,25 @@ location_velo["date"] = pd.to_datetime(
 
 # %%
 _, ax = plt.subplots(figsize=(6, 4))
-location_velo.set_index("date").resample("3D")["nombre de locations"].mean().plot(ax=ax)
+location_velo.set_index("date").resample("D")["nombre de locations"].mean().plot(ax=ax)
 _ = ax.set_ylabel("Nombre de locations")
+
+# %% [markdown]
+#
+# La première observation à noter sur ce graphique est que le nombre de
+# locations sur l'année 2012 est le plus élevé que pour l'année 2011. Ceci est
+# un élement à prendre en compte pour notre modèle prédictif. Entraîner un
+# modèle prédictif sur l'année 2011 pour prédire pour l'année 2012 résultera à
+# une erreur due à cette tendance.
+#
+# Maintenant, nous pouvons nous attarder sur les variables catégorielles
+# encodées à partir de la date. Une représentation graphique assez simple
+# de ces variables peut se faire en utilisant des boîtes à moustaches.
+# `seaborn` fournit une méthode `boxplot()` à cet égard.
+#
+# Nous allons donc représenter chacune des variables catégorielles encodée. En
+# revanche, il est nécessaire de déclarer que ces variables sont des
+# catégories en utilisant la méthode `astype("category")`.
 
 # %%
 variable_date = [
@@ -386,4 +403,14 @@ for variable in variable_date:
         ax=ax,
     )
 
-# %%
+# %% [markdown]
+#
+# Nous pouvons observer une tendance similaire pour les variables `mois` et
+# `saison`. Ceci est logique vu que les saisons sont une aggrégation des mois
+# de l'année.
+#
+# La variable permettant de discerner une différence dans le nombre de
+# locations est la variable `heure`. Nous pouvons observer une augmentation du
+# nombre de locations à 8 heures et entre 17 et 18 heures. Il semblerait que
+# des personnes utilisent le vélo comme moyen de déplacement pour le travail.
+
