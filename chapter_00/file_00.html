@@ -200,6 +200,11 @@
    </li>
   </ul>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#conclusion">
+   Conclusion
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -730,14 +735,7 @@ empirique que nous obtenons. D’ailleurs, il est intéressant de noter que ces
 distributions ne sont pas de type Gaussienne ce qui pourrait également avoir
 un impact sur le design de notre modèle prédictif.</p>
 <p>Nous pouvons aller un peu plus loin dans notre analyse statistique en
-observant le lien marginal entre chacune de ces variables. Il faut noter que
-le lien marginal est une relation entre deux variables et ne sera pas le lien
-appris par un modèle prédictif de machine learning qui apprendra un lien
-conditionnel entre ces mêmes variables. En d’autres mots, lorsque nous
-regardons l’impact d’une variable sur une autre dans un modèle prédictif,
-celle-ci sera dépendante de la valeurs de toutes les autres variables. Ici,
-en utilisant seulement deux variables à la fois, nous négligeons tous les
-liens qui pourraient exister avec les autres variables.</p>
+observant le lien marginal entre chacune de ces variables.</p>
 <p>La librairie <code class="docutils literal notranslate"><span class="pre">seaborn</span></code> nous permet de visualiser les liens marginales entre
 deux variables. Pour cela, nous pouvons utiliser la méthode <code class="docutils literal notranslate"><span class="pre">.pairplot()</span></code></p>
 <div class="cell docutils container">
@@ -1105,6 +1103,18 @@ locations est la variable <code class="docutils literal notranslate"><span class
 nombre de locations à 8 heures et entre 17 et 18 heures. Il semblerait que
 des personnes utilisent le vélo comme moyen de déplacement pour le travail.</p>
 </div>
+</div>
+<div class="section" id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
+<p>Nous avons effectué une analyse statistique descriptive de notre jeu de
+données. En revanche, il est extrêmement important de noter que nous les
+intuitions que nous avons construites sont seulement des relations marginales
+entre deux variables. En d’autres termes, nous avons sélectionné deux
+variables et ignoré les autres pour construire ses intuitions. Ce type
+d’analyse est différent des interprétations que nous pourrons obtenir en
+inspectant nos modèles prédictifs. En effet, un les interprétations seront
+de type conditionelle puisque l’interprétation de l’effet d’une variable
+donnée sera faite en fonction de la valeur de toutes les autres variables.</p>
 </div>
 </div>
 
