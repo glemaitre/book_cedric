@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Landing page &#8212; Cédric&#39;s book</title>
+    <title>Apprentissage supervisée &#8212; Cédric&#39;s book</title>
     
   <link href="_static/css/theme.css" rel="stylesheet" />
   <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -84,7 +84,7 @@
         <ul class="nav bd-sidenav">
  <li class="toctree-l1 current">
   <a class="reference internal" href="#">
-   Landing page
+   Apprentissage supervisée
   </a>
  </li>
 </ul>
@@ -172,6 +172,331 @@
         <!-- Table of contents -->
         <div class="d-none d-md-block col-md-2 bd-toc show">
             
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Apprentissage supervisée
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#presentation-generale">
+     Présentation générale
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#methodologie-basee-sur-les-modeles-lineaires">
+     Méthodologie basée sur les modèles linéaires
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#les-moindres-carres">
+       Les moindres carrés
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#hubert-regression">
+       Hubert Regression
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#quantile-regression">
+       Quantile Regression
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#approche-proba-bayesienne">
+       Approche proba -&gt; bayésienne
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#regression-darete">
+       Régression d’arête
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#lasso">
+       Lasso
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#elastic-net">
+       Elastic-Net
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#omp">
+       OMP
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#regression-logistique">
+       Régression logistique
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#descente-de-gradient-stochastic">
+       Descente de gradient stochastic
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#perceptron">
+       Perceptron
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#svm">
+       SVM
+      </a>
+      <ul class="nav section-nav flex-column">
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#presentation">
+         Présentation
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#probleme-geometrique">
+         Problème géométrique
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#refit-sig-sur-hyperplan-estimation-de-proba-car-calcul-de-distance-regression">
+         Refit sig sur hyperplan -&gt; estimation de proba car calcul de distance - Régression
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#classification">
+         Classification
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#les-fonctions-noyaux">
+         Les fonctions noyaux
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#exemple-sur-un-exemple-jouet-et-sur-un-jeu-de-donnees-de-la-vraie-vie">
+         Exemple sur un exemple jouet et sur un jeu de données de la vraie vie
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#les-plus-proches-voisins">
+       Les plus proches voisins
+      </a>
+      <ul class="nav section-nav flex-column">
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#id1">
+         Classification
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#regression">
+         Régression
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#processus-gaussian">
+       Processus Gaussian
+      </a>
+      <ul class="nav section-nav flex-column">
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#id2">
+         Regression
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#id3">
+         Classification
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#les-fonctions-a-noyaux">
+         Les fonctions à noyaux
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#arbres-de-decisions-gradient-boosting-random-forest">
+       Arbres de décisions (gradient boosting + random forest)
+      </a>
+      <ul class="nav section-nav flex-column">
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#presentations-generales">
+         Présentations générales
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#id4">
+         Classification
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#regressions">
+         Régressions
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#les-reseaux-de-neurones">
+       Les réseaux de neurones
+      </a>
+      <ul class="nav section-nav flex-column">
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#id5">
+         Présentation générale
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#perceptron-multi-couche">
+         Perceptron multi-couche
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#id6">
+         Classification
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#id7">
+         Régression
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#regularisation">
+         Régularisation
+        </a>
+       </li>
+      </ul>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#apprentissage-non-supervise">
+   Apprentissage non-supervisé
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#modele-de-melanges-gaussiens">
+     Modèle de mélanges gaussiens
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#apprentissage-de-type-manifold">
+     Apprentissage de type manifold
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#methodes-de-partitionnement-clustering">
+     Méthodes de partitionnement (clustering)
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#k-means">
+       K-means
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#mean-shift">
+       Mean Shift
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#methode-spectral">
+       Méthode spectral
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#methode-hierarchique">
+       Méthode hiérarchique
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#le-bi-clustering">
+       Le Bi-clustering
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#methodes-utilisant-la-decomposition-du-signal">
+     Méthodes utilisant la décomposition du signal
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#pca-reduction-dimension">
+       PCA / reduction dimension
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tsne">
+       TSNE
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#nmf">
+       NMF
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#embedding-reseaux-de-neurone">
+       Embedding Réseaux de neurone
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ica">
+     ICA
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#lda">
+     LDA
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#reseaux-de-neurones">
+     Réseaux de neurones
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#recherche-de-parametre-optimaux-dun-modele">
+   Recherche de paramètre optimaux d’un modèle
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#la-notion-de-pipeline">
+     La notion de « pipeline »
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pre-traitement-des-donnees">
+     Pré-traitement des données
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#cas-des-donnees-manquantes">
+     Cas des données manquantes
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -180,9 +505,188 @@
         
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="landing-page">
-<h1>Landing page<a class="headerlink" href="#landing-page" title="Permalink to this headline">¶</a></h1>
-<p>Let’s go!!!</p>
+  <p>Landing page</p>
+<p>Partie machine learning avec Scikit-learn :</p>
+<div class="tex2jax_ignore mathjax_ignore section" id="apprentissage-supervisee">
+<h1>Apprentissage supervisée<a class="headerlink" href="#apprentissage-supervisee" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="presentation-generale">
+<h2>Présentation générale<a class="headerlink" href="#presentation-generale" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="methodologie-basee-sur-les-modeles-lineaires">
+<h2>Méthodologie basée sur les modèles linéaires<a class="headerlink" href="#methodologie-basee-sur-les-modeles-lineaires" title="Permalink to this headline">¶</a></h2>
+<p>Ecrit</p>
+<div class="section" id="les-moindres-carres">
+<h3>Les moindres carrés<a class="headerlink" href="#les-moindres-carres" title="Permalink to this headline">¶</a></h3>
+<p>Ecrit</p>
+</div>
+<div class="section" id="hubert-regression">
+<h3>Hubert Regression<a class="headerlink" href="#hubert-regression" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="quantile-regression">
+<h3>Quantile Regression<a class="headerlink" href="#quantile-regression" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="approche-proba-bayesienne">
+<h3>Approche proba -&gt; bayésienne<a class="headerlink" href="#approche-proba-bayesienne" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="regression-darete">
+<h3>Régression d’arête<a class="headerlink" href="#regression-darete" title="Permalink to this headline">¶</a></h3>
+<p>Ecrit mais mettre en accord avec la suite</p>
+</div>
+<div class="section" id="lasso">
+<h3>Lasso<a class="headerlink" href="#lasso" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="elastic-net">
+<h3>Elastic-Net<a class="headerlink" href="#elastic-net" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="omp">
+<h3>OMP<a class="headerlink" href="#omp" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="regression-logistique">
+<h3>Régression logistique<a class="headerlink" href="#regression-logistique" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="descente-de-gradient-stochastic">
+<h3>Descente de gradient stochastic<a class="headerlink" href="#descente-de-gradient-stochastic" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="perceptron">
+<h3>Perceptron<a class="headerlink" href="#perceptron" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="svm">
+<h3>SVM<a class="headerlink" href="#svm" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="presentation">
+<h4>Présentation<a class="headerlink" href="#presentation" title="Permalink to this headline">¶</a></h4>
+</div>
+<div class="section" id="probleme-geometrique">
+<h4>Problème géométrique<a class="headerlink" href="#probleme-geometrique" title="Permalink to this headline">¶</a></h4>
+</div>
+<div class="section" id="refit-sig-sur-hyperplan-estimation-de-proba-car-calcul-de-distance-regression">
+<h4>Refit sig sur hyperplan -&gt; estimation de proba car calcul de distance - Régression<a class="headerlink" href="#refit-sig-sur-hyperplan-estimation-de-proba-car-calcul-de-distance-regression" title="Permalink to this headline">¶</a></h4>
+</div>
+<div class="section" id="classification">
+<h4>Classification<a class="headerlink" href="#classification" title="Permalink to this headline">¶</a></h4>
+</div>
+<div class="section" id="les-fonctions-noyaux">
+<h4>Les fonctions noyaux<a class="headerlink" href="#les-fonctions-noyaux" title="Permalink to this headline">¶</a></h4>
+</div>
+<div class="section" id="exemple-sur-un-exemple-jouet-et-sur-un-jeu-de-donnees-de-la-vraie-vie">
+<h4>Exemple sur un exemple jouet et sur un jeu de données de la vraie vie<a class="headerlink" href="#exemple-sur-un-exemple-jouet-et-sur-un-jeu-de-donnees-de-la-vraie-vie" title="Permalink to this headline">¶</a></h4>
+</div>
+</div>
+<div class="section" id="les-plus-proches-voisins">
+<h3>Les plus proches voisins<a class="headerlink" href="#les-plus-proches-voisins" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id1">
+<h4>Classification<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+</div>
+<div class="section" id="regression">
+<h4>Régression<a class="headerlink" href="#regression" title="Permalink to this headline">¶</a></h4>
+</div>
+</div>
+<div class="section" id="processus-gaussian">
+<h3>Processus Gaussian<a class="headerlink" href="#processus-gaussian" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id2">
+<h4>Regression<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+</div>
+<div class="section" id="id3">
+<h4>Classification<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
+</div>
+<div class="section" id="les-fonctions-a-noyaux">
+<h4>Les fonctions à noyaux<a class="headerlink" href="#les-fonctions-a-noyaux" title="Permalink to this headline">¶</a></h4>
+</div>
+</div>
+<div class="section" id="arbres-de-decisions-gradient-boosting-random-forest">
+<h3>Arbres de décisions (gradient boosting + random forest)<a class="headerlink" href="#arbres-de-decisions-gradient-boosting-random-forest" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="presentations-generales">
+<h4>Présentations générales<a class="headerlink" href="#presentations-generales" title="Permalink to this headline">¶</a></h4>
+</div>
+<div class="section" id="id4">
+<h4>Classification<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
+</div>
+<div class="section" id="regressions">
+<h4>Régressions<a class="headerlink" href="#regressions" title="Permalink to this headline">¶</a></h4>
+</div>
+</div>
+<div class="section" id="les-reseaux-de-neurones">
+<h3>Les réseaux de neurones<a class="headerlink" href="#les-reseaux-de-neurones" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id5">
+<h4>Présentation générale<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
+</div>
+<div class="section" id="perceptron-multi-couche">
+<h4>Perceptron multi-couche<a class="headerlink" href="#perceptron-multi-couche" title="Permalink to this headline">¶</a></h4>
+</div>
+<div class="section" id="id6">
+<h4>Classification<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h4>
+</div>
+<div class="section" id="id7">
+<h4>Régression<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h4>
+</div>
+<div class="section" id="regularisation">
+<h4>Régularisation<a class="headerlink" href="#regularisation" title="Permalink to this headline">¶</a></h4>
+</div>
+</div>
+</div>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="apprentissage-non-supervise">
+<h1>Apprentissage non-supervisé<a class="headerlink" href="#apprentissage-non-supervise" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="modele-de-melanges-gaussiens">
+<h2>Modèle de mélanges gaussiens<a class="headerlink" href="#modele-de-melanges-gaussiens" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="apprentissage-de-type-manifold">
+<h2>Apprentissage de type manifold<a class="headerlink" href="#apprentissage-de-type-manifold" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="methodes-de-partitionnement-clustering">
+<h2>Méthodes de partitionnement (clustering)<a class="headerlink" href="#methodes-de-partitionnement-clustering" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="k-means">
+<h3>K-means<a class="headerlink" href="#k-means" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="mean-shift">
+<h3>Mean Shift<a class="headerlink" href="#mean-shift" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="methode-spectral">
+<h3>Méthode spectral<a class="headerlink" href="#methode-spectral" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="methode-hierarchique">
+<h3>Méthode hiérarchique<a class="headerlink" href="#methode-hierarchique" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="le-bi-clustering">
+<h3>Le Bi-clustering<a class="headerlink" href="#le-bi-clustering" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="methodes-utilisant-la-decomposition-du-signal">
+<h2>Méthodes utilisant la décomposition du signal<a class="headerlink" href="#methodes-utilisant-la-decomposition-du-signal" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="pca-reduction-dimension">
+<h3>PCA / reduction dimension<a class="headerlink" href="#pca-reduction-dimension" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="tsne">
+<h3>TSNE<a class="headerlink" href="#tsne" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="nmf">
+<h3>NMF<a class="headerlink" href="#nmf" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="embedding-reseaux-de-neurone">
+<h3>Embedding Réseaux de neurone<a class="headerlink" href="#embedding-reseaux-de-neurone" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="ica">
+<h2>ICA<a class="headerlink" href="#ica" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="lda">
+<h2>LDA<a class="headerlink" href="#lda" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="reseaux-de-neurones">
+<h2>Réseaux de neurones<a class="headerlink" href="#reseaux-de-neurones" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="recherche-de-parametre-optimaux-dun-modele">
+<h1>Recherche de paramètre optimaux d’un modèle<a class="headerlink" href="#recherche-de-parametre-optimaux-dun-modele" title="Permalink to this headline">¶</a></h1>
+<p>Calcul et traitement de données de grande dimension / problème réel</p>
+<div class="section" id="la-notion-de-pipeline">
+<h2>La notion de « pipeline »<a class="headerlink" href="#la-notion-de-pipeline" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pre-traitement-des-donnees">
+<h2>Pré-traitement des données<a class="headerlink" href="#pre-traitement-des-donnees" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="cas-des-donnees-manquantes">
+<h2>Cas des données manquantes<a class="headerlink" href="#cas-des-donnees-manquantes" title="Permalink to this headline">¶</a></h2>
+</div>
 <div class="toctree-wrapper compound">
 </div>
 </div>
