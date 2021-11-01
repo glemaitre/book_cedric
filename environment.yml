@@ -2,6 +2,7 @@ name: book
 dependencies:
   - jupyter-book
   - pycodestyle
+  - black
   - scikit-learn
   - pandas
   - seaborn

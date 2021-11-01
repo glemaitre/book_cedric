@@ -50,9 +50,7 @@ location_velo.info()
 # pour convertir la colonne `date`.
 
 # %%
-location_velo = pd.read_csv(
-    "../datasets/bike_sharing/hour.csv", parse_dates=["date"]
-)
+location_velo = pd.read_csv("../datasets/bike_sharing/hour.csv", parse_dates=["date"])
 location_velo.info()
 
 # %% [markdown]
@@ -183,6 +181,7 @@ location_velo[variable_numerique].describe()
 # Afin de changer le style de nos graphiques, nous pouvons utiliser seaborn
 # context.
 import seaborn as sns
+
 sns.set_context("poster")
 
 # %%
@@ -220,7 +219,9 @@ import numpy as np
 # Nous pouvons utiliser un sous échantillonnage pour accelerer la visualisation
 rng = np.random.RandomState(42)
 index_sous_echantillons = rng.choice(
-    location_velo.index, size=1_000, replace=False,
+    location_velo.index,
+    size=1_000,
+    replace=False,
 )
 
 _ = sns.pairplot(
@@ -339,12 +340,14 @@ location_velo.head()
 # analyser un eventuelle relation entre ces périodes et le nombre de locations.
 
 # %%
-location_velo["date"] = pd.to_datetime({
-    "year": location_velo["date"].dt.year,
-    "month": location_velo["date"].dt.month,
-    "day": location_velo["date"].dt.day,
-    "hour": location_velo["heure"],
-})
+location_velo["date"] = pd.to_datetime(
+    {
+        "year": location_velo["date"].dt.year,
+        "month": location_velo["date"].dt.month,
+        "day": location_velo["date"].dt.day,
+        "hour": location_velo["heure"],
+    }
+)
 
 # %%
 _, ax = plt.subplots(figsize=(6, 4))
@@ -358,16 +361,28 @@ variable_date = [
     "heure",
     "jour de la semaine",
     "jour travaille",
-    "meteo",
 ]
 
 # %%
+location_velo[variable_date] = location_velo[variable_date].astype("category")
+
+# %%
 for variable in variable_date:
-    _, ax = plt.subplots(figsize=(6, 4))
+    height_axis = location_velo[variable].nunique() * 0.5
+    _, ax = plt.subplots(figsize=(6, height_axis))
     sns.boxplot(
-        x=variable,
-        y="nombre de locations",
+        y=variable,
+        x="nombre de locations",
         data=location_velo,
+        color="white",
+        ax=ax,
+    )
+    sns.stripplot(
+        y=variable,
+        x="nombre de locations",
+        data=location_velo,
+        alpha=0.01,
+        color="black",
         ax=ax,
     )
 
