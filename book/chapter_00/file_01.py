@@ -10,7 +10,7 @@
 #
 # ### Importance du prétraitement
 #
-# ### Alternative à la minimization moindres carrés
+# ### Alternative à la minimization moindres carrés
 #
 # ## Résolution de problèmes non-linéaires
 #
