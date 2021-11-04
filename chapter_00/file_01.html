@@ -228,8 +228,8 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#alternative-a-la-minimization-moindres-carres">
-     Alternative à la minimization moindres carrés
+    <a class="reference internal nav-link" href="#alternative-a-la-methode-des-moindres-carres">
+     Alternative à la méthode des moindres carrés
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -436,9 +436,10 @@ formulée ci-dessous :</p>
 \mathcal{L}(\beta) = \frac{1}{N} \sum_{i=1}^N \left( y_i - f(X_i, \beta)
 \right)^2
 \]</div>
-<p>Et nour chercherons donc à minimiser cette fonction de coût. En d’autre
+<p>Et nous chercherons donc à minimiser cette fonction de coût. En d’autre
 termes, nous serions intéressés par trouver le minimum de
-<span class="math notranslate nohighlight">\(\mathcal{L}(\beta)\)</span>.</p>
+<span class="math notranslate nohighlight">\(\mathcal{L}(\beta)\)</span>. Cette minimisation est également appellée méthode
+des moindres carrés.</p>
 <div class="math notranslate nohighlight">
 \[
 \min_{\beta} \mathcal{L}(\beta)
@@ -495,7 +496,7 @@ observer visuellement quels sont les prédictions produites par ce modèle.</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
     <span class="n">x</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span>
 <span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Regression lineaire&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Regression linéaire&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Modele LinearRegression&quot;</span><span class="p">)</span>
 </pre></div>
@@ -552,8 +553,310 @@ de la variable <code class="docutils literal notranslate"><span class="pre">inte
 grammes! Cette valeur est beaucoup plus compliquée à comprendre mais elle
 nous permet d’avoir un modèle plus flexible, ne passant pas par l’origine.</p>
 </div>
-<div class="section" id="alternative-a-la-minimization-moindres-carres">
-<h3>Alternative à la minimization moindres carrés<a class="headerlink" href="#alternative-a-la-minimization-moindres-carres" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="alternative-a-la-methode-des-moindres-carres">
+<h3>Alternative à la méthode des moindres carrés<a class="headerlink" href="#alternative-a-la-methode-des-moindres-carres" title="Permalink to this headline">¶</a></h3>
+<p>La méthode des moindres carrés est la méthode la plus simple que nou pouvions
+présenter. En revanche, cette méthode à des limitations connues. Nous allons
+en présenter l’une d’entre elles, ainsi montrer comment nous pouvons la
+contourner.</p>
+<p>Nous allons reprendre les mêmes données que précédemment utilisées. En
+revanche, nous allons simuler que des erreurs de saisie sont survenues lors
+de la collecte des données. Pour cela, nous allons rajouter un échantillon de
+pinguoin qui aura un aileron de longueur de 230 mm et une masse corporelle de
+300 grammes. Cette erreur pourrait être dûe à une erreur de saisie ou un 0
+est manquant.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">donnees</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;Longueur Aileron (mm)&quot;</span><span class="p">:</span> <span class="mi">230</span><span class="p">,</span> <span class="s2">&quot;Masse Corporelle (g)&quot;</span><span class="p">:</span> <span class="mi">300</span><span class="p">},</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+<span class="n">donnees</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">donnees</span><span class="p">[[</span><span class="s2">&quot;Longueur Aileron (mm)&quot;</span><span class="p">]]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">donnees</span><span class="p">[</span><span class="s2">&quot;Masse Corporelle (g)&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span>
+<span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Nos données avec une</span><span class="se">\n</span><span class="s2">erreur de saisie&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/file_01_21_0.png" src="../_images/file_01_21_0.png" />
+</div>
+</div>
+<p>Nous pouvons observer que nous avons un nouveau échantillon dans le cadrant
+en bas à droite de notre graphique. Nous allons maintenant entraîner un
+modèle linéaire qui minimise l’erreur quadratique moyenne. Pour simuler que
+nous avons plusieurs erreurs de saisie, nous allons entraîner notre modèle en
+assignant des poids à chaque échantillon : tous les échantillons auront un
+poids de 1, sauf le nouvel échantillon qui aura un poids de 10.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">poids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+<span class="n">poids</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">modele</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
+<span class="n">predictions_err_quadratique</span> <span class="o">=</span> <span class="n">modele</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="n">poids</span><span class="p">)</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">predictions_err_quadratique</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Regression linéaire&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Modele LinearRegression&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/file_01_25_0.png" src="../_images/file_01_25_0.png" />
+</div>
+</div>
+<p>Nous pouvons donc observer que le faite d’avoir des erreurs de saisie à une
+influence non négligeable sur la qualité de notre modèle. Ceci peut-être
+expliqué par le type de fonction de coût que nous utilisons. Il sera plus
+facile d’obtenir une intuition en représentant graphiquement cette fonction.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">erreur_quadratique</span><span class="p">(</span><span class="n">cible</span><span class="p">,</span> <span class="n">prediction</span><span class="p">):</span>
+    <span class="n">cout</span> <span class="o">=</span> <span class="p">(</span><span class="n">cible</span> <span class="o">-</span> <span class="n">prediction</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="n">cout</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">=</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span>
+<span class="n">xx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">erreur_quadratique</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">xx</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Erreur quadratique&quot;</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/file_01_28_0.png" src="../_images/file_01_28_0.png" />
+</div>
+</div>
+<p>Nous pouvons donc observer que le faite d’élever au carré l’erreur pénalise
+extrêment les échantillons avec une grande erreur. Il serait donc intéressant
+d’utiliser une fonction de coût qui affectera un coût moindre aux
+échantillons pour lesquel notre modèle commet le plus d’erreur. Au lieu de
+prendre le carré de l’erreur, nous pourrions seulement utiliser la valeur
+absolue de l’erreur. Cette erreur sera donc l’<strong>erreur absolute moyenne</strong> et
+peut-être formulée comme suit :</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L}(\beta) = \frac{1}{N} \sum_{i=1}^N \left| y_i - f(X_i, \beta)
+\right|
+\]</div>
+<p>Nous pouvons comparer visualement la représentation de cette fonction de coût
+avec la représentation de la fonction d’erreur quadratique.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">erreur_absolue</span><span class="p">(</span><span class="n">cible</span><span class="p">,</span> <span class="n">prediction</span><span class="p">):</span>
+    <span class="n">cout</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">cible</span> <span class="o">-</span> <span class="n">prediction</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cout</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">erreur_quadratique</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">xx</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Erreur quadratique&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">erreur_absolue</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">xx</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Erreur absolue&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Comparaison des fonctions de coût&quot;</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/file_01_31_0.png" src="../_images/file_01_31_0.png" />
+</div>
+</div>
+<p>On peut donc observer que l’erreur absolue pénalisera les échantillons avec
+une grande erreur. En revanche, si nous nous attardons sur l’erreur aboslue
+nous pouvons observer quelle n’est pas dérivable en 0. Ceci nous empêche
+d’utiliser une méthode d’optimisation basée sur le gradient ce qui est
+problématique.</p>
+<p>Si nous voulons utiliser une méthode par descente de gradient, il est donc
+nécessaire de trouver un moyen de combiner les deux fonctions de coût :
+utiliser l’erreur absolue loin de 0 pour moins pénaliser les échantillons
+avec une grande erreur et utiliser l’erreur quadratique quand l’erreur est
+proche de 0 pour que nous puissions déterminer le gradient.</p>
+<p>Cette fonction de coût est connu sous le nom de la fonction de Huber et est
+formulée comme suit :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\mathcal{L}(\beta) = \frac{1}{N} \sum^{N}_{i=1} \begin{cases}
+\left( y_i - f(X_i, \beta) \right)^2 &amp; \text{si } \left|
+y_i - f(X_i, \beta) \right| &lt; \epsilon \\
+2 \epsilon \left( | y_i - f(X_i, \beta) | - \epsilon^2 \right) &amp; \text{sinon}
+\end{cases}
+\end{split}\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fonction_huber</span><span class="p">(</span><span class="n">cible</span><span class="p">,</span> <span class="n">prediction</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">1.35</span><span class="p">):</span>
+    <span class="n">cout_absolue</span> <span class="o">=</span> <span class="n">erreur_absolue</span><span class="p">(</span><span class="n">cible</span><span class="p">,</span> <span class="n">prediction</span><span class="p">)</span>
+    <span class="n">cout_quadratique</span> <span class="o">=</span> <span class="n">erreur_quadratique</span><span class="p">(</span><span class="n">cible</span><span class="p">,</span> <span class="n">prediction</span><span class="p">)</span>
+
+    <span class="n">plus_grand_epsilon</span> <span class="o">=</span> <span class="n">cout_absolue</span> <span class="o">&gt;</span> <span class="n">epsilon</span>
+
+    <span class="n">cout</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">prediction</span><span class="p">)</span>
+    <span class="n">cout</span><span class="p">[</span><span class="o">~</span><span class="n">plus_grand_epsilon</span><span class="p">]</span> <span class="o">=</span> <span class="n">cout_quadratique</span><span class="p">[</span><span class="o">~</span><span class="n">plus_grand_epsilon</span><span class="p">]</span>
+    <span class="n">cout</span><span class="p">[</span><span class="n">plus_grand_epsilon</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="mi">2</span> <span class="o">*</span> <span class="n">epsilon</span> <span class="o">*</span> <span class="n">cout_absolue</span><span class="p">[</span><span class="n">plus_grand_epsilon</span><span class="p">]</span> <span class="o">-</span> <span class="n">epsilon</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">cout</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">erreur_quadratique</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">xx</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Erreur quadratique&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">erreur_absolue</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">xx</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Erreur absolue&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">xx</span><span class="p">,</span> <span class="n">fonction_huber</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">xx</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Fonction de Huber&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Comparaison des fonctions de coût&quot;</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/file_01_34_0.png" src="../_images/file_01_34_0.png" />
+</div>
+</div>
+<p>Nous pouvons donc observer que la fonction de Huber a les avantages des deux
+fonctions de coût précédentes. <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code> propose une classe appelée
+<code class="docutils literal notranslate"><span class="pre">HuberRegressor</span></code> qui permettra d’optimiser cette fonction de coût. Nous
+allons donc utiliser ce modèle sur notre jeu de données et observer la
+différence sur les prédictions.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">HuberRegressor</span>
+
+<span class="n">modele</span> <span class="o">=</span> <span class="n">HuberRegressor</span><span class="p">()</span>
+<span class="n">predictions_err_huber</span> <span class="o">=</span> <span class="n">modele</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="n">poids</span><span class="p">)</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">predictions_err_quadratique</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Quadratique&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">predictions_err_huber</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Huber&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Comparaison modèle linéaire&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/file_01_37_0.png" src="../_images/file_01_37_0.png" />
+</div>
+</div>
+<p>Nous pouvons donc constater que le modèle linéaire minimisant la fonction de
+Huber permet d’obtenir un meilleur modèle que celui minimisant la fonction
+de coût quadratique.</p>
+<p>Pour confirmer de manière quantitative, nous pourrions calculer des erreurs.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">mean_absolute_error</span>
+
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Modèle linéaire quadratique:</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="s2">&quot;  Erreur quadratique moyenne : &quot;</span>
+    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">predictions_err_quadratique</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="s2">&quot;  Erreur absolue moyenne : &quot;</span>
+    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">mean_absolute_error</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">predictions_err_quadratique</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Modèle linéaire Huber:</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="s2">&quot;  Erreur quadratique moyenne : &quot;</span>
+    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">predictions_err_huber</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="s2">&quot;  Erreur absolue moyenne : &quot;</span>
+    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">mean_absolute_error</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">predictions_err_huber</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Modèle linéaire quadratique:
+  Erreur quadratique moyenne : 313313.17
+  Erreur absolue moyenne : 412.61
+Modèle linéaire Huber:
+  Erreur quadratique moyenne : 236451.75
+  Erreur absolue moyenne : 328.44
+</pre></div>
+</div>
+</div>
+</div>
+<p>Nous pouvons confirmer que le modèle linéaire quadratique a une erreur
+quadratique moins élevèe que le modèle linéaire Huber. En revanche, nous
+avons la conclusion opposée pour l’erreur absolue.</p>
+<p>Il est quand même intéressant de mentionner qu’il es possible d’optimiser la
+fonction de coût basée sur l’erreur absolue. En revanche, la méthode
+d’optimisation sera différente. Ce type de d’estimateur est connue en anglais
+sous le nom de “Least Absolute Deviation” (LAD). Cet estimateur minimisera
+donc la fonction de coût des erreurs absolues et sera un estimateur de la
+médiane de nos données. <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code> propose une classe appelée
+<code class="docutils literal notranslate"><span class="pre">QuantileRegressor</span></code> qui permet de regresser n’importe quelle quantile et
+notemment la médiane.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">QuantileRegressor</span>
+
+<span class="n">modele</span> <span class="o">=</span> <span class="n">QuantileRegressor</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">solver</span><span class="o">=</span><span class="s2">&quot;highs&quot;</span><span class="p">)</span>
+<span class="n">predictions_err_absolue</span> <span class="o">=</span> <span class="n">modele</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="n">poids</span><span class="p">)</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">predictions_err_quadratique</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Quadratique&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">predictions_err_huber</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Huber&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">predictions_err_absolue</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Absolue&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Comparaison modèle linéaire&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/file_01_42_0.png" src="../_images/file_01_42_0.png" />
+</div>
+</div>
+<p>Nous pouvons donc constater que l’estimateur basé sur la fonction de coût de
+Huber est très proche de l’estimateur de la médiane. Nous reviendrons plus
+tard dans ce chapitre sur l’estimateur quantiles pour estimer des intervalles
+de confiance autour de la médiane.</p>
 </div>
 <div class="section" id="principe-de-la-regularisation">
 <h3>Principe de la régularisation<a class="headerlink" href="#principe-de-la-regularisation" title="Permalink to this headline">¶</a></h3>
