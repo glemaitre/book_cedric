@@ -163,9 +163,10 @@ print(f"Erreur du modèle #3: {mean_squared_error(y, predictions_modele_3):.2f}"
 # \right)^2
 # $$
 #
-# Et nour chercherons donc à minimiser cette fonction de coût. En d'autre
+# Et nous chercherons donc à minimiser cette fonction de coût. En d'autre
 # termes, nous serions intéressés par trouver le minimum de
-# $\mathcal{L}(\beta)$.
+# $\mathcal{L}(\beta)$. Cette minimisation est également appellée méthode
+# des moindres carrés.
 #
 # $$
 # \min_{\beta} \mathcal{L}(\beta)
@@ -216,7 +217,7 @@ predictions = modele.predict(X)
 ax = donnees.plot.scatter(
     x=donnees.columns[0], y=donnees.columns[1], color="black", alpha=0.2
 )
-ax.plot(X, predictions, label="Regression lineaire")
+ax.plot(X, predictions, label="Regression linéaire")
 ax.legend()
 _ = ax.set_title("Modele LinearRegression")
 
@@ -254,10 +255,252 @@ modele.intercept_
 # : un pinguoin avec un aileron de 0 mm aura une masse corporelle de -5781
 # grammes! Cette valeur est beaucoup plus compliquée à comprendre mais elle
 # nous permet d'avoir un modèle plus flexible, ne passant pas par l'origine.
+#
+# ### Alternative à la méthode des moindres carrés
+#
+# La méthode des moindres carrés est la méthode la plus simple que nou pouvions
+# présenter. En revanche, cette méthode à des limitations connues. Nous allons
+# en présenter l'une d'entre elles, ainsi montrer comment nous pouvons la
+# contourner.
+#
+# Nous allons reprendre les mêmes données que précédemment utilisées. En
+# revanche, nous allons simuler que des erreurs de saisie sont survenues lors
+# de la collecte des données. Pour cela, nous allons rajouter un échantillon de
+# pinguoin qui aura un aileron de longueur de 230 mm et une masse corporelle de
+# 300 grammes. Cette erreur pourrait être dûe à une erreur de saisie ou un 0
+# est manquant.
+
+# %%
+donnees = donnees.append(
+    {"Longueur Aileron (mm)": 230, "Masse Corporelle (g)": 300}, ignore_index=True
+)
+donnees.tail()
+X = donnees[["Longueur Aileron (mm)"]]
+y = donnees["Masse Corporelle (g)"]
+
+# %%
+ax = donnees.plot.scatter(
+    x=donnees.columns[0], y=donnees.columns[1], color="black", alpha=0.2
+)
+_ = ax.set_title("Nos données avec une\nerreur de saisie")
 
 # %% [markdown]
 #
-# ### Alternative à la minimization moindres carrés
+# Nous pouvons observer que nous avons un nouveau échantillon dans le cadrant
+# en bas à droite de notre graphique. Nous allons maintenant entraîner un
+# modèle linéaire qui minimise l'erreur quadratique moyenne. Pour simuler que
+# nous avons plusieurs erreurs de saisie, nous allons entraîner notre modèle en
+# assignant des poids à chaque échantillon : tous les échantillons auront un
+# poids de 1, sauf le nouvel échantillon qui aura un poids de 10.
+
+# %%
+import numpy as np
+
+poids = np.ones(y.size)
+poids[-1] = 10
+
+# %%
+modele = LinearRegression()
+predictions_err_quadratique = modele.fit(X, y, sample_weight=poids).predict(X)
+
+# %%
+ax = donnees.plot.scatter(
+    x=donnees.columns[0], y=donnees.columns[1], color="black", alpha=0.2
+)
+ax.plot(X, predictions_err_quadratique, label="Regression linéaire")
+ax.legend()
+_ = ax.set_title("Modele LinearRegression")
+
+# %% [markdown]
+#
+# Nous pouvons donc observer que le faite d'avoir des erreurs de saisie à une
+# influence non négligeable sur la qualité de notre modèle. Ceci peut-être
+# expliqué par le type de fonction de coût que nous utilisons. Il sera plus
+# facile d'obtenir une intuition en représentant graphiquement cette fonction.
+
+
+# %%
+def erreur_quadratique(cible, prediction):
+    cout = (cible - prediction) ** 2
+    return cout
+
+
+# %%
+import matplotlib.pyplot as plt
+
+xmin, xmax = -3, 3
+xx = np.linspace(xmin, xmax, 100)
+
+plt.plot(xx, erreur_quadratique(0, xx), label="Erreur quadratique")
+_ = plt.legend()
+
+# %% [markdown]
+#
+# Nous pouvons donc observer que le faite d'élever au carré l'erreur pénalise
+# extrêment les échantillons avec une grande erreur. Il serait donc intéressant
+# d'utiliser une fonction de coût qui affectera un coût moindre aux
+# échantillons pour lesquel notre modèle commet le plus d'erreur. Au lieu de
+# prendre le carré de l'erreur, nous pourrions seulement utiliser la valeur
+# absolue de l'erreur. Cette erreur sera donc l'**erreur absolute moyenne** et
+# peut-être formulée comme suit :
+#
+# $$
+# \mathcal{L}(\beta) = \frac{1}{N} \sum_{i=1}^N \left| y_i - f(X_i, \beta)
+# \right|
+# $$
+#
+# Nous pouvons comparer visualement la représentation de cette fonction de coût
+# avec la représentation de la fonction d'erreur quadratique.
+
+
+# %%
+def erreur_absolue(cible, prediction):
+    cout = abs(cible - prediction)
+    return cout
+
+
+# %%
+plt.plot(xx, erreur_quadratique(0, xx), label="Erreur quadratique")
+plt.plot(xx, erreur_absolue(0, xx), label="Erreur absolue")
+plt.title("Comparaison des fonctions de coût")
+_ = plt.legend()
+
+# %% [markdown]
+#
+# On peut donc observer que l'erreur absolue pénalisera les échantillons avec
+# une grande erreur. En revanche, si nous nous attardons sur l'erreur aboslue
+# nous pouvons observer quelle n'est pas dérivable en 0. Ceci nous empêche
+# d'utiliser une méthode d'optimisation basée sur le gradient ce qui est
+# problématique.
+#
+# Si nous voulons utiliser une méthode par descente de gradient, il est donc
+# nécessaire de trouver un moyen de combiner les deux fonctions de coût :
+# utiliser l'erreur absolue loin de 0 pour moins pénaliser les échantillons
+# avec une grande erreur et utiliser l'erreur quadratique quand l'erreur est
+# proche de 0 pour que nous puissions déterminer le gradient.
+#
+# Cette fonction de coût est connu sous le nom de la fonction de Huber et est
+# formulée comme suit :
+#
+# $$
+# \mathcal{L}(\beta) = \frac{1}{N} \sum^{N}_{i=1} \begin{cases}
+# \left( y_i - f(X_i, \beta) \right)^2 & \text{si } \left|
+# y_i - f(X_i, \beta) \right| < \epsilon \\
+# 2 \epsilon \left( | y_i - f(X_i, \beta) | - \epsilon^2 \right) & \text{sinon}
+# \end{cases}
+# $$
+
+
+# %%
+def fonction_huber(cible, prediction, *, epsilon=1.35):
+    cout_absolue = erreur_absolue(cible, prediction)
+    cout_quadratique = erreur_quadratique(cible, prediction)
+
+    plus_grand_epsilon = cout_absolue > epsilon
+
+    cout = np.zeros_like(prediction)
+    cout[~plus_grand_epsilon] = cout_quadratique[~plus_grand_epsilon]
+    cout[plus_grand_epsilon] = (
+        2 * epsilon * cout_absolue[plus_grand_epsilon] - epsilon ** 2
+    )
+    return cout
+
+
+# %%
+plt.plot(xx, erreur_quadratique(0, xx), label="Erreur quadratique")
+plt.plot(xx, erreur_absolue(0, xx), label="Erreur absolue")
+plt.plot(
+    xx, fonction_huber(0, xx, epsilon=1.0), label="Fonction de Huber", linestyle="--"
+)
+plt.title("Comparaison des fonctions de coût")
+_ = plt.legend()
+
+# %% [markdown]
+#
+# Nous pouvons donc observer que la fonction de Huber a les avantages des deux
+# fonctions de coût précédentes. `scikit-learn` propose une classe appelée
+# `HuberRegressor` qui permettra d'optimiser cette fonction de coût. Nous
+# allons donc utiliser ce modèle sur notre jeu de données et observer la
+# différence sur les prédictions.
+
+# %%
+from sklearn.linear_model import HuberRegressor
+
+modele = HuberRegressor()
+predictions_err_huber = modele.fit(X, y, sample_weight=poids).predict(X)
+
+# %%
+ax = donnees.plot.scatter(
+    x=donnees.columns[0], y=donnees.columns[1], color="black", alpha=0.2
+)
+ax.plot(X, predictions_err_quadratique, label="Quadratique")
+ax.plot(X, predictions_err_huber, label="Huber")
+ax.legend()
+_ = ax.set_title("Comparaison modèle linéaire")
+
+# %% [markdown]
+#
+# Nous pouvons donc constater que le modèle linéaire minimisant la fonction de
+# Huber permet d'obtenir un meilleur modèle que celui minimisant la fonction
+# de coût quadratique.
+#
+# Pour confirmer de manière quantitative, nous pourrions calculer des erreurs.
+
+# %%
+from sklearn.metrics import mean_absolute_error
+
+print(
+    "Modèle linéaire quadratique:\n"
+    "  Erreur quadratique moyenne : "
+    f"{mean_squared_error(y, predictions_err_quadratique):.2f}\n"
+    "  Erreur absolue moyenne : "
+    f"{mean_absolute_error(y, predictions_err_quadratique):.2f}"
+)
+print(
+    "Modèle linéaire Huber:\n"
+    "  Erreur quadratique moyenne : "
+    f"{mean_squared_error(y, predictions_err_huber):.2f}\n"
+    "  Erreur absolue moyenne : "
+    f"{mean_absolute_error(y, predictions_err_huber):.2f}"
+)
+
+# %% [markdown]
+#
+# Nous pouvons confirmer que le modèle linéaire quadratique a une erreur
+# quadratique moins élevèe que le modèle linéaire Huber. En revanche, nous
+# avons la conclusion opposée pour l'erreur absolue.
+#
+# Il est quand même intéressant de mentionner qu'il es possible d'optimiser la
+# fonction de coût basée sur l'erreur absolue. En revanche, la méthode
+# d'optimisation sera différente. Ce type de d'estimateur est connue en anglais
+# sous le nom de "Least Absolute Deviation" (LAD). Cet estimateur minimisera
+# donc la fonction de coût des erreurs absolues et sera un estimateur de la
+# médiane de nos données. `scikit-learn` propose une classe appelée
+# `QuantileRegressor` qui permet de regresser n'importe quelle quantile et
+# notemment la médiane.
+
+# %%
+from sklearn.linear_model import QuantileRegressor
+
+modele = QuantileRegressor(alpha=0.5, solver="highs")
+predictions_err_absolue = modele.fit(X, y, sample_weight=poids).predict(X)
+
+# %%
+ax = donnees.plot.scatter(
+    x=donnees.columns[0], y=donnees.columns[1], color="black", alpha=0.2
+)
+ax.plot(X, predictions_err_quadratique, label="Quadratique")
+ax.plot(X, predictions_err_huber, label="Huber")
+ax.plot(X, predictions_err_absolue, label="Absolue", linestyle="--")
+ax.legend()
+_ = ax.set_title("Comparaison modèle linéaire")
+
+# %% [markdown]
+#
+# Nous pouvons donc constater que l'estimateur basé sur la fonction de coût de
+# Huber est très proche de l'estimateur de la médiane. Nous reviendrons plus
+# tard dans ce chapitre sur l'estimateur quantiles pour estimer des intervalles
+# de confiance autour de la médiane.
 #
 # ### Principe de la régularisation
 #
