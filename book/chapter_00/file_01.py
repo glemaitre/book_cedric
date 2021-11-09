@@ -501,8 +501,238 @@ _ = ax.set_title("Comparaison modèle linéaire")
 # Huber est très proche de l'estimateur de la médiane. Nous reviendrons plus
 # tard dans ce chapitre sur l'estimateur quantiles pour estimer des intervalles
 # de confiance autour de la médiane.
+
+# %% [markdown]
 #
 # ### Principe de la régularisation
+#
+# Dans la section précédente, nous avons abordé le principe de la fonction de
+# coût. Nous avons étudié et analysé différentes types d'erreur. En revanche,
+# nous n'avons pas abordé les différentes formes de régularisation.
+#
+# Dans cette section, nous allons dans un premier temps motivé l'utilité de la
+# régularisation. Dans un deuxième temps, nous allons présenter les différents
+# types de régularisation.
+#
+# Pour motiver l'utilité de la régularisation, nous allons générer un jeu de
+# données simple que nous allons pouvoir facilement interpréter. Nous allons
+# générer une cible à partir d'une combination linéaire de deux variables. Nous
+# allons également ajouter trois variables qui ne seront pas prédictives (i.e.
+# aucun lien n'existera entre la cible `y` et ces variables). Pour rendre le
+# problème plus réaliste, nous allons ajouter un bruit Gaussien à la cible.
+#
+# La fonction `make_regression` dans `scikit-learn` nous permet de générer un
+# tel jeu de données.
+
+# %%
+from sklearn.datasets import make_regression
+
+n_features = 6
+X, y, true_coef = make_regression(
+    n_samples=1_000,
+    n_features=n_features,
+    n_informative=2,
+    shuffle=False,
+    coef=True,
+    random_state=0,
+    noise=30,
+)
+
+# %% [markdown]
+#
+# En plus des données `X` et `y`, cette fonction nous fournit également les
+# coefficients de la combinaison linéaire. Nous pouvons visualiser ces
+# coefficients.
+
+# %%
+nom_colonnes = [f"Colonne #{i}" for i in range(n_features)]
+true_coef = pd.Series(true_coef, index=nom_colonnes)
+true_coef.plot.barh()
+true_coef
+
+# %% [markdown]
+#
+# Nous pouvons également visualiser les liens marginales entre la cible `y` et
+# chacune des variables composant notre jeu de données `X`.
+
+# %%
+donnees = pd.DataFrame(X, columns=nom_colonnes)
+donnees["Cible"] = y
+donnees = donnees.melt(id_vars="Cible", var_name="Variable", value_name="Valeur")
+
+# %%
+sns.lmplot(
+    x="Valeur",
+    y="Cible",
+    col="Variable",
+    hue="Variable",
+    data=donnees,
+    col_wrap=2,
+    ci=None,
+    scatter_kws={"s": 50, "alpha": 0.3},
+)
+
+# %% [markdown]
+#
+# Sur ce graphique, nous pouvons donc confirmer qu'il existe une lien entre les
+# deux premières variables et notre cible alors qu'il n'existe aucun lien avec
+# les autres variables.
+#
+# Maintenant, que nous avons quelques intuitions concernant notre jeu de
+# données, nous allons créer un modèle linéaire pour estimer les coefficients
+# de la combinaison linéaire. Mais tout d'abord, nous allons évaluer un tel
+# modèle via une validation croisée. Nous utiliserons le score $R^2$ pour
+# evaluer notre modèle (ce score est une mesure de la qualité du modèle où le
+# maximum score est 1).
+
+# %%
+from sklearn.model_selection import cross_validate
+from sklearn.model_selection import RepeatedKFold
+
+modele = LinearRegression()
+cv = RepeatedKFold(n_splits=5, n_repeats=100, random_state=0)
+cv_results = cross_validate(
+    modele, X, y, cv=cv, return_train_score=True, return_estimator=True
+)
+cv_results = pd.DataFrame(cv_results)
+
+# %%
+ax = cv_results[["train_score", "test_score"]].plot.hist(bins=10, alpha=0.5)
+_ = ax.set_xlim([0, 1])
+
+# %% [markdown]
+#
+# Nous pouvons donc constater que notre modèle nous permet d'obtenir de bonnes
+# prédictions. Nous pouvons inspecter les coefficients des différents modèles
+# obtenus pendant la validation croisée.
+
+# %%
+coef = pd.DataFrame(
+    [modele_cv.coef_ for modele_cv in cv_results["estimator"]],
+    columns=nom_colonnes,
+)
+ax = coef.plot.box(vert=False, whis=10)
+_ = ax.set_title("Coefficients des modèles linéaires \nobtenus par validation croisée")
+
+# %% [markdown]
+#
+# Nous pouvons donc observer en utilisant une représentation graphique sous
+# forme de boîte à moustache que les coefficients des modèles obtenus sont très
+# proches de ceux de la combinaison linéaire.
+#
+# So far, so good! Nous allons mainteant introduire des **variables
+# collinéaires**. Une variable collinéaire est une variable qui sera corrélé
+# avec une autre. Nous allons analyser le type de problème engendré par ce type
+# de variables lorsque un modèle linéaire utilisant les moindres carrés sera
+# appliqué.
+#
+# Pour cela, nous allons répéter plusieurs fois les variables prédictives
+# plusieurs fois.
+
+# %%
+X = np.concatenate([X, X[:, [0, 1]], X[:, [0, 1]]], axis=1)
+
+# %% [markdown]
+#
+# Nous allons répéter l'expérience précédente et représenter graphiquement
+# les coefficients des modèles obtenus.
+
+# %%
+cv = RepeatedKFold(n_splits=5, n_repeats=100, random_state=0)
+cv_results = cross_validate(
+    modele, X, y, cv=cv, return_train_score=True, return_estimator=True
+)
+
+# %%
+nom_colonnes = [f"Colonne #{i}" for i in range(X.shape[1])]
+coef = pd.DataFrame(
+    [modele_cv.coef_ for modele_cv in cv_results["estimator"]],
+    columns=nom_colonnes,
+)
+ax = coef.plot.box(vert=False, whis=1e15)
+_ = ax.set_title("Coefficients des modèles linéaires \nobtenus par validation croisée")
+
+# %% [markdown]
+#
+# Nous pouvons remarquer que les coefficients des modèles obtenus sont
+# extrêmement élevés et complètement dissociés des valeurs originales. Ce
+# problème est lié à une imprécision des calculs numériques.
+#
+# Nous pouvons aller un peu plus loin dans les détails en rappelant l'équation
+# Normale pour résoudre notre système d'équations linéaires :
+#
+# $$
+# \beta = (X^T X)^{-1} X^T y
+# $$
+#
+# Dans cette équation, nous pouvons voir que nous devons inverser la matrice de
+# Gram $(X^T X)$. Si cette matrice n'est pas inversible, nous serions donc dans
+# l'impossibilité de calculer les coefficients du modèle. Une manière de
+# vérifier est de calculer le déterminant de cette matrice.
+
+# %%
+np.linalg.det(X.T @ X)
+
+# %% [markdown]
+#
+# Le déterminant étant nul, il n'est donc pas possible d'inverser la matrice :
+
+# %%
+try:
+    np.linalg.inv(X.T @ X)
+except np.linalg.LinAlgError as e:
+    print(e)
+
+# %% [markdown]
+#
+# En pratique, cette matrice n'utilise pas strictement la fonction inverse
+# ci-dessus ce qui explique le réultat obtenu qui est cependant incorrect.
+#
+# Afin de résoudre ce problème, nous pouvons introduire le principe de
+# régularisation où l'idée est d'ajouter à la fonction de coût un terme
+# permettant de contraindre d'une manière donnée (i.e. qui dépend du type de
+# régularisation) la valeur des coefficients.
+#
+# Nous allons tout d'abord formuler la régularisation de type L2 :
+#
+# $$
+# \mathcal{L}(\beta) = \frac{1}{N} \sum_{i=1}^N \left( y_i - f(X_i, \beta)
+# \right)^2 + \alpha \||\beta\||_2^2
+# $$
+#
+# where $\alpha$ est le paramètre controllant l'impact de la régularisation.
+#
+# En analysant la fonction de coût, nous pouvons remarquer que si le paramètre
+# $\alpha$ est nul, le terme contraignant les coefficients sera nul et donc
+# nous avons une simple régression linéaire. En revanche, si $\alpha$ est
+# élevé, nous allons contraindre les coefficients plutôt que de réduire le
+# terme correspondant à l'erreur quadratique. Donc nous obtiendrons un modèle
+# qui minimisera la valeur des coefficients.
+#
+# Ce type de modèle est appelé **Ridge regression**. Nous allons le mettre de
+# suite en oeuvre en utilisant `scikit-learn` en répétant l'expérience
+# précédente.
+
+# %%
+from sklearn.linear_model import Ridge
+
+modele = Ridge(alpha=1.0)
+cv = RepeatedKFold(n_splits=5, n_repeats=100, random_state=0)
+cv_results = cross_validate(
+    modele, X, y, cv=cv, return_train_score=True, return_estimator=True
+)
+
+# %%
+nom_colonnes = [f"Colonne #{i}" for i in range(X.shape[1])]
+coef = pd.DataFrame(
+    [modele_cv.coef_ for modele_cv in cv_results["estimator"]],
+    columns=nom_colonnes,
+)
+ax = coef.plot.box(vert=False, whis=1e15)
+_ = ax.set_title("Coefficients des modèles linéaires \nobtenus par validation croisée")
+
+
+# %% [markdown]
 #
 # ### Importance du prétraitement
 #
