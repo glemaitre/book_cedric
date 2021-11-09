@@ -357,11 +357,11 @@ print(f"Erreur de généralisation: {modele.score(X_test, y_test):.2f} grammes")
 # réaliser plusieurs essais pour obtenir une distribution des erreurs et
 # evaluer si les différences sont suffisantes.
 #
-# Ces essais répétés sont dénommés **cross-validation**. `scikit-learn` fournit
+# Ces essais répétés sont dénommés **validation croisée**. `scikit-learn` fournit
 # une fonction `cross_validate` permettant de réaliser ces essais. Il existe
-# plusieurs méthodes de cross-validation. Nous allons utiliser la méthode
+# plusieurs méthodes de validation croisée. Nous allons utiliser la méthode
 # **k-fold** qui permet de séparer un jeu de données en $k$ sous-ensembles. A
-# chaque itération de la cross-validation, un des $k$ sous-ensembles est
+# chaque itération de la validation croisée, un des $k$ sous-ensembles est
 # utilisé pour évaluer le modèle alors que les autres sous-ensembles sont
 # utilisés pour l'apprentissage.
 
@@ -383,7 +383,7 @@ cv_resultats[["train_error", "test_error"]]
 
 # %% [markdown]
 #
-# Cross-validation nous permet donc d'obtenir plusieurs estimations de nos
+# Validation croisée nous permet donc d'obtenir plusieurs estimations de nos
 # erreurs. Nous pouvons même répéter l'opération plusieurs fois pour obtenir
 # des distributions d'erreurs que nous pourrons visualiser.
 

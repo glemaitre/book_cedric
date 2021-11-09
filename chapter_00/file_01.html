@@ -860,6 +860,286 @@ de confiance autour de la médiane.</p>
 </div>
 <div class="section" id="principe-de-la-regularisation">
 <h3>Principe de la régularisation<a class="headerlink" href="#principe-de-la-regularisation" title="Permalink to this headline">¶</a></h3>
+<p>Dans la section précédente, nous avons abordé le principe de la fonction de
+coût. Nous avons étudié et analysé différentes types d’erreur. En revanche,
+nous n’avons pas abordé les différentes formes de régularisation.</p>
+<p>Dans cette section, nous allons dans un premier temps motivé l’utilité de la
+régularisation. Dans un deuxième temps, nous allons présenter les différents
+types de régularisation.</p>
+<p>Pour motiver l’utilité de la régularisation, nous allons générer un jeu de
+données simple que nous allons pouvoir facilement interpréter. Nous allons
+générer une cible à partir d’une combination linéaire de deux variables. Nous
+allons également ajouter trois variables qui ne seront pas prédictives (i.e.
+aucun lien n’existera entre la cible <code class="docutils literal notranslate"><span class="pre">y</span></code> et ces variables). Pour rendre le
+problème plus réaliste, nous allons ajouter un bruit Gaussien à la cible.</p>
+<p>La fonction <code class="docutils literal notranslate"><span class="pre">make_regression</span></code> dans <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code> nous permet de générer un
+tel jeu de données.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_regression</span>
+
+<span class="n">n_features</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">true_coef</span> <span class="o">=</span> <span class="n">make_regression</span><span class="p">(</span>
+    <span class="n">n_samples</span><span class="o">=</span><span class="mi">1_000</span><span class="p">,</span>
+    <span class="n">n_features</span><span class="o">=</span><span class="n">n_features</span><span class="p">,</span>
+    <span class="n">n_informative</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">coef</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">noise</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>En plus des données <code class="docutils literal notranslate"><span class="pre">X</span></code> et <code class="docutils literal notranslate"><span class="pre">y</span></code>, cette fonction nous fournit également les
+coefficients de la combinaison linéaire. Nous pouvons visualiser ces
+coefficients.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nom_colonnes</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;Colonne #</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_features</span><span class="p">)]</span>
+<span class="n">true_coef</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">true_coef</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">nom_colonnes</span><span class="p">)</span>
+<span class="n">true_coef</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">barh</span><span class="p">()</span>
+<span class="n">true_coef</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Colonne #0    44.145196
+Colonne #1    63.006149
+Colonne #2     0.000000
+Colonne #3     0.000000
+Colonne #4     0.000000
+Colonne #5     0.000000
+dtype: float64
+</pre></div>
+</div>
+<img alt="../_images/file_01_47_1.png" src="../_images/file_01_47_1.png" />
+</div>
+</div>
+<p>Nous pouvons également visualiser les liens marginales entre la cible <code class="docutils literal notranslate"><span class="pre">y</span></code> et
+chacune des variables composant notre jeu de données <code class="docutils literal notranslate"><span class="pre">X</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">donnees</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">nom_colonnes</span><span class="p">)</span>
+<span class="n">donnees</span><span class="p">[</span><span class="s2">&quot;Cible&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span>
+<span class="n">donnees</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">melt</span><span class="p">(</span><span class="n">id_vars</span><span class="o">=</span><span class="s2">&quot;Cible&quot;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s2">&quot;Variable&quot;</span><span class="p">,</span> <span class="n">value_name</span><span class="o">=</span><span class="s2">&quot;Valeur&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">lmplot</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;Valeur&quot;</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Cible&quot;</span><span class="p">,</span>
+    <span class="n">col</span><span class="o">=</span><span class="s2">&quot;Variable&quot;</span><span class="p">,</span>
+    <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;Variable&quot;</span><span class="p">,</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">donnees</span><span class="p">,</span>
+    <span class="n">col_wrap</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">ci</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">scatter_kws</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span> <span class="s2">&quot;alpha&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;seaborn.axisgrid.FacetGrid at 0x7f1eb03cd4d0&gt;
+</pre></div>
+</div>
+<img alt="../_images/file_01_50_1.png" src="../_images/file_01_50_1.png" />
+</div>
+</div>
+<p>Sur ce graphique, nous pouvons donc confirmer qu’il existe une lien entre les
+deux premières variables et notre cible alors qu’il n’existe aucun lien avec
+les autres variables.</p>
+<p>Maintenant, que nous avons quelques intuitions concernant notre jeu de
+données, nous allons créer un modèle linéaire pour estimer les coefficients
+de la combinaison linéaire. Mais tout d’abord, nous allons évaluer un tel
+modèle via une validation croisée. Nous utiliserons le score <span class="math notranslate nohighlight">\(R^2\)</span> pour
+evaluer notre modèle (ce score est une mesure de la qualité du modèle où le
+maximum score est 1).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">cross_validate</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">RepeatedKFold</span>
+
+<span class="n">modele</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
+<span class="n">cv</span> <span class="o">=</span> <span class="n">RepeatedKFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_repeats</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">cv_results</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span>
+    <span class="n">modele</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">cv</span><span class="p">,</span> <span class="n">return_train_score</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_estimator</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+<span class="n">cv_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv_results</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">cv_results</span><span class="p">[[</span><span class="s2">&quot;train_score&quot;</span><span class="p">,</span> <span class="s2">&quot;test_score&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/file_01_53_0.png" src="../_images/file_01_53_0.png" />
+</div>
+</div>
+<p>Nous pouvons donc constater que notre modèle nous permet d’obtenir de bonnes
+prédictions. Nous pouvons inspecter les coefficients des différents modèles
+obtenus pendant la validation croisée.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coef</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">modele_cv</span><span class="o">.</span><span class="n">coef_</span> <span class="k">for</span> <span class="n">modele_cv</span> <span class="ow">in</span> <span class="n">cv_results</span><span class="p">[</span><span class="s2">&quot;estimator&quot;</span><span class="p">]],</span>
+    <span class="n">columns</span><span class="o">=</span><span class="n">nom_colonnes</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">coef</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="n">vert</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">whis</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Coefficients des modèles linéaires </span><span class="se">\n</span><span class="s2">obtenus par validation croisée&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/file_01_55_0.png" src="../_images/file_01_55_0.png" />
+</div>
+</div>
+<p>Nous pouvons donc observer en utilisant une représentation graphique sous
+forme de boîte à moustache que les coefficients des modèles obtenus sont très
+proches de ceux de la combinaison linéaire.</p>
+<p>So far, so good! Nous allons mainteant introduire des <strong>variables
+collinéaires</strong>. Une variable collinéaire est une variable qui sera corrélé
+avec une autre. Nous allons analyser le type de problème engendré par ce type
+de variables lorsque un modèle linéaire utilisant les moindres carrés sera
+appliqué.</p>
+<p>Pour cela, nous allons répéter plusieurs fois les variables prédictives
+plusieurs fois.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="n">X</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Nous allons répéter l’expérience précédente et représenter graphiquement
+les coefficients des modèles obtenus.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cv</span> <span class="o">=</span> <span class="n">RepeatedKFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_repeats</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">cv_results</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span>
+    <span class="n">modele</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">cv</span><span class="p">,</span> <span class="n">return_train_score</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_estimator</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nom_colonnes</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;Colonne #</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
+<span class="n">coef</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">modele_cv</span><span class="o">.</span><span class="n">coef_</span> <span class="k">for</span> <span class="n">modele_cv</span> <span class="ow">in</span> <span class="n">cv_results</span><span class="p">[</span><span class="s2">&quot;estimator&quot;</span><span class="p">]],</span>
+    <span class="n">columns</span><span class="o">=</span><span class="n">nom_colonnes</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">coef</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="n">vert</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">whis</span><span class="o">=</span><span class="mf">1e15</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Coefficients des modèles linéaires </span><span class="se">\n</span><span class="s2">obtenus par validation croisée&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/file_01_60_0.png" src="../_images/file_01_60_0.png" />
+</div>
+</div>
+<p>Nous pouvons remarquer que les coefficients des modèles obtenus sont
+extrêmement élevés et complètement dissociés des valeurs originales. Ce
+problème est lié à une imprécision des calculs numériques.</p>
+<p>Nous pouvons aller un peu plus loin dans les détails en rappelant l’équation
+Normale pour résoudre notre système d’équations linéaires :</p>
+<div class="math notranslate nohighlight">
+\[
+\beta = (X^T X)^{-1} X^T y
+\]</div>
+<p>Dans cette équation, nous pouvons voir que nous devons inverser la matrice de
+Gram <span class="math notranslate nohighlight">\((X^T X)\)</span>. Si cette matrice n’est pas inversible, nous serions donc dans
+l’impossibilité de calculer les coefficients du modèle. Une manière de
+vérifier est de calculer le déterminant de cette matrice.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0
+</pre></div>
+</div>
+</div>
+</div>
+<p>Le déterminant étant nul, il n’est donc pas possible d’inverser la matrice :</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">X</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">LinAlgError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Singular matrix
+</pre></div>
+</div>
+</div>
+</div>
+<p>En pratique, cette matrice n’utilise pas strictement la fonction inverse
+ci-dessus ce qui explique le réultat obtenu qui est cependant incorrect.</p>
+<p>Afin de résoudre ce problème, nous pouvons introduire le principe de
+régularisation où l’idée est d’ajouter à la fonction de coût un terme
+permettant de contraindre d’une manière donnée (i.e. qui dépend du type de
+régularisation) la valeur des coefficients.</p>
+<p>Nous allons tout d’abord formuler la régularisation de type L2 :</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L}(\beta) = \frac{1}{N} \sum_{i=1}^N \left( y_i - f(X_i, \beta)
+\right)^2 + \alpha \||\beta\||_2^2
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\alpha\)</span> est le paramètre controllant l’impact de la régularisation.</p>
+<p>En analysant la fonction de coût, nous pouvons remarquer que si le paramètre
+<span class="math notranslate nohighlight">\(\alpha\)</span> est nul, le terme contraignant les coefficients sera nul et donc
+nous avons une simple régression linéaire. En revanche, si <span class="math notranslate nohighlight">\(\alpha\)</span> est
+élevé, nous allons contraindre les coefficients plutôt que de réduire le
+terme correspondant à l’erreur quadratique. Donc nous obtiendrons un modèle
+qui minimisera la valeur des coefficients.</p>
+<p>Ce type de modèle est appelé <strong>Ridge regression</strong>. Nous allons le mettre de
+suite en oeuvre en utilisant <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code> en répétant l’expérience
+précédente.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">Ridge</span>
+
+<span class="n">modele</span> <span class="o">=</span> <span class="n">Ridge</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="n">cv</span> <span class="o">=</span> <span class="n">RepeatedKFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_repeats</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">cv_results</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span>
+    <span class="n">modele</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">cv</span><span class="p">,</span> <span class="n">return_train_score</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_estimator</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nom_colonnes</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;Colonne #</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
+<span class="n">coef</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">modele_cv</span><span class="o">.</span><span class="n">coef_</span> <span class="k">for</span> <span class="n">modele_cv</span> <span class="ow">in</span> <span class="n">cv_results</span><span class="p">[</span><span class="s2">&quot;estimator&quot;</span><span class="p">]],</span>
+    <span class="n">columns</span><span class="o">=</span><span class="n">nom_colonnes</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">coef</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="n">vert</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">whis</span><span class="o">=</span><span class="mf">1e15</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Coefficients des modèles linéaires </span><span class="se">\n</span><span class="s2">obtenus par validation croisée&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/file_01_67_0.png" src="../_images/file_01_67_0.png" />
+</div>
+</div>
 </div>
 <div class="section" id="importance-du-pretraitement">
 <h3>Importance du prétraitement<a class="headerlink" href="#importance-du-pretraitement" title="Permalink to this headline">¶</a></h3>

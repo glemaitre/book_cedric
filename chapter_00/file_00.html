@@ -771,11 +771,11 @@ sous-apprentissage ou en sur-apprentissage ou généralise. En effet, puisque
 la procédure de séparation des jeux de données est aléatoire, nous devrions
 réaliser plusieurs essais pour obtenir une distribution des erreurs et
 evaluer si les différences sont suffisantes.</p>
-<p>Ces essais répétés sont dénommés <strong>cross-validation</strong>. <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code> fournit
+<p>Ces essais répétés sont dénommés <strong>validation croisée</strong>. <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code> fournit
 une fonction <code class="docutils literal notranslate"><span class="pre">cross_validate</span></code> permettant de réaliser ces essais. Il existe
-plusieurs méthodes de cross-validation. Nous allons utiliser la méthode
+plusieurs méthodes de validation croisée. Nous allons utiliser la méthode
 <strong>k-fold</strong> qui permet de séparer un jeu de données en <span class="math notranslate nohighlight">\(k\)</span> sous-ensembles. A
-chaque itération de la cross-validation, un des <span class="math notranslate nohighlight">\(k\)</span> sous-ensembles est
+chaque itération de la validation croisée, un des <span class="math notranslate nohighlight">\(k\)</span> sous-ensembles est
 utilisé pour évaluer le modèle alors que les autres sous-ensembles sont
 utilisés pour l’apprentissage.</p>
 <div class="cell docutils container">
@@ -854,7 +854,7 @@ utilisés pour l’apprentissage.</p>
 </table>
 </div></div></div>
 </div>
-<p>Cross-validation nous permet donc d’obtenir plusieurs estimations de nos
+<p>Validation croisée nous permet donc d’obtenir plusieurs estimations de nos
 erreurs. Nous pouvons même répéter l’opération plusieurs fois pour obtenir
 des distributions d’erreurs que nous pourrons visualiser.</p>
 <div class="cell docutils container">
