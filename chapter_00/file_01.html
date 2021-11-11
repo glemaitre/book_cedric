@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Famille des modèles paramétriques &#8212; Cédric&#39;s book</title>
     
-  <link href="../_static/css/theme.css" rel="stylesheet" />
-  <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+  <link href="../_static/css/theme.css" rel="stylesheet">
+  <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
 
     
   <link rel="stylesheet"
@@ -31,7 +31,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
     
-  <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
+  <link rel="preload" as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js">
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -42,7 +42,7 @@
     <script src="../_static/copybutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
     <script>
@@ -57,7 +57,10 @@
     <link rel="next" title="Famille des modèles non-paramétriques" href="file_02.html" />
     <link rel="prev" title="Introduction" href="file_00.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="en" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
     
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
@@ -242,6 +245,11 @@
      Importance du prétraitement
     </a>
    </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#de-la-regression-a-la-classification">
+     De la régression à la classification
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -332,7 +340,7 @@ pouvons l’illustrer sur le même jeu de données que nous avons utilisé dans
 le chapitre précédent. Tout d’abord, nous chargeons les données.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="n">donnees</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;../datasets/penguins_regression.csv&quot;</span><span class="p">)</span>
 <span class="n">X</span> <span class="o">=</span> <span class="n">donnees</span><span class="p">[[</span><span class="s2">&quot;Longueur Aileron (mm)&quot;</span><span class="p">]]</span>
@@ -344,16 +352,13 @@ le chapitre précédent. Tout d’abord, nous chargeons les données.</p>
 <p>Et nous pouvons visualaliser la relation entre <span class="math notranslate nohighlight">\(X\)</span> et <span class="math notranslate nohighlight">\(y\)</span> :</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 
 <span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;poster&quot;</span><span class="p">)</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Masse corporelle en fonction de</span><span class="se">\n</span><span class="s2">la longueur d&#39;aileron&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/file_01_3_0.png" src="../_images/file_01_3_0.png" />
 </div>
 </div>
 <p>Il existe une infinité de modèle linéaire qui pourraient être utilisés pour
@@ -362,7 +367,7 @@ Python générique qui permet de prédire la masse corporelle de notre pinguoin
 en fonction de la longueur d’aileron.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">modele_lineaire</span><span class="p">(</span><span class="n">longueur_aileron</span><span class="p">,</span> <span class="n">parametres</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">modele_lineaire</span><span class="p">(</span><span class="n">longueur_aileron</span><span class="p">,</span> <span class="n">parametres</span><span class="p">):</span>
     <span class="c1"># notre modèle est défini par: y = beta_0 + x_1 * beta_1</span>
     <span class="k">return</span> <span class="n">parametres</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">parametres</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">longueur_aileron</span>
 </pre></div>
@@ -373,7 +378,7 @@ en fonction de la longueur d’aileron.</p>
 modèles avec différents paramètres.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">predictions_modele_1</span> <span class="o">=</span> <span class="n">modele_lineaire</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">3_000</span><span class="p">,</span> <span class="mi">30</span><span class="p">])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">predictions_modele_1</span> <span class="o">=</span> <span class="n">modele_lineaire</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">3_000</span><span class="p">,</span> <span class="mi">30</span><span class="p">])</span>
 <span class="n">predictions_modele_2</span> <span class="o">=</span> <span class="n">modele_lineaire</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">6_000</span><span class="p">,</span> <span class="mi">50</span><span class="p">])</span>
 <span class="n">predictions_modele_3</span> <span class="o">=</span> <span class="n">modele_lineaire</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">2_000</span><span class="p">,</span> <span class="mi">30</span><span class="p">])</span>
 </pre></div>
@@ -382,7 +387,7 @@ modèles avec différents paramètres.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
     <span class="n">x</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span>
 <span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">predictions_modele_1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Modèle #1&quot;</span><span class="p">)</span>
@@ -392,9 +397,6 @@ modèles avec différents paramètres.</p>
 <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Quel modèle est le meilleur?&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/file_01_8_0.png" src="../_images/file_01_8_0.png" />
 </div>
 </div>
 <p>A partir de ce graphique, la question que nous pourrions avoir est de savoir
@@ -407,18 +409,11 @@ méthodes qui calculaient une erreur. Nous pouvons ici calculer une erreur
 donnée : l’erreur quadratique moyenne.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">mean_squared_error</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">mean_squared_error</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Erreur du modèle #1: </span><span class="si">{</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">predictions_modele_1</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Erreur du modèle #2: </span><span class="si">{</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">predictions_modele_2</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Erreur du modèle #3: </span><span class="si">{</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">predictions_modele_3</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Erreur du modèle #1: 1609923.83
-Erreur du modèle #2: 178899.85
-Erreur du modèle #3: 261327.34
 </pre></div>
 </div>
 </div>
@@ -469,15 +464,10 @@ permet de minimser cette fonction de coût. Nous allons la mettre en pratique
 dès maintenant.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
 
 <span class="n">modele</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
 <span class="n">modele</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>LinearRegression()
 </pre></div>
 </div>
 </div>
@@ -486,14 +476,14 @@ dès maintenant.</p>
 observer visuellement quels sont les prédictions produites par ce modèle.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">predictions</span> <span class="o">=</span> <span class="n">modele</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">predictions</span> <span class="o">=</span> <span class="n">modele</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
     <span class="n">x</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span>
 <span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Regression linéaire&quot;</span><span class="p">)</span>
@@ -502,33 +492,20 @@ observer visuellement quels sont les prédictions produites par ce modèle.</p>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="../_images/file_01_15_0.png" src="../_images/file_01_15_0.png" />
-</div>
 </div>
 <p>Ce modèle semble donc bien minimiser la fonction de coût et est
 qualititivement correct. Nous pouvons donc maintenant nous pencher sur notre
 modèle et obtenir la valeurs des paramètres.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">modele</span><span class="o">.</span><span class="n">coef_</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([49.68556641])
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">modele</span><span class="o">.</span><span class="n">coef_</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">modele</span><span class="o">.</span><span class="n">intercept_</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-5780.831358077066
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">modele</span><span class="o">.</span><span class="n">intercept_</span>
 </pre></div>
 </div>
 </div>
@@ -567,7 +544,7 @@ pinguoin qui aura un aileron de longueur de 230 mm et une masse corporelle de
 est manquant.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">donnees</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">donnees</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
     <span class="p">{</span><span class="s2">&quot;Longueur Aileron (mm)&quot;</span><span class="p">:</span> <span class="mi">230</span><span class="p">,</span> <span class="s2">&quot;Masse Corporelle (g)&quot;</span><span class="p">:</span> <span class="mi">300</span><span class="p">},</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">)</span>
 <span class="n">donnees</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
@@ -579,15 +556,12 @@ est manquant.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
     <span class="n">x</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span>
 <span class="p">)</span>
 <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Nos données avec une</span><span class="se">\n</span><span class="s2">erreur de saisie&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/file_01_21_0.png" src="../_images/file_01_21_0.png" />
 </div>
 </div>
 <p>Nous pouvons observer que nous avons un nouveau échantillon dans le cadrant
@@ -598,7 +572,7 @@ assignant des poids à chaque échantillon : tous les échantillons auront un
 poids de 1, sauf le nouvel échantillon qui aura un poids de 10.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="n">poids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
 <span class="n">poids</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span>
@@ -608,7 +582,7 @@ poids de 1, sauf le nouvel échantillon qui aura un poids de 10.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">modele</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">modele</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
 <span class="n">predictions_err_quadratique</span> <span class="o">=</span> <span class="n">modele</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="n">poids</span><span class="p">)</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -616,7 +590,7 @@ poids de 1, sauf le nouvel échantillon qui aura un poids de 10.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
     <span class="n">x</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span>
 <span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">predictions_err_quadratique</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Regression linéaire&quot;</span><span class="p">)</span>
@@ -625,9 +599,6 @@ poids de 1, sauf le nouvel échantillon qui aura un poids de 10.</p>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="../_images/file_01_25_0.png" src="../_images/file_01_25_0.png" />
-</div>
 </div>
 <p>Nous pouvons donc observer que le faite d’avoir des erreurs de saisie à une
 influence non négligeable sur la qualité de notre modèle. Ceci peut-être
@@ -635,7 +606,7 @@ expliqué par le type de fonction de coût que nous utilisons. Il sera plus
 facile d’obtenir une intuition en représentant graphiquement cette fonction.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">erreur_quadratique</span><span class="p">(</span><span class="n">cible</span><span class="p">,</span> <span class="n">prediction</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">erreur_quadratique</span><span class="p">(</span><span class="n">cible</span><span class="p">,</span> <span class="n">prediction</span><span class="p">):</span>
     <span class="n">cout</span> <span class="o">=</span> <span class="p">(</span><span class="n">cible</span> <span class="o">-</span> <span class="n">prediction</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
     <span class="k">return</span> <span class="n">cout</span>
 </pre></div>
@@ -644,7 +615,7 @@ facile d’obtenir une intuition en représentant graphiquement cette fonction.<
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
 <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">=</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span>
 <span class="n">xx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
@@ -653,9 +624,6 @@ facile d’obtenir une intuition en représentant graphiquement cette fonction.<
 <span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/file_01_28_0.png" src="../_images/file_01_28_0.png" />
 </div>
 </div>
 <p>Nous pouvons donc observer que le faite d’élever au carré l’erreur pénalise
@@ -674,7 +642,7 @@ peut-être formulée comme suit :</p>
 avec la représentation de la fonction d’erreur quadratique.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">erreur_absolue</span><span class="p">(</span><span class="n">cible</span><span class="p">,</span> <span class="n">prediction</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">erreur_absolue</span><span class="p">(</span><span class="n">cible</span><span class="p">,</span> <span class="n">prediction</span><span class="p">):</span>
     <span class="n">cout</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">cible</span> <span class="o">-</span> <span class="n">prediction</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">cout</span>
 </pre></div>
@@ -683,15 +651,12 @@ avec la représentation de la fonction d’erreur quadratique.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">erreur_quadratique</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">xx</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Erreur quadratique&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">erreur_quadratique</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">xx</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Erreur quadratique&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">erreur_absolue</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">xx</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Erreur absolue&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Comparaison des fonctions de coût&quot;</span><span class="p">)</span>
 <span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/file_01_31_0.png" src="../_images/file_01_31_0.png" />
 </div>
 </div>
 <p>On peut donc observer que l’erreur absolue pénalisera les échantillons avec
@@ -716,7 +681,7 @@ y_i - f(X_i, \beta) \right| &lt; \epsilon \\
 \end{split}\]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fonction_huber</span><span class="p">(</span><span class="n">cible</span><span class="p">,</span> <span class="n">prediction</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">1.35</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fonction_huber</span><span class="p">(</span><span class="n">cible</span><span class="p">,</span> <span class="n">prediction</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">1.35</span><span class="p">):</span>
     <span class="n">cout_absolue</span> <span class="o">=</span> <span class="n">erreur_absolue</span><span class="p">(</span><span class="n">cible</span><span class="p">,</span> <span class="n">prediction</span><span class="p">)</span>
     <span class="n">cout_quadratique</span> <span class="o">=</span> <span class="n">erreur_quadratique</span><span class="p">(</span><span class="n">cible</span><span class="p">,</span> <span class="n">prediction</span><span class="p">)</span>
 
@@ -734,7 +699,7 @@ y_i - f(X_i, \beta) \right| &lt; \epsilon \\
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">erreur_quadratique</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">xx</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Erreur quadratique&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">erreur_quadratique</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">xx</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Erreur quadratique&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">erreur_absolue</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">xx</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Erreur absolue&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
     <span class="n">xx</span><span class="p">,</span> <span class="n">fonction_huber</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">xx</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Fonction de Huber&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span>
@@ -744,9 +709,6 @@ y_i - f(X_i, \beta) \right| &lt; \epsilon \\
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="../_images/file_01_34_0.png" src="../_images/file_01_34_0.png" />
-</div>
 </div>
 <p>Nous pouvons donc observer que la fonction de Huber a les avantages des deux
 fonctions de coût précédentes. <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code> propose une classe appelée
@@ -755,7 +717,7 @@ allons donc utiliser ce modèle sur notre jeu de données et observer la
 différence sur les prédictions.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">HuberRegressor</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">HuberRegressor</span>
 
 <span class="n">modele</span> <span class="o">=</span> <span class="n">HuberRegressor</span><span class="p">()</span>
 <span class="n">predictions_err_huber</span> <span class="o">=</span> <span class="n">modele</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="n">poids</span><span class="p">)</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
@@ -765,7 +727,7 @@ différence sur les prédictions.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
     <span class="n">x</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span>
 <span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">predictions_err_quadratique</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Quadratique&quot;</span><span class="p">)</span>
@@ -775,9 +737,6 @@ différence sur les prédictions.</p>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="../_images/file_01_37_0.png" src="../_images/file_01_37_0.png" />
-</div>
 </div>
 <p>Nous pouvons donc constater que le modèle linéaire minimisant la fonction de
 Huber permet d’obtenir un meilleur modèle que celui minimisant la fonction
@@ -785,7 +744,7 @@ de coût quadratique.</p>
 <p>Pour confirmer de manière quantitative, nous pourrions calculer des erreurs.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">mean_absolute_error</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">mean_absolute_error</span>
 
 <span class="nb">print</span><span class="p">(</span>
     <span class="s2">&quot;Modèle linéaire quadratique:</span><span class="se">\n</span><span class="s2">&quot;</span>
@@ -804,16 +763,6 @@ de coût quadratique.</p>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Modèle linéaire quadratique:
-  Erreur quadratique moyenne : 313313.17
-  Erreur absolue moyenne : 412.61
-Modèle linéaire Huber:
-  Erreur quadratique moyenne : 236451.75
-  Erreur absolue moyenne : 328.44
-</pre></div>
-</div>
-</div>
 </div>
 <p>Nous pouvons confirmer que le modèle linéaire quadratique a une erreur
 quadratique moins élevèe que le modèle linéaire Huber. En revanche, nous
@@ -828,7 +777,7 @@ médiane de nos données. <code class="docutils literal notranslate"><span class
 notemment la médiane.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">QuantileRegressor</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">QuantileRegressor</span>
 
 <span class="n">modele</span> <span class="o">=</span> <span class="n">QuantileRegressor</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">solver</span><span class="o">=</span><span class="s2">&quot;highs&quot;</span><span class="p">)</span>
 <span class="n">predictions_err_absolue</span> <span class="o">=</span> <span class="n">modele</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="n">poids</span><span class="p">)</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
@@ -838,7 +787,7 @@ notemment la médiane.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
     <span class="n">x</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span>
 <span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">predictions_err_quadratique</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Quadratique&quot;</span><span class="p">)</span>
@@ -848,9 +797,6 @@ notemment la médiane.</p>
 <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Comparaison modèle linéaire&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/file_01_42_0.png" src="../_images/file_01_42_0.png" />
 </div>
 </div>
 <p>Nous pouvons donc constater que l’estimateur basé sur la fonction de coût de
@@ -876,7 +822,7 @@ problème plus réaliste, nous allons ajouter un bruit Gaussien à la cible.</p>
 tel jeu de données.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_regression</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_regression</span>
 
 <span class="n">n_features</span> <span class="o">=</span> <span class="mi">6</span>
 <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">true_coef</span> <span class="o">=</span> <span class="n">make_regression</span><span class="p">(</span>
@@ -897,31 +843,19 @@ coefficients de la combinaison linéaire. Nous pouvons visualiser ces
 coefficients.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nom_colonnes</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;Colonne #</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_features</span><span class="p">)]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nom_colonnes</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;Colonne #</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_features</span><span class="p">)]</span>
 <span class="n">true_coef</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">true_coef</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">nom_colonnes</span><span class="p">)</span>
 <span class="n">true_coef</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">barh</span><span class="p">()</span>
 <span class="n">true_coef</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Colonne #0    44.145196
-Colonne #1    63.006149
-Colonne #2     0.000000
-Colonne #3     0.000000
-Colonne #4     0.000000
-Colonne #5     0.000000
-dtype: float64
-</pre></div>
-</div>
-<img alt="../_images/file_01_47_1.png" src="../_images/file_01_47_1.png" />
-</div>
 </div>
 <p>Nous pouvons également visualiser les liens marginales entre la cible <code class="docutils literal notranslate"><span class="pre">y</span></code> et
 chacune des variables composant notre jeu de données <code class="docutils literal notranslate"><span class="pre">X</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">donnees</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">nom_colonnes</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">donnees</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">nom_colonnes</span><span class="p">)</span>
 <span class="n">donnees</span><span class="p">[</span><span class="s2">&quot;Cible&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span>
 <span class="n">donnees</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">melt</span><span class="p">(</span><span class="n">id_vars</span><span class="o">=</span><span class="s2">&quot;Cible&quot;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s2">&quot;Variable&quot;</span><span class="p">,</span> <span class="n">value_name</span><span class="o">=</span><span class="s2">&quot;Valeur&quot;</span><span class="p">)</span>
 </pre></div>
@@ -930,7 +864,7 @@ chacune des variables composant notre jeu de données <code class="docutils lite
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">lmplot</span><span class="p">(</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">lmplot</span><span class="p">(</span>
     <span class="n">x</span><span class="o">=</span><span class="s2">&quot;Valeur&quot;</span><span class="p">,</span>
     <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Cible&quot;</span><span class="p">,</span>
     <span class="n">col</span><span class="o">=</span><span class="s2">&quot;Variable&quot;</span><span class="p">,</span>
@@ -942,12 +876,6 @@ chacune des variables composant notre jeu de données <code class="docutils lite
 <span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;seaborn.axisgrid.FacetGrid at 0x7f1eb03cd4d0&gt;
-</pre></div>
-</div>
-<img alt="../_images/file_01_50_1.png" src="../_images/file_01_50_1.png" />
 </div>
 </div>
 <p>Sur ce graphique, nous pouvons donc confirmer qu’il existe une lien entre les
@@ -961,7 +889,7 @@ evaluer notre modèle (ce score est une mesure de la qualité du modèle où le
 maximum score est 1).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">cross_validate</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">cross_validate</span>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">RepeatedKFold</span>
 
 <span class="n">modele</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
@@ -976,13 +904,10 @@ maximum score est 1).</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">cv_results</span><span class="p">[[</span><span class="s2">&quot;train_score&quot;</span><span class="p">,</span> <span class="s2">&quot;test_score&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">cv_results</span><span class="p">[[</span><span class="s2">&quot;train_score&quot;</span><span class="p">,</span> <span class="s2">&quot;test_score&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/file_01_53_0.png" src="../_images/file_01_53_0.png" />
 </div>
 </div>
 <p>Nous pouvons donc constater que notre modèle nous permet d’obtenir de bonnes
@@ -990,7 +915,7 @@ prédictions. Nous pouvons inspecter les coefficients des différents modèles
 obtenus pendant la validation croisée.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coef</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">coef</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
     <span class="p">[</span><span class="n">modele_cv</span><span class="o">.</span><span class="n">coef_</span> <span class="k">for</span> <span class="n">modele_cv</span> <span class="ow">in</span> <span class="n">cv_results</span><span class="p">[</span><span class="s2">&quot;estimator&quot;</span><span class="p">]],</span>
     <span class="n">columns</span><span class="o">=</span><span class="n">nom_colonnes</span><span class="p">,</span>
 <span class="p">)</span>
@@ -998,9 +923,6 @@ obtenus pendant la validation croisée.</p>
 <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Coefficients des modèles linéaires </span><span class="se">\n</span><span class="s2">obtenus par validation croisée&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/file_01_55_0.png" src="../_images/file_01_55_0.png" />
 </div>
 </div>
 <p>Nous pouvons donc observer en utilisant une représentation graphique sous
@@ -1015,7 +937,7 @@ appliqué.</p>
 plusieurs fois.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="n">X</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="n">X</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1024,7 +946,7 @@ plusieurs fois.</p>
 les coefficients des modèles obtenus.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cv</span> <span class="o">=</span> <span class="n">RepeatedKFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_repeats</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cv</span> <span class="o">=</span> <span class="n">RepeatedKFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_repeats</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">cv_results</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span>
     <span class="n">modele</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">cv</span><span class="p">,</span> <span class="n">return_train_score</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_estimator</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">)</span>
@@ -1034,7 +956,7 @@ les coefficients des modèles obtenus.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nom_colonnes</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;Colonne #</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nom_colonnes</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;Colonne #</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
 <span class="n">coef</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
     <span class="p">[</span><span class="n">modele_cv</span><span class="o">.</span><span class="n">coef_</span> <span class="k">for</span> <span class="n">modele_cv</span> <span class="ow">in</span> <span class="n">cv_results</span><span class="p">[</span><span class="s2">&quot;estimator&quot;</span><span class="p">]],</span>
     <span class="n">columns</span><span class="o">=</span><span class="n">nom_colonnes</span><span class="p">,</span>
@@ -1043,9 +965,6 @@ les coefficients des modèles obtenus.</p>
 <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Coefficients des modèles linéaires </span><span class="se">\n</span><span class="s2">obtenus par validation croisée&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/file_01_60_0.png" src="../_images/file_01_60_0.png" />
 </div>
 </div>
 <p>Nous pouvons remarquer que les coefficients des modèles obtenus sont
@@ -1063,12 +982,7 @@ l’impossibilité de calculer les coefficients du modèle. Une manière de
 vérifier est de calculer le déterminant de cette matrice.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">X</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">X</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1076,15 +990,10 @@ vérifier est de calculer le déterminant de cette matrice.</p>
 <p>Le déterminant étant nul, il n’est donc pas possible d’inverser la matrice :</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
     <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">X</span><span class="p">)</span>
 <span class="k">except</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">LinAlgError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Singular matrix
 </pre></div>
 </div>
 </div>
@@ -1099,7 +1008,7 @@ régularisation) la valeur des coefficients.</p>
 <div class="math notranslate nohighlight">
 \[
 \mathcal{L}(\beta) = \frac{1}{N} \sum_{i=1}^N \left( y_i - f(X_i, \beta)
-\right)^2 + \alpha \||\beta\||_2^2
+\right)^2 + \alpha \|\beta\|_2^2
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\alpha\)</span> est le paramètre controllant l’impact de la régularisation.</p>
 <p>En analysant la fonction de coût, nous pouvons remarquer que si le paramètre
@@ -1113,7 +1022,7 @@ suite en oeuvre en utilisant <code class="docutils literal notranslate"><span cl
 précédente.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">Ridge</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">Ridge</span>
 
 <span class="n">modele</span> <span class="o">=</span> <span class="n">Ridge</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
 <span class="n">cv</span> <span class="o">=</span> <span class="n">RepeatedKFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_repeats</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -1126,23 +1035,196 @@ précédente.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nom_colonnes</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;Colonne #</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nom_colonnes</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;Colonne #</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
 <span class="n">coef</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
     <span class="p">[</span><span class="n">modele_cv</span><span class="o">.</span><span class="n">coef_</span> <span class="k">for</span> <span class="n">modele_cv</span> <span class="ow">in</span> <span class="n">cv_results</span><span class="p">[</span><span class="s2">&quot;estimator&quot;</span><span class="p">]],</span>
     <span class="n">columns</span><span class="o">=</span><span class="n">nom_colonnes</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">coef</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="n">vert</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">whis</span><span class="o">=</span><span class="mf">1e15</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">coef</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="n">vert</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">whis</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Coefficients des modèles linéaires </span><span class="se">\n</span><span class="s2">obtenus par validation croisée&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="../_images/file_01_67_0.png" src="../_images/file_01_67_0.png" />
+</div>
+<p>Nous pouvons remarquer que nos modèles ne souffrent pas d’instabilité
+numérique comme nous l’avons constaté lors de l’usage du modèle
+<code class="docutils literal notranslate"><span class="pre">LinearRegression</span></code>. Nous pouvons même observer la correspondance entre les
+coefficients des modèles <code class="docutils literal notranslate"><span class="pre">Ridge</span></code> et les coefficients utilisés pour générer
+les données originales. En effet, puisque que les variables prédictives
+originales sont répétées trois fois, les coefficients des modèles <code class="docutils literal notranslate"><span class="pre">Ridge</span></code>
+sont trois fois moins importantes.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">true_coef</span>
+</pre></div>
 </div>
 </div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">coef</span><span class="p">[</span><span class="n">true_coef</span><span class="o">.</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">*</span> <span class="mi">3</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Nous allons maintenant confirmer expérimentalement, l’effet du paramètre
+<span class="math notranslate nohighlight">\(\alpha\)</span> sur les coefficients des modèles <code class="docutils literal notranslate"><span class="pre">Ridge</span></code>. Nous allons utiliser
+une valeur très faible et une valeur très élevée.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+<span class="n">alphas</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1e-14</span><span class="p">,</span> <span class="mf">1e5</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">alpha</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">alphas</span><span class="p">):</span>
+    <span class="n">modele</span> <span class="o">=</span> <span class="n">Ridge</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
+    <span class="n">cv</span> <span class="o">=</span> <span class="n">RepeatedKFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_repeats</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">cv_results</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span>
+        <span class="n">modele</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">cv</span><span class="p">,</span> <span class="n">return_train_score</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_estimator</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+
+    <span class="n">coef</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">modele_cv</span><span class="o">.</span><span class="n">coef_</span> <span class="k">for</span> <span class="n">modele_cv</span> <span class="ow">in</span> <span class="n">cv_results</span><span class="p">[</span><span class="s2">&quot;estimator&quot;</span><span class="p">]],</span>
+        <span class="n">columns</span><span class="o">=</span><span class="n">nom_colonnes</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">coef</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="n">vert</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">whis</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Coefficients for $\alpha=</span><span class="si">{}</span><span class="s2">$&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">alpha</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">hspace</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Effect of the parameter $\alpha$&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Nous pouvons donc confirmer nos premières intuitions. Plus <span class="math notranslate nohighlight">\(\alpha\)</span> augmente,
+plus les coefficients des modèles <code class="docutils literal notranslate"><span class="pre">Ridge</span></code> sont plus petits. Au contraire,
+plus <span class="math notranslate nohighlight">\(\alpha\)</span> diminue, le modèle se rapproche d’une simple régression
+linéaire, souffrant alors d’instabilité numérique.</p>
+<p>Maintenant, au lieu d’utiliser la norme L2 comme contrainte imposer sur les
+coefficients, nous pouvons utiliser une autre type de norme. Une possibilité
+est d’utiliser la norme L1 :</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L}(\beta) = \frac{1}{N} \sum_{i=1}^N \left( y_i - f(X_i, \beta)
+\right)^2 + \alpha \|\beta\|_1
+\]</div>
+<p>Ce modèle est appelé <strong>Lasso regression</strong>. Nous pouvons obtenir les mêmes
+intuitions que précédemment : lorsque <span class="math notranslate nohighlight">\(\alpha\)</span> est petit, le terme
+contraignant les coefficients est négligeable et donc nous avons une simple
+régression linéaire. Sinon, nous forcons la contraintes L1 sur les
+coefficients. La question est maintenant de comprendre quel est l’effet de
+minimizer la norme L1 sur les coefficients. Rien de tel que de répéter
+l’expérience précédente pour le modèle <code class="docutils literal notranslate"><span class="pre">Lasso</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">Lasso</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+<span class="n">alphas</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1e-14</span><span class="p">,</span> <span class="mf">1e4</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">alpha</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">alphas</span><span class="p">):</span>
+    <span class="n">modele</span> <span class="o">=</span> <span class="n">Lasso</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
+    <span class="n">cv</span> <span class="o">=</span> <span class="n">RepeatedKFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_repeats</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">cv_results</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span>
+        <span class="n">modele</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">cv</span><span class="p">,</span> <span class="n">return_train_score</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_estimator</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+
+    <span class="n">coef</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">modele_cv</span><span class="o">.</span><span class="n">coef_</span> <span class="k">for</span> <span class="n">modele_cv</span> <span class="ow">in</span> <span class="n">cv_results</span><span class="p">[</span><span class="s2">&quot;estimator&quot;</span><span class="p">]],</span>
+        <span class="n">columns</span><span class="o">=</span><span class="n">nom_colonnes</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">coef</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="n">vert</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">whis</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Coefficients for $\alpha=</span><span class="si">{}</span><span class="s2">$&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">alpha</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">hspace</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Effect of the parameter $\alpha$&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Nous pouvons constater que la minimiser la norme L1 forcera certains
+coefficients à devenir nuls. Si le paramètre <span class="math notranslate nohighlight">\(\alpha\)</span> est trop grand, les
+coefficients seront tous nul. Nous pouvons constater que le problème que nous
+essayons de résoudre <code class="docutils literal notranslate"><span class="pre">Lasso</span></code> est performant car il permet de n’utiliser
+seulement qu’une des variables prédictives et n’utilise pas les variables
+colinéaires. En renvanche, il est intéressant que le choix de cette variable
+parmi les variables colinéaires peut-être arbitraire.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">modele</span> <span class="o">=</span> <span class="n">Lasso</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">selection</span><span class="o">=</span><span class="s2">&quot;random&quot;</span><span class="p">)</span>
+<span class="n">cv</span> <span class="o">=</span> <span class="n">RepeatedKFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_repeats</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">cv_results</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span>
+    <span class="n">modele</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">cv</span><span class="p">,</span> <span class="n">return_train_score</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_estimator</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="n">coef</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">modele_cv</span><span class="o">.</span><span class="n">coef_</span> <span class="k">for</span> <span class="n">modele_cv</span> <span class="ow">in</span> <span class="n">cv_results</span><span class="p">[</span><span class="s2">&quot;estimator&quot;</span><span class="p">]],</span>
+    <span class="n">columns</span><span class="o">=</span><span class="n">nom_colonnes</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">coef</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="n">vert</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">whis</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Effet du paramètre selection&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Dans ce graphique, nous pouvons observer que la variation des valeurs des
+coefficients est réellement importante. Cela signifie que par exemple, la
+colonne 0, 6 ou 8 peuvent être sélectionnées arbitrairement. Pour une
+itération de validation croisée donnée, si la colonne 0 a été selectionnée,
+alors <code class="docutils literal notranslate"><span class="pre">Lasso</span></code> ne sélectionnera pas la colonne 6 ou 8. Et ceci peut changer
+d’itération à l’itération suivante. Utiliser le paramètre
+<code class="docutils literal notranslate"><span class="pre">selection=&quot;cyclic&quot;</span></code> propose une sélection qui ne variera pas d’itération à
+l’itération suivante.</p>
+<p>Le dernier type de régularization que nous allons aborder est une combinaison
+entre <code class="docutils literal notranslate"><span class="pre">Ridge</span></code> et <code class="docutils literal notranslate"><span class="pre">Lasso</span></code>. La fonction de coût est alors définit comme suit :</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L}(\beta) = \frac{1}{N} \sum_{i=1}^N \left( y_i - f(X_i, \beta)
+\right)^2 + \alpha_1 \|\beta\|_1 + \alpha_2 \|\beta\|_2^2
+\]</div>
+<p>Ce modèle est appelé <strong>Elastic Net regression</strong>. Il permet alors de
+sélectionner un sous-ensemble des variables en utilisant la norme L1 comme
+dans <code class="docutils literal notranslate"><span class="pre">Lasso</span></code> et d’imposer une contrainte de type L2 sur les variables
+restantes. <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code> fournit un classe <code class="docutils literal notranslate"><span class="pre">ElasticNet</span></code> qui permet de
+construire un tel modèle. En revanche, il n’expose pas deux paramètres
+<span class="math notranslate nohighlight">\(\alpha_1\)</span> et <span class="math notranslate nohighlight">\(\alpha_2\)</span> mais un seul paramètre <span class="math notranslate nohighlight">\(\alpha\)</span> commun aux deux type
+de contrainte L1 et L2 et un autre paramètre <code class="docutils literal notranslate"><span class="pre">l1_ratio</span></code> qui permet de qui
+permet de définir si nous favorison un modèle de type <code class="docutils literal notranslate"><span class="pre">Lasso</span></code> ou un modèle de
+type <code class="docutils literal notranslate"><span class="pre">Ridge</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">ElasticNet</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+<span class="n">l1_ratios</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">l1_ratio</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">l1_ratios</span><span class="p">):</span>
+    <span class="n">modele</span> <span class="o">=</span> <span class="n">ElasticNet</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">l1_ratio</span><span class="o">=</span><span class="n">l1_ratio</span><span class="p">)</span>
+    <span class="n">cv</span> <span class="o">=</span> <span class="n">RepeatedKFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_repeats</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">cv_results</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span>
+        <span class="n">modele</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">cv</span><span class="p">,</span> <span class="n">return_train_score</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_estimator</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+
+    <span class="n">coef</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">modele_cv</span><span class="o">.</span><span class="n">coef_</span> <span class="k">for</span> <span class="n">modele_cv</span> <span class="ow">in</span> <span class="n">cv_results</span><span class="p">[</span><span class="s2">&quot;estimator&quot;</span><span class="p">]],</span>
+        <span class="n">columns</span><span class="o">=</span><span class="n">nom_colonnes</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">coef</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="n">vert</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">whis</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Coefficients for </span><span class="si">{</span><span class="n">l1_ratio</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">hspace</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Effect of the parameter l1_ratio</span><span class="se">\n</span><span class="s2"> dans ElasticNet&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.05</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Nous pouvons constater que quand le paramètre <code class="docutils literal notranslate"><span class="pre">l1_ratio</span></code> est plus élevé,
+alors nour avons un modèle qui force les variables random (e.g. colonne 2 à
+5) à être nulle. Lorsque le paramètre <code class="docutils literal notranslate"><span class="pre">l1_ratio</span></code> est plus faible, alors les
+variables random (e.g. colonne 2 à 5) sont plus non nuls ce qui
+correspondrait plus ò un modèle de type <code class="docutils literal notranslate"><span class="pre">Ridge</span></code>.</p>
 </div>
 <div class="section" id="importance-du-pretraitement">
 <h3>Importance du prétraitement<a class="headerlink" href="#importance-du-pretraitement" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="de-la-regression-a-la-classification">
+<h3>De la régression à la classification<a class="headerlink" href="#de-la-regression-a-la-classification" title="Permalink to this headline">¶</a></h3>
 </div>
 </div>
 <div class="section" id="resolution-de-problemes-non-lineaires">
@@ -1176,31 +1258,22 @@ précédente.</p>
               </div>
               
         
-            
-
-
-
-<div class='prev-next-bottom'>
-    
-    <div id="prev">
-        <a class="left-prev" href="file_00.html" title="previous page">
-            <i class="prevnext-label fas fa-angle-left"></i>
-            <div class="prevnext-info">
-                <p class="prevnext-label">previous</p>
-                <p class="prevnext-title">Introduction</p>
-            </div>
-        </a>
+            <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="file_00.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Introduction</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="file_02.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Famille des modèles non-paramétriques</p>
     </div>
-     <div id="next">
-        <a class="right-next" href="file_02.html" title="next page">
-            <div class="prevnext-info">
-                <p class="prevnext-label">next</p>
-                <p class="prevnext-title">Famille des modèles non-paramétriques</p>
-            </div>
-            <i class="prevnext-label fas fa-angle-right"></i>
-        </a>
-     </div>
-
+    <i class="fas fa-angle-right"></i>
+    </a>
 </div>
         
         </div>
@@ -1221,8 +1294,7 @@ précédente.</p>
       </div>
     </div>
   
-  <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+  <script src="../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
 
-  
   </body>
 </html>

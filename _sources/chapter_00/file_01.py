@@ -697,7 +697,7 @@ except np.linalg.LinAlgError as e:
 #
 # $$
 # \mathcal{L}(\beta) = \frac{1}{N} \sum_{i=1}^N \left( y_i - f(X_i, \beta)
-# \right)^2 + \alpha \||\beta\||_2^2
+# \right)^2 + \alpha \|\beta\|_2^2
 # $$
 #
 # where $\alpha$ est le paramètre controllant l'impact de la régularisation.
@@ -728,13 +728,185 @@ coef = pd.DataFrame(
     [modele_cv.coef_ for modele_cv in cv_results["estimator"]],
     columns=nom_colonnes,
 )
-ax = coef.plot.box(vert=False, whis=1e15)
+ax = coef.plot.box(vert=False, whis=100)
 _ = ax.set_title("Coefficients des modèles linéaires \nobtenus par validation croisée")
 
+# %% [markdown]
+#
+# Nous pouvons remarquer que nos modèles ne souffrent pas d'instabilité
+# numérique comme nous l'avons constaté lors de l'usage du modèle
+# `LinearRegression`. Nous pouvons même observer la correspondance entre les
+# coefficients des modèles `Ridge` et les coefficients utilisés pour générer
+# les données originales. En effet, puisque que les variables prédictives
+# originales sont répétées trois fois, les coefficients des modèles `Ridge`
+# sont trois fois moins importantes.
+
+# %%
+true_coef
+
+# %%
+coef[true_coef.index].mean() * 3
+
+# %% [markdown]
+#
+# Nous allons maintenant confirmer expérimentalement, l'effet du paramètre
+# $\alpha$ sur les coefficients des modèles `Ridge`. Nous allons utiliser
+# une valeur très faible et une valeur très élevée.
+
+# %%
+fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(6, 10))
+
+alphas = [1e-14, 1e5]
+for ax, alpha in zip(axes, alphas):
+    modele = Ridge(alpha=alpha)
+    cv = RepeatedKFold(n_splits=5, n_repeats=100, random_state=0)
+    cv_results = cross_validate(
+        modele, X, y, cv=cv, return_train_score=True, return_estimator=True
+    )
+
+    coef = pd.DataFrame(
+        [modele_cv.coef_ for modele_cv in cv_results["estimator"]],
+        columns=nom_colonnes,
+    )
+    coef.plot.box(vert=False, whis=100, ax=ax)
+    ax.set_title(r"Coefficients for $\alpha={}$".format(alpha))
+fig.subplots_adjust(hspace=0.4)
+_ = fig.suptitle(r"Effect of the parameter $\alpha$")
+
+# %% [markdown]
+#
+# Nous pouvons donc confirmer nos premières intuitions. Plus $\alpha$ augmente,
+# plus les coefficients des modèles `Ridge` sont plus petits. Au contraire,
+# plus $\alpha$ diminue, le modèle se rapproche d'une simple régression
+# linéaire, souffrant alors d'instabilité numérique.
+#
+# Maintenant, au lieu d'utiliser la norme L2 comme contrainte imposer sur les
+# coefficients, nous pouvons utiliser une autre type de norme. Une possibilité
+# est d'utiliser la norme L1 :
+#
+# $$
+# \mathcal{L}(\beta) = \frac{1}{N} \sum_{i=1}^N \left( y_i - f(X_i, \beta)
+# \right)^2 + \alpha \|\beta\|_1
+# $$
+#
+# Ce modèle est appelé **Lasso regression**. Nous pouvons obtenir les mêmes
+# intuitions que précédemment : lorsque $\alpha$ est petit, le terme
+# contraignant les coefficients est négligeable et donc nous avons une simple
+# régression linéaire. Sinon, nous forcons la contraintes L1 sur les
+# coefficients. La question est maintenant de comprendre quel est l'effet de
+# minimizer la norme L1 sur les coefficients. Rien de tel que de répéter
+# l'expérience précédente pour le modèle `Lasso`.
+
+# %%
+from sklearn.linear_model import Lasso
+
+fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(6, 10))
+
+alphas = [1e-14, 1e4]
+for ax, alpha in zip(axes, alphas):
+    modele = Lasso(alpha=alpha)
+    cv = RepeatedKFold(n_splits=5, n_repeats=100, random_state=0)
+    cv_results = cross_validate(
+        modele, X, y, cv=cv, return_train_score=True, return_estimator=True
+    )
+
+    coef = pd.DataFrame(
+        [modele_cv.coef_ for modele_cv in cv_results["estimator"]],
+        columns=nom_colonnes,
+    )
+    coef.plot.box(vert=False, whis=100, ax=ax)
+    ax.set_title(r"Coefficients for $\alpha={}$".format(alpha))
+fig.subplots_adjust(hspace=0.4)
+_ = fig.suptitle(r"Effect of the parameter $\alpha$")
+
+# %% [markdown]
+#
+# Nous pouvons constater que la minimiser la norme L1 forcera certains
+# coefficients à devenir nuls. Si le paramètre $\alpha$ est trop grand, les
+# coefficients seront tous nul. Nous pouvons constater que le problème que nous
+# essayons de résoudre `Lasso` est performant car il permet de n'utiliser
+# seulement qu'une des variables prédictives et n'utilise pas les variables
+# colinéaires. En renvanche, il est intéressant que le choix de cette variable
+# parmi les variables colinéaires peut-être arbitraire.
+
+# %%
+modele = Lasso(alpha=1, selection="random")
+cv = RepeatedKFold(n_splits=5, n_repeats=100, random_state=0)
+cv_results = cross_validate(
+    modele, X, y, cv=cv, return_train_score=True, return_estimator=True
+)
+
+coef = pd.DataFrame(
+    [modele_cv.coef_ for modele_cv in cv_results["estimator"]],
+    columns=nom_colonnes,
+)
+ax = coef.plot.box(vert=False, whis=100)
+_ = ax.set_title("Effet du paramètre selection")
+
+# %% [markdown]
+#
+# Dans ce graphique, nous pouvons observer que la variation des valeurs des
+# coefficients est réellement importante. Cela signifie que par exemple, la
+# colonne 0, 6 ou 8 peuvent être sélectionnées arbitrairement. Pour une
+# itération de validation croisée donnée, si la colonne 0 a été selectionnée,
+# alors `Lasso` ne sélectionnera pas la colonne 6 ou 8. Et ceci peut changer
+# d'itération à l'itération suivante. Utiliser le paramètre
+# `selection="cyclic"` propose une sélection qui ne variera pas d'itération à
+# l'itération suivante.
+#
+# Le dernier type de régularization que nous allons aborder est une combinaison
+# entre `Ridge` et `Lasso`. La fonction de coût est alors définit comme suit :
+#
+# $$
+# \mathcal{L}(\beta) = \frac{1}{N} \sum_{i=1}^N \left( y_i - f(X_i, \beta)
+# \right)^2 + \alpha_1 \|\beta\|_1 + \alpha_2 \|\beta\|_2^2
+# $$
+#
+# Ce modèle est appelé **Elastic Net regression**. Il permet alors de
+# sélectionner un sous-ensemble des variables en utilisant la norme L1 comme
+# dans `Lasso` et d'imposer une contrainte de type L2 sur les variables
+# restantes. `scikit-learn` fournit un classe `ElasticNet` qui permet de
+# construire un tel modèle. En revanche, il n'expose pas deux paramètres
+# $\alpha_1$ et $\alpha_2$ mais un seul paramètre $\alpha$ commun aux deux type
+# de contrainte L1 et L2 et un autre paramètre `l1_ratio` qui permet de qui
+# permet de définir si nous favorison un modèle de type `Lasso` ou un modèle de
+# type `Ridge`.
+
+# %%
+from sklearn.linear_model import ElasticNet
+
+fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(6, 10))
+
+l1_ratios = [0.1, 0.9]
+for ax, l1_ratio in zip(axes, l1_ratios):
+    modele = ElasticNet(alpha=10, l1_ratio=l1_ratio)
+    cv = RepeatedKFold(n_splits=5, n_repeats=100, random_state=0)
+    cv_results = cross_validate(
+        modele, X, y, cv=cv, return_train_score=True, return_estimator=True
+    )
+
+    coef = pd.DataFrame(
+        [modele_cv.coef_ for modele_cv in cv_results["estimator"]],
+        columns=nom_colonnes,
+    )
+    coef.plot.box(vert=False, whis=100, ax=ax)
+    ax.set_title(f"Coefficients for {l1_ratio=}")
+fig.subplots_adjust(hspace=0.4)
+_ = fig.suptitle("Effect of the parameter l1_ratio\n dans ElasticNet", y=1.05)
+
+# %% [markdown]
+#
+# Nous pouvons constater que quand le paramètre `l1_ratio` est plus élevé,
+# alors nour avons un modèle qui force les variables random (e.g. colonne 2 à
+# 5) à être nulle. Lorsque le paramètre `l1_ratio` est plus faible, alors les
+# variables random (e.g. colonne 2 à 5) sont plus non nuls ce qui
+# correspondrait plus ò un modèle de type `Ridge`.
 
 # %% [markdown]
 #
 # ### Importance du prétraitement
+#
+# ### De la régression à la classification
 #
 # ## Résolution de problèmes non-linéaires
 #
