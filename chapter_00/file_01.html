@@ -239,10 +239,37 @@
     <a class="reference internal nav-link" href="#principe-de-la-regularisation">
      Principe de la régularisation
     </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#statuer-le-probleme">
+       Statuer le problème
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#regularisation-l2">
+       Régularisation L2
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#utiliser-a-la-foid-regularisation-l1-et-l2">
+       Utiliser à la foid regularisation L1 et L2
+      </a>
+     </li>
+    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#de-la-regression-a-la-classification">
      De la régression à la classification
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#alternative-en-utilisant-une-approche-geometrique">
+     Alternative en utilisant une approche géométrique
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#note-concernant-le-parametre-de-regularisation">
+     Note concernant le paramètre de régularisation
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -806,6 +833,8 @@ de confiance autour de la médiane.</p>
 </div>
 <div class="section" id="principe-de-la-regularisation">
 <h3>Principe de la régularisation<a class="headerlink" href="#principe-de-la-regularisation" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="statuer-le-probleme">
+<h4>Statuer le problème<a class="headerlink" href="#statuer-le-probleme" title="Permalink to this headline">¶</a></h4>
 <p>Dans la section précédente, nous avons abordé le principe de la fonction de
 coût. Nous avons étudié et analysé différentes types d’erreur. En revanche,
 nous n’avons pas abordé les différentes formes de régularisation.</p>
@@ -864,7 +893,7 @@ chacune des variables composant notre jeu de données <code class="docutils lite
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">lmplot</span><span class="p">(</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">lmplot</span><span class="p">(</span>
     <span class="n">x</span><span class="o">=</span><span class="s2">&quot;Valeur&quot;</span><span class="p">,</span>
     <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Cible&quot;</span><span class="p">,</span>
     <span class="n">col</span><span class="o">=</span><span class="s2">&quot;Variable&quot;</span><span class="p">,</span>
@@ -1000,6 +1029,9 @@ vérifier est de calculer le déterminant de cette matrice.</p>
 </div>
 <p>En pratique, cette matrice n’utilise pas strictement la fonction inverse
 ci-dessus ce qui explique le réultat obtenu qui est cependant incorrect.</p>
+</div>
+<div class="section" id="regularisation-l2">
+<h4>Régularisation L2<a class="headerlink" href="#regularisation-l2" title="Permalink to this headline">¶</a></h4>
 <p>Afin de résoudre ce problème, nous pouvons introduire le principe de
 régularisation où l’idée est d’ajouter à la fonction de coût un terme
 permettant de contraindre d’une manière donnée (i.e. qui dépend du type de
@@ -1098,6 +1130,7 @@ une valeur très faible et une valeur très élevée.</p>
 plus les coefficients des modèles <code class="docutils literal notranslate"><span class="pre">Ridge</span></code> sont plus petits. Au contraire,
 plus <span class="math notranslate nohighlight">\(\alpha\)</span> diminue, le modèle se rapproche d’une simple régression
 linéaire, souffrant alors d’instabilité numérique.</p>
+<p>Régularisation L1</p>
 <p>Maintenant, au lieu d’utiliser la norme L2 comme contrainte imposer sur les
 coefficients, nous pouvons utiliser une autre type de norme. Une possibilité
 est d’utiliser la norme L1 :</p>
@@ -1172,6 +1205,9 @@ alors <code class="docutils literal notranslate"><span class="pre">Lasso</span><
 d’itération à l’itération suivante. Utiliser le paramètre
 <code class="docutils literal notranslate"><span class="pre">selection=&quot;cyclic&quot;</span></code> propose une sélection qui ne variera pas d’itération à
 l’itération suivante.</p>
+</div>
+<div class="section" id="utiliser-a-la-foid-regularisation-l1-et-l2">
+<h4>Utiliser à la foid regularisation L1 et L2<a class="headerlink" href="#utiliser-a-la-foid-regularisation-l1-et-l2" title="Permalink to this headline">¶</a></h4>
 <p>Le dernier type de régularization que nous allons aborder est une combinaison
 entre <code class="docutils literal notranslate"><span class="pre">Ridge</span></code> et <code class="docutils literal notranslate"><span class="pre">Lasso</span></code>. La fonction de coût est alors définit comme suit :</p>
 <div class="math notranslate nohighlight">
@@ -1219,6 +1255,7 @@ alors nour avons un modèle qui force les variables random (e.g. colonne 2 à
 5) à être nulle. Lorsque le paramètre <code class="docutils literal notranslate"><span class="pre">l1_ratio</span></code> est plus faible, alors les
 variables random (e.g. colonne 2 à 5) sont plus non nuls ce qui
 correspondrait plus à un modèle de type <code class="docutils literal notranslate"><span class="pre">Ridge</span></code>.</p>
+</div>
 </div>
 <div class="section" id="de-la-regression-a-la-classification">
 <h3>De la régression à la classification<a class="headerlink" href="#de-la-regression-a-la-classification" title="Permalink to this headline">¶</a></h3>
@@ -1318,8 +1355,8 @@ de coût dérivée (incluant les termes pour la régularisation) pour ce problè
 est formellement :</p>
 <div class="math notranslate nohighlight">
 \[
-\mathcal{L}(\beta) = \frac{1 - \rho}{2} \|\beta\|_2 + \rho \|\beta\|_1 + C
-\sum_{i=1}^N \log ( \exp (- y_i (X_i \beta)) + 1)
+\mathcal{L}(\beta) = \frac{1 - \rho}{2} \|\beta\|_2 + \rho \|\beta\|_1 +
+\frac{C}{N} \sum_{i=1}^N \log ( \exp (- y_i (X_i \beta)) + 1)
 \]</div>
 <p>En pratique, cette fonction de coût est dérivable et il est donc possible
 d’optimiser les paramètres <span class="math notranslate nohighlight">\(\beta\)</span> pour minimiser cette fonction de coût.</p>
@@ -1333,14 +1370,14 @@ l’erreur et non pas aux termes imposant les contraintes sur les coefficients.
 Donc l’impact du paramètre <span class="math notranslate nohighlight">\(C\)</span> dans le modèle <code class="docutils literal notranslate"><span class="pre">LogisticRegression</span></code> est
 l’opposé du paramètre <span class="math notranslate nohighlight">\(\alpha\)</span> dans les méthodes de régression. Le paramètre
 <span class="math notranslate nohighlight">\(\rho\)</span> permet de choisir entre une regularisation L2 et L1.</p>
-<p>Nous allons illustrer ces différents comportements sur le jeu de données
-de classification avec une régularisation de type L2.</p>
+<p>Nous allons illustrer ces différents comportements sur le jeu de données de
+classification avec une régularisation de type L2.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
 <span class="kn">from</span> <span class="nn">helper.plotting</span> <span class="kn">import</span> <span class="n">DecisionBoundaryDisplay</span>
 
-<span class="n">Cs</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1e-5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">1e5</span><span class="p">]</span>
+<span class="n">Cs</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1e-5</span><span class="p">,</span> <span class="mf">1e5</span><span class="p">]</span>
 
 <span class="k">for</span> <span class="n">C</span> <span class="ow">in</span> <span class="n">Cs</span><span class="p">:</span>
     <span class="n">modele</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">penalty</span><span class="o">=</span><span class="s2">&quot;l2&quot;</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="n">C</span><span class="p">)</span>
@@ -1356,8 +1393,12 @@ de classification avec une régularisation de type L2.</p>
         <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">donnees</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
-        <span class="n">x</span><span class="o">=</span><span class="s2">&quot;Longueur Bec (mm)&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Epaisseur Bec (mm)&quot;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;Especes&quot;</span><span class="p">,</span>
-        <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">RdBu</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+        <span class="n">x</span><span class="o">=</span><span class="s2">&quot;Longueur Bec (mm)&quot;</span><span class="p">,</span>
+        <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Epaisseur Bec (mm)&quot;</span><span class="p">,</span>
+        <span class="n">c</span><span class="o">=</span><span class="s2">&quot;Especes&quot;</span><span class="p">,</span>
+        <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">RdBu</span><span class="p">,</span>
+        <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+        <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Séparation avec </span><span class="se">\n</span><span class="si">{</span><span class="n">C</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
@@ -1367,9 +1408,134 @@ de classification avec une régularisation de type L2.</p>
 </div>
 </div>
 </div>
+<p>Nous pouvons donc confirmer que plus <span class="math notranslate nohighlight">\(C\)</span> est petit, plus les coefficients
+sont contraints et donc petits. Nous pouvons également observer, de manière
+intuitive, l’effet de rendre un coefficient nul (ou proche de zero) : la
+séparation devient perpendiculaire à un des axes correspondant au coefficient
+non-nul.</p>
+</div>
+<div class="section" id="alternative-en-utilisant-une-approche-geometrique">
+<h3>Alternative en utilisant une approche géométrique<a class="headerlink" href="#alternative-en-utilisant-une-approche-geometrique" title="Permalink to this headline">¶</a></h3>
+<p>Un modèle alternatif aux modèles précédent est connu sous le nom de <strong>Support
+Vector Machine (SVM)</strong>. Le problème d’optimisation a été formulé de façcon
+différente, en utilisant une approche géométrique.</p>
+<p>Nous allons essayer de l’illustrer de manière intuitive. Pour cela, nous
+allons utiliser un jeu de données synthétique.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_blobs</span>
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_blobs</span><span class="p">(</span>
+    <span class="n">n_samples</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">n_features</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">centers</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">cluster_std</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span>
+<span class="p">)</span>
+<span class="n">donnees</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;Colonne #0&quot;</span><span class="p">:</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="s2">&quot;Colonne #1&quot;</span><span class="p">:</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+        <span class="s2">&quot;Cible&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="n">donnees</span><span class="p">[</span><span class="s2">&quot;Cible&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">donnees</span><span class="p">[</span><span class="s2">&quot;Cible&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;category&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">donnees</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;Colonne #0&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Colonne #1&quot;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;Cible&quot;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">RdBu</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Ce jeu de données est simple puisqu’il est composé de deux nuages de points
+qui peuvent être séparés facilement en utilisant une séparation linéaire.</p>
+<p>Le terme “Support Vectors” réfère à certains échantillons qui seront
+sélectionnés permettant de définir la séparation linéaire. Nous allons
+entraîner un modèle SVM sur ce jeu de données et expliquer les intuitions
+derrière l’optimisation réalisée.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">SVC</span>
+
+<span class="n">modele</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">modele</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Maintenant, nous allons afficher la séparation linéaire ainsi que les
+échantillons qui constituent les vecteurs support.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">display</span> <span class="o">=</span> <span class="n">DecisionBoundaryDisplay</span><span class="o">.</span><span class="n">from_estimator</span><span class="p">(</span>
+    <span class="n">modele</span><span class="p">,</span>
+    <span class="n">X</span><span class="p">,</span>
+    <span class="n">response_method</span><span class="o">=</span><span class="s2">&quot;decision_function&quot;</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">RdBu</span><span class="p">,</span>
+    <span class="n">plot_method</span><span class="o">=</span><span class="s2">&quot;contour&quot;</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+    <span class="n">levels</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">display</span><span class="o">.</span><span class="n">surface_</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+<span class="n">donnees</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;Colonne #0&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Colonne #1&quot;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;Cible&quot;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">RdBu</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">X</span><span class="p">[</span><span class="n">modele</span><span class="o">.</span><span class="n">support_</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="n">y</span><span class="o">=</span><span class="n">X</span><span class="p">[</span><span class="n">modele</span><span class="o">.</span><span class="n">support_</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">c</span><span class="o">=</span><span class="s2">&quot;orange&quot;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Vecteurs support&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Nous pouvons remarquer que les vecteurs support sont les plus proches de la
+séparation linéaire. En effet, il définisse cette séparation : la séparation
+correspond à l’hyperplan (ici une ligne) de manière à ce que la distance
+entre la séparation et ces points soit maximale. Cette optimisation est
+souvent appelée la <strong>maximisation de la marge</strong> ou la marge est l’espace
+défini entre les échantillons et la séparation.</p>
+<p>Ce problème est bien entendu relié à une certaine fonction de coût connu sous
+le nom de fonction de Hinge et formulée comme suit :</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L}(\beta) = \|\beta\|^2 + \frac{C}{N} \sum_{i=1}^N \max(0, 1 - y_i
+X_i \beta)
+\]</div>
+<p>Il est intéressant de noter que les prédictions ici n’ont pas de sens
+probabilistes : un échantillon est affecté à une classe suivant de quel coté
+il se trouve de la séparation. De plus, nous pouvons connaître la distance à
+cet hyperplan mais il nous impossible de calculer une probabilité
+d’appartenance à un classe.</p>
+<p>En pratique, il existe une astuce où une fonction sigmoid est utilisée a
+posteriori pour déterminer la probabilité d’appartenance à une classe. Cette
+approche est connu sous le nom de la calibration de Platt.</p>
+</div>
+<div class="section" id="note-concernant-le-parametre-de-regularisation">
+<h3>Note concernant le paramètre de régularisation<a class="headerlink" href="#note-concernant-le-parametre-de-regularisation" title="Permalink to this headline">¶</a></h3>
+<p>Dans cette section, nous voulons attirer l’attention de notre lecteur sur le
+choix de la paramètre de régularisation. Dans la section précédente, nous
+avons seulement montrer de manière expérimentale l’effet des paramètres <span class="math notranslate nohighlight">\(C\)</span>
+et <span class="math notranslate nohighlight">\(\alpha\)</span>. En revanche, nous n’avons pas expliqué quelles valeurs nous
+devrions assigner à ce paramètre de régularisation.</p>
+<p>En réalité, ce paramètre ne peut pas être choisi de manière arbitraire. En
+d’autres mots, il dépendra du problème de régression ou classification à
+résoudre. Il est donc nécessaire de rechercher la meilleur valeur du
+paramètre de régularisation après avoir entraîné et évalué plusieurs modèles.</p>
+<p>Nous reviendrons sur ce sujet dénomé <strong>recherche d’hyperparamètres</strong> et qui
+requiert une présentation exhaustive.</p>
 </div>
 <div class="section" id="importance-du-pretraitement">
 <h3>Importance du prétraitement<a class="headerlink" href="#importance-du-pretraitement" title="Permalink to this headline">¶</a></h3>
+<p>Pour conclure sur la présentation des modèles linéaires, nous allons nous
+intéresser à la question de prétratement et son effet sur l’optimisation.</p>
 </div>
 </div>
 <div class="section" id="resolution-de-problemes-non-lineaires">
