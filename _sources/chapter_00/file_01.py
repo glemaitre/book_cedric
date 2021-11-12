@@ -900,13 +900,156 @@ _ = fig.suptitle("Effect of the parameter l1_ratio\n dans ElasticNet", y=1.05)
 # alors nour avons un modèle qui force les variables random (e.g. colonne 2 à
 # 5) à être nulle. Lorsque le paramètre `l1_ratio` est plus faible, alors les
 # variables random (e.g. colonne 2 à 5) sont plus non nuls ce qui
-# correspondrait plus ò un modèle de type `Ridge`.
+# correspondrait plus à un modèle de type `Ridge`.
+
+# %% [markdown]
+#
+# ### De la régression à la classification
+#
+# Pour le moment, nous nous sommes intéressés seulement au problème de
+# régression. Les modèles linéaires que nous avons présentés ne peuvent pas
+# être appliqués directement aux problèmes de classification : la fonction de
+# coût et plus spécifiquement le terme calculant l'erreur entre les prédictions
+# et les valeurs cibles n'est pas adapté.
+#
+# Avant de présenter comment modifier notre modèle de régression pour qu'il
+# puisse être utilisé pour des problèmes de classification, nous allons
+# introduire un jeu de données de classification pour observer les différences
+# avec le jeu de données de utilisé pour la régression.
+
+# %%
+donnees = pd.read_csv("../datasets/penguins_classification.csv")
+donnees.head()
+
+# %% [markdown]
+#
+# Dans ce jeu de données le but est de prédire l'espèce de pingouin à partir de
+# la morphologie de son bec (longueur et épaisseur). La particularité est que
+# l'espèce à prédire est une catégorie et non une valeur numérique continue
+# comme dans le problème de régression précédent :
+
+# %%
+donnees["Especes"].value_counts()
+
+# %% [markdown]
+#
+# En revanche, les variables prédictives ne sont pas différentes. Donc la
+# différence entre un problème de classification et régression dépend de du
+# type de la variable cible.
+#
+# Ici nous avons trois espèces de pingouins. Ce problème de classification
+# est dénomé **multi-classe**. Lorsque seulement deux classes sont présentes,
+# ce problème est appelé **classification binaire**. Nous allons simplifier
+# notre problème à un problème binaire à des fins didactiques.
+
+# %%
+donnees = donnees[donnees["Especes"].isin(["Adelie", "Chinstrap"])]
+donnees["Especes"] = donnees["Especes"].astype("category")
+X, y = donnees[["Longueur Bec (mm)", "Epaisseur Bec (mm)"]], donnees["Especes"]
+
+# %%
+_, ax = plt.subplots(figsize=(6, 4))
+_ = donnees.plot.scatter(
+    x="Longueur Bec (mm)",
+    y="Epaisseur Bec (mm)",
+    c="Especes",
+    cmap=plt.cm.RdBu,
+    s=50,
+    ax=ax,
+)
+
+# %% [markdown]
+#
+# Dans ce problème de classification, nous essayons donc de trouver une
+# séparation entre les deux espèces de pingouins. Il semble que nous pourrions
+# utiliser une séparation linéaire à cet effet.
+#
+# En considérant tous les aspects que nous venons de discuter, nous pourrions
+# modifier notre modèle de régression et faire que les prédictions deviennent
+# discrète. Une manière est d'utiliser la fonction logistique pour transformer
+# les prédictions dans un intervalle entre 0 et 1.
+
+
+# %%
+def logistic_function(x):
+    return 1 / (1 + np.exp(-x))
+
+
+# %%
+xx = np.linspace(-5, 5)
+plt.plot(xx, logistic_function(xx))
+plt.ylabel("y")
+plt.xlabel("x")
+_ = plt.title("Logistic function")
+
+# %% [markdown]
+#
+# Notre modèle est donc formuler de la manière suivante :
+#
+# $$
+# \hat{y} = \frac{1}{1 + \exp(-X \beta)}
+# $$
+#
+# Donc les valeurs $\hat{y}$ sont des valeurs entre 0 et 1 et représentent la
+# probabilité d'appartenir à l'une des deux espèces de pingouins. La fonction
+# de coût dérivée (incluant les termes pour la régularisation) pour ce problème
+# est formellement :
+#
+# $$
+# \mathcal{L}(\beta) = \frac{1 - \rho}{2} \|\beta\|_2 + \rho \|\beta\|_1 + C
+# \sum_{i=1}^N \log ( \exp (- y_i (X_i \beta)) + 1)
+# $$
+#
+# En pratique, cette fonction de coût est dérivable et il est donc possible
+# d'optimiser les paramètres $\beta$ pour minimiser cette fonction de coût.
+#
+# `scikit-learn` propose un classe `LogisticRegression` pour réaliser cette
+# optimisation. Cette classe expose un paramètre `penalty` pour choisir le type
+# de régularisation. Il n'existe donc pas différentes classes pour les
+# différents types de régularisation.
+#
+# Il est également important de noter que la régularisation dépend du paramètre
+# $C$. Ce facteur multiplicatif est cependant appliqué au terme calculant
+# l'erreur et non pas aux termes imposant les contraintes sur les coefficients.
+# Donc l'impact du paramètre $C$ dans le modèle `LogisticRegression` est
+# l'opposé du paramètre $\alpha$ dans les méthodes de régression. Le paramètre
+# $\rho$ permet de choisir entre une regularisation L2 et L1.
+#
+# Nous allons illustrer ces différents comportements sur le jeu de données
+# de classification avec une régularisation de type L2.
+
+# %%
+from sklearn.linear_model import LogisticRegression
+from helper.plotting import DecisionBoundaryDisplay
+
+Cs = [1e-5, 1, 1e5]
+
+for C in Cs:
+    modele = LogisticRegression(penalty="l2", C=C)
+    modele.fit(X, y)
+    _, ax = plt.subplots(figsize=(6, 4))
+    DecisionBoundaryDisplay.from_estimator(
+        modele,
+        X,
+        response_method="decision_function",
+        cmap=plt.cm.RdBu,
+        plot_method="pcolormesh",
+        shading="auto",
+        ax=ax,
+    )
+    donnees.plot.scatter(
+        x="Longueur Bec (mm)", y="Epaisseur Bec (mm)", c="Especes",
+        cmap=plt.cm.RdBu, s=50, ax=ax,
+    )
+    ax.set_title(f"Séparation avec \n{C=}")
+    _, ax = plt.subplots(figsize=(6, 4))
+    pd.Series(modele.coef_[0], index=X.columns).plot.barh(ax=ax)
+    ax.set_title(f"Coefficients avec {C=}")
+
 
 # %% [markdown]
 #
 # ### Importance du prétraitement
-#
-# ### De la régression à la classification
 #
 # ## Résolution de problèmes non-linéaires
 #
