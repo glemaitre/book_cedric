@@ -506,6 +506,8 @@ _ = ax.set_title("Comparaison modèle linéaire")
 #
 # ### Principe de la régularisation
 #
+# #### Statuer le problème
+#
 # Dans la section précédente, nous avons abordé le principe de la fonction de
 # coût. Nous avons étudié et analysé différentes types d'erreur. En revanche,
 # nous n'avons pas abordé les différentes formes de régularisation.
@@ -561,7 +563,7 @@ donnees["Cible"] = y
 donnees = donnees.melt(id_vars="Cible", var_name="Variable", value_name="Valeur")
 
 # %%
-sns.lmplot(
+_ = sns.lmplot(
     x="Valeur",
     y="Cible",
     col="Variable",
@@ -688,6 +690,8 @@ except np.linalg.LinAlgError as e:
 # En pratique, cette matrice n'utilise pas strictement la fonction inverse
 # ci-dessus ce qui explique le réultat obtenu qui est cependant incorrect.
 #
+# #### Régularisation L2
+#
 # Afin de résoudre ce problème, nous pouvons introduire le principe de
 # régularisation où l'idée est d'ajouter à la fonction de coût un terme
 # permettant de contraindre d'une manière donnée (i.e. qui dépend du type de
@@ -780,6 +784,8 @@ _ = fig.suptitle(r"Effect of the parameter $\alpha$")
 # plus $\alpha$ diminue, le modèle se rapproche d'une simple régression
 # linéaire, souffrant alors d'instabilité numérique.
 #
+# Régularisation L1
+#
 # Maintenant, au lieu d'utiliser la norme L2 comme contrainte imposer sur les
 # coefficients, nous pouvons utiliser une autre type de norme. Une possibilité
 # est d'utiliser la norme L1 :
@@ -853,6 +859,8 @@ _ = ax.set_title("Effet du paramètre selection")
 # d'itération à l'itération suivante. Utiliser le paramètre
 # `selection="cyclic"` propose une sélection qui ne variera pas d'itération à
 # l'itération suivante.
+#
+# #### Utiliser à la foid regularisation L1 et L2
 #
 # Le dernier type de régularization que nous allons aborder est une combinaison
 # entre `Ridge` et `Lasso`. La fonction de coût est alors définit comme suit :
@@ -996,8 +1004,8 @@ _ = plt.title("Logistic function")
 # est formellement :
 #
 # $$
-# \mathcal{L}(\beta) = \frac{1 - \rho}{2} \|\beta\|_2 + \rho \|\beta\|_1 + C
-# \sum_{i=1}^N \log ( \exp (- y_i (X_i \beta)) + 1)
+# \mathcal{L}(\beta) = \frac{1 - \rho}{2} \|\beta\|_2 + \rho \|\beta\|_1 +
+# \frac{C}{N} \sum_{i=1}^N \log ( \exp (- y_i (X_i \beta)) + 1)
 # $$
 #
 # En pratique, cette fonction de coût est dérivable et il est donc possible
@@ -1015,14 +1023,14 @@ _ = plt.title("Logistic function")
 # l'opposé du paramètre $\alpha$ dans les méthodes de régression. Le paramètre
 # $\rho$ permet de choisir entre une regularisation L2 et L1.
 #
-# Nous allons illustrer ces différents comportements sur le jeu de données
-# de classification avec une régularisation de type L2.
+# Nous allons illustrer ces différents comportements sur le jeu de données de
+# classification avec une régularisation de type L2.
 
 # %%
 from sklearn.linear_model import LogisticRegression
 from helper.plotting import DecisionBoundaryDisplay
 
-Cs = [1e-5, 1, 1e5]
+Cs = [1e-5, 1e5]
 
 for C in Cs:
     modele = LogisticRegression(penalty="l2", C=C)
@@ -1038,18 +1046,149 @@ for C in Cs:
         ax=ax,
     )
     donnees.plot.scatter(
-        x="Longueur Bec (mm)", y="Epaisseur Bec (mm)", c="Especes",
-        cmap=plt.cm.RdBu, s=50, ax=ax,
+        x="Longueur Bec (mm)",
+        y="Epaisseur Bec (mm)",
+        c="Especes",
+        cmap=plt.cm.RdBu,
+        s=50,
+        ax=ax,
     )
     ax.set_title(f"Séparation avec \n{C=}")
     _, ax = plt.subplots(figsize=(6, 4))
     pd.Series(modele.coef_[0], index=X.columns).plot.barh(ax=ax)
     ax.set_title(f"Coefficients avec {C=}")
 
+# %% [markdown]
+#
+# Nous pouvons donc confirmer que plus $C$ est petit, plus les coefficients
+# sont contraints et donc petits. Nous pouvons également observer, de manière
+# intuitive, l'effet de rendre un coefficient nul (ou proche de zero) : la
+# séparation devient perpendiculaire à un des axes correspondant au coefficient
+# non-nul.
+#
+# ### Alternative en utilisant une approche géométrique
+#
+# Un modèle alternatif aux modèles précédent est connu sous le nom de **Support
+# Vector Machine (SVM)**. Le problème d'optimisation a été formulé de façcon
+# différente, en utilisant une approche géométrique.
+#
+# Nous allons essayer de l'illustrer de manière intuitive. Pour cela, nous
+# allons utiliser un jeu de données synthétique.
+
+# %%
+from sklearn.datasets import make_blobs
+
+X, y = make_blobs(
+    n_samples=100, n_features=2, centers=2, cluster_std=2.5, random_state=42
+)
+donnees = pd.DataFrame(
+    {
+        "Colonne #0": X[:, 0],
+        "Colonne #1": X[:, 1],
+        "Cible": y,
+    }
+)
+donnees["Cible"] = donnees["Cible"].astype("category")
+
+# %%
+_, ax = plt.subplots(figsize=(6, 4))
+donnees.plot.scatter(
+    x="Colonne #0", y="Colonne #1", c="Cible", cmap=plt.cm.RdBu, s=50, ax=ax
+)
 
 # %% [markdown]
 #
+# Ce jeu de données est simple puisqu'il est composé de deux nuages de points
+# qui peuvent être séparés facilement en utilisant une séparation linéaire.
+#
+# Le terme "Support Vectors" réfère à certains échantillons qui seront
+# sélectionnés permettant de définir la séparation linéaire. Nous allons
+# entraîner un modèle SVM sur ce jeu de données et expliquer les intuitions
+# derrière l'optimisation réalisée.
+# %%
+from sklearn.svm import SVC
+
+modele = SVC(kernel="linear", random_state=0)
+modele.fit(X, y)
+
+# %% [markdown]
+#
+# Maintenant, nous allons afficher la séparation linéaire ainsi que les
+# échantillons qui constituent les vecteurs support.
+
+# %%
+_, ax = plt.subplots(figsize=(6, 4))
+display = DecisionBoundaryDisplay.from_estimator(
+    modele,
+    X,
+    response_method="decision_function",
+    cmap=plt.cm.RdBu,
+    plot_method="contour",
+    ax=ax,
+    levels=np.arange(-12, 12, 4),
+)
+ax.clabel(display.surface_, colors="black")
+donnees.plot.scatter(
+    x="Colonne #0", y="Colonne #1", c="Cible", cmap=plt.cm.RdBu, s=50, ax=ax
+)
+ax.scatter(
+    x=X[modele.support_, 0],
+    y=X[modele.support_, 1],
+    s=100,
+    c="orange",
+    label="Vecteurs support",
+)
+_ = ax.legend()
+
+# %% [markdown]
+#
+# Nous pouvons remarquer que les vecteurs support sont les plus proches de la
+# séparation linéaire. En effet, il définisse cette séparation : la séparation
+# correspond à l'hyperplan (ici une ligne) de manière à ce que la distance
+# entre la séparation et ces points soit maximale. Cette optimisation est
+# souvent appelée la **maximisation de la marge** ou la marge est l'espace
+# défini entre les échantillons et la séparation.
+#
+# Ce problème est bien entendu relié à une certaine fonction de coût connu sous
+# le nom de fonction de Hinge et formulée comme suit :
+#
+# $$
+# \mathcal{L}(\beta) = \|\beta\|^2 + \frac{C}{N} \sum_{i=1}^N \max(0, 1 - y_i
+# X_i \beta)
+# $$
+#
+# Il est intéressant de noter que les prédictions ici n'ont pas de sens
+# probabilistes : un échantillon est affecté à une classe suivant de quel coté
+# il se trouve de la séparation. De plus, nous pouvons connaître la distance à
+# cet hyperplan mais il nous impossible de calculer une probabilité
+# d'appartenance à un classe.
+#
+# En pratique, il existe une astuce où une fonction sigmoid est utilisée a
+# posteriori pour déterminer la probabilité d'appartenance à une classe. Cette
+# approche est connu sous le nom de la calibration de Platt.
+
+#  %% [markdown]
+#
+# ### Note concernant le paramètre de régularisation
+#
+# Dans cette section, nous voulons attirer l'attention de notre lecteur sur le
+# choix de la paramètre de régularisation. Dans la section précédente, nous
+# avons seulement montrer de manière expérimentale l'effet des paramètres $C$
+# et $\alpha$. En revanche, nous n'avons pas expliqué quelles valeurs nous
+# devrions assigner à ce paramètre de régularisation.
+#
+# En réalité, ce paramètre ne peut pas être choisi de manière arbitraire. En
+# d'autres mots, il dépendra du problème de régression ou classification à
+# résoudre. Il est donc nécessaire de rechercher la meilleur valeur du
+# paramètre de régularisation après avoir entraîné et évalué plusieurs modèles.
+#
+# Nous reviendrons sur ce sujet dénomé **recherche d'hyperparamètres** et qui
+# requiert une présentation exhaustive.
+#
 # ### Importance du prétraitement
+#
+# Pour conclure sur la présentation des modèles linéaires, nous allons nous
+# intéresser à la question de prétratement et son effet sur l'optimisation.
 #
 # ## Résolution de problèmes non-linéaires
 #
