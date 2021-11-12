@@ -16,7 +16,7 @@ function show_error_logs {
     exit 1
 }
 
-jupyter-book build $jupyter_book_dir
+jupyter-book build $jupyter_book_dir 2>&1 | tee $jupyter_book_dir/build.log
 
 # Grep the log to make sure there has been no errors when running the notebooks
 # since jupyter-book exit code is always 0
