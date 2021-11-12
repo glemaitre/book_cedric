@@ -164,7 +164,7 @@ location_velo[variable_numerique].describe()
 # %% [markdown]
 #
 # Nous pouvons observer que toutes ces variables sont comprises entre 0 et 1.
-# L'ordre de grandeur des moyennes et des standard déviations est équivalent
+# L'ordre de grandeur des moyennes et des écart-types est équivalent
 # pour toutes ces variables, mis à part la variable `nombre de locations` ce
 # qui n'est pas un problème puisque cette variable devra être prédite. Elles ne
 # sont donc pas exprimées dans leurs unités naturelles. Cela nous indique
