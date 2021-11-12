@@ -276,6 +276,28 @@
     <a class="reference internal nav-link" href="#importance-du-pretraitement">
      Importance du prétraitement
     </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#effet-des-donnees-non-traitees">
+       Effet des données non-traîtées
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#pretraitement-integre-dans-scikit-learn">
+       Prétraitement intégré dans
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         scikit-learn
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#probleme-de-convergence">
+       Problème de convergence
+      </a>
+     </li>
+    </ul>
    </li>
   </ul>
  </li>
@@ -1534,8 +1556,317 @@ requiert une présentation exhaustive.</p>
 </div>
 <div class="section" id="importance-du-pretraitement">
 <h3>Importance du prétraitement<a class="headerlink" href="#importance-du-pretraitement" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="effet-des-donnees-non-traitees">
+<h4>Effet des données non-traîtées<a class="headerlink" href="#effet-des-donnees-non-traitees" title="Permalink to this headline">¶</a></h4>
 <p>Pour conclure sur la présentation des modèles linéaires, nous allons nous
-intéresser à la question de prétratement et son effet sur l’optimisation.</p>
+intéresser à la question de prétraitement et son effet sur l’optimisation.
+Le prétraitement est particulièrement important avec les algorithmes
+itératifs basés sur le gradient.</p>
+<p>Nous allons l’illustrer sur un problème de classification en utilisant
+le modèle de <code class="docutils literal notranslate"><span class="pre">LogisticRegression</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">donnees</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;../datasets/adult-census-numeric-all.csv&quot;</span><span class="p">)</span>
+<span class="n">colonne_cible</span> <span class="o">=</span> <span class="s2">&quot;class&quot;</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">colonne_cible</span><span class="p">),</span> <span class="n">donnees</span><span class="p">[</span><span class="n">colonne_cible</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>A des fins d’évaluation, nous allons seulement utiliser un séparation simple
+afin d’obtenir un jeu de données pour d’entraînement et un autre pour le
+test.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.25</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Dans les sections précédentes, nous avons utilisé un modèle de la manière
+suivante :</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+
+<span class="n">modele</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">debut</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">modele</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">temps_entrainement</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">debut</span>
+<span class="n">modele</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Avec cette approche, nous avons directement entraîné notre modèle sur les
+données originales. Nous pouvon vérifier le temps pris par l’algorithme
+pour trouver les meilleurs coefficients. Nous pouvons également vérifier
+le nombre d’itérations de l’algorithme.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Temps d&#39;entrainement : </span><span class="si">{</span><span class="n">temps_entrainement</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> secondes&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Nombre d&#39;itérations : </span><span class="si">{</span><span class="n">modele</span><span class="o">.</span><span class="n">n_iter_</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">modele</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">barh</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>L’algorithme utilisé pour optimiser les coefficients est basé sur le gradient
+de la fonction de coût. Dans ce contexte, l’espace de cette fonction de coût
+est particulièrement important. Nous pouvons nous attarder sur une
+statistique tel que la moyenne et l’écart-type des différentes variables
+prédictives.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X_train</span><span class="o">.</span><span class="n">aggregate</span><span class="p">([</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="s2">&quot;std&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Nous pouvons observer que les données ne sont pas centrées car la moyenne des
+différentes variables prédictives est différente. Ceci n’est pas forcément le
+plus problématique. En revanche, les écart-types sont très différents. Ceci
+signifie que les coefficients seront donc très différents également. Cela
+sera un problème lors de l’estimation du gradient car des coefficients de
+plus grandes valeurs domineront la descente du gradient et freinerons
+l’algorithme. Il est donc possible de normaliser les données pour quelles
+soient centrées et dans le même ordre de grandeur. Ceci aura donc un impact
+sur la valeur des coefficients trouvés.</p>
+<p>La normalisation consiste donc à retrancher la moyenne de chaque variable
+prédictive et de diviser par l’écart-type. En revanche, pour ne pas utiliser
+d’information du jeu de test, il est important de calculer les statistiques
+sur le jeu de données d’entraînement seulement.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X_train_mean</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">X_train_std</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X_train_normalise</span> <span class="o">=</span> <span class="p">(</span><span class="n">X_train</span> <span class="o">-</span> <span class="n">X_train_mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">X_train_std</span>
+<span class="n">X_test_normalise</span> <span class="o">=</span> <span class="p">(</span><span class="n">X_test</span> <span class="o">-</span> <span class="n">X_train_mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">X_train_std</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Nous pouvons donc maintenant observer que nous avons des données avec une
+moyenne nulle et un écart-type unitaire.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X_train_normalise</span><span class="o">.</span><span class="n">aggregate</span><span class="p">([</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="s2">&quot;std&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X_test_normalise</span><span class="o">.</span><span class="n">aggregate</span><span class="p">([</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="s2">&quot;std&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Nous pouvons réitérer l’expérience précédente et observer l’effet sur les
+performance de l’algorithme d’optimisation mais également sur la valeur des
+coefficients.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">debut</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">modele</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_normalise</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">temps_entrainement</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">debut</span>
+<span class="n">modele</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test_normalise</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>En ce qui concerne les performances statistiques, notre modèle obtient
+un score similaire.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Temps d&#39;entrainement : </span><span class="si">{</span><span class="n">temps_entrainement</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> secondes&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Nombre d&#39;itérations : </span><span class="si">{</span><span class="n">modele</span><span class="o">.</span><span class="n">n_iter_</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">modele</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">barh</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>En revanche, le temps pour effectuer l’entraînement ainsi que le nombre
+d’itérations sont plus failbles. En outre, nous pouvons observer que les
+valeurs des coefficients sont plus proches car nous opérons sur des données
+qui sont dans le même ordre de grandeur.</p>
+</div>
+<div class="section" id="pretraitement-integre-dans-scikit-learn">
+<h4>Prétraitement intégré dans <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code><a class="headerlink" href="#pretraitement-integre-dans-scikit-learn" title="Permalink to this headline">¶</a></h4>
+<p>Dans la procédure que nous avons dévoilé dans la section précédente, nous
+manuellement créer un jeu de données qui ensuite a été délégué au modèle
+<code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code>. Cette opération est très souvent réalisée. A cet essort,
+<code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code> propose le concept de “pipeline” qui permet d’enchainer des
+étapes de prétraitement successives finissant par l’entraînement d’un modèle
+prédictif. De plus, ce pipeline expose la même interface de programmation que
+les modèles que nous avons déjà utilisés (i.e. <code class="docutils literal notranslate"><span class="pre">fit</span></code> + <code class="docutils literal notranslate"><span class="pre">predict</span></code>).</p>
+<p>Dans cette section, nous allons brièvement présenter l’interface des classes
+de prétraitement disponibles dans <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code>. Par la suite, nous
+introduirons les pipelines ce qui nous permettra d’effectuer des
+prétraitements suivient d’un apprentrissage de modèle prédictif.</p>
+<p><code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code> propose une classes permettant d’effectuer le centrage
+et la normalisation des données.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+
+<span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+<span class="n">scaler</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>L’appelle à la méthode <code class="docutils literal notranslate"><span class="pre">fit</span></code> permet de calculer les paramètres de
+normalisation : la moyenne et l’écart-type.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Les moyennes par variable sont</span><span class="se">\n</span><span class="si">{</span><span class="n">scaler</span><span class="o">.</span><span class="n">mean_</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Les écart-types par variable sont</span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">scaler</span><span class="o">.</span><span class="n">scale_</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>La méthode <code class="docutils literal notranslate"><span class="pre">transform</span></code> permet de normaliser les données en utilisant les
+statistiques calculées lors de l’appel à la méthode <code class="docutils literal notranslate"><span class="pre">fit</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X_train_normalise</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Cette opération est donc équivalente à l’opération manuelle que nous avons
+déjà vu. En revanche, il est important d’observer que <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code> peut
+consommer des dataframes, mais que celles-ci seront automatiquement
+converties en matrices <code class="docutils literal notranslate"><span class="pre">numpy</span></code>. De pus, le résultat d’une opération comme
+<code class="docutils literal notranslate"><span class="pre">transform</span></code> nous donnera une matrice <code class="docutils literal notranslate"><span class="pre">numpy</span></code> en sortie. La raison est que les
+méthodes utilisées dans <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code> requiert de l’optmisation numérique
+pour lequel <code class="docutils literal notranslate"><span class="pre">numpy</span></code> est plus adapté que <code class="docutils literal notranslate"><span class="pre">pandas</span></code>.</p>
+<p>Pour l’instant, nous n’avons pas encore utilisé les pipelines. Cette classe
+est une pièce maîtresse dans <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code> et est généralement ignoré.
+Un pipeline permet de créer une séquence d’opération de type transformation
+suivi d’un apprentissage de modèle prédictif. Nous allons le mettre en
+pratique sur notre exemple précédent.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sklearn</span>
+<span class="c1"># pour obtenir des diagrams pour les pipelines</span>
+<span class="n">sklearn</span><span class="o">.</span><span class="n">set_config</span><span class="p">(</span><span class="n">display</span><span class="o">=</span><span class="s2">&quot;diagram&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+
+<span class="n">modele</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span>
+    <span class="n">steps</span><span class="o">=</span><span class="p">[</span>
+        <span class="p">(</span><span class="s2">&quot;normalisation&quot;</span><span class="p">,</span> <span class="n">StandardScaler</span><span class="p">()),</span>
+        <span class="p">(</span><span class="s2">&quot;classification&quot;</span><span class="p">,</span> <span class="n">LogisticRegression</span><span class="p">()),</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+<span class="n">modele</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Ce nouveau modèle prédictif expose la même interface que l’estimateur
+<code class="docutils literal notranslate"><span class="pre">LogisticRegression</span></code>. Lorsque que la méthode <code class="docutils literal notranslate"><span class="pre">fit</span></code> est appelée, le
+<code class="docutils literal notranslate"><span class="pre">StandardScaler</span></code> appèlera ca propre méthode <code class="docutils literal notranslate"><span class="pre">fit</span></code> et transformera les données
+d’entrée. Ensuite, le modèle sera entraîné sur ces données prétraitées.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">modele</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Nous pouvons donc inspecter chacun des estimateurs entraînés dans le
+pipeline.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Les moyennes par variable sont</span><span class="se">\n</span><span class="si">{</span><span class="n">modele</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">mean_</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Les écart-types par variable sont</span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">modele</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scale_</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Nombre d&#39;itérations : </span><span class="si">{</span><span class="n">modele</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">n_iter_</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">modele</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">barh</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Finalement, ce pipeline peut-être utilisé pour prédire. Dans un premier
+temps, les données seront normalisées et seront ensuite données à la méthode
+de classification qui appèlera la méthode <code class="docutils literal notranslate"><span class="pre">predict</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">y_pred</span> <span class="o">=</span> <span class="n">modele</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span>
+
+<span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Nous pouvons donc même utiliser ce type de pipeline dans une validation
+croisée.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cv_results</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span><span class="n">modele</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">return_train_score</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">cv_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv_results</span><span class="p">)</span>
+<span class="n">cv_results</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="probleme-de-convergence">
+<h4>Problème de convergence<a class="headerlink" href="#probleme-de-convergence" title="Permalink to this headline">¶</a></h4>
+<p>Nous avons donc montré dans les sections précédentes que le prétraitement
+des données peut accélérer l’apprentissage de modèle prédictif. Il est même
+possible qu’un modèle prédictif n’est pas forcément le temps de converger
+dans le budget d’itération donné. Nous allons illuster ces propos :</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">modele</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">max_iter</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">modele</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Nous pouvons observer un warning de type <code class="docutils literal notranslate"><span class="pre">ConvergenceWarning</span></code>. Cela signifie
+que nous n’avons pas trouver le minimum de notre fonction de coût. Sur le
+problème que nous avons maintenant, nous avons pu voir que 20 itérations sont
+suffisantes pour converger, si nous prétraitons les données à l’avance. Ici,
+la solution serait donc de normaliser nos données. En revanche, il peut
+arriver qu’un algorithme est besoin de plus de temps pour converger. Dans ce
+cas, il sera donc nécessaire d’augmenter le nombre d’itérations en augmentant
+la valeur du paramètre <code class="docutils literal notranslate"><span class="pre">max_iter</span></code>.</p>
+</div>
 </div>
 </div>
 <div class="section" id="resolution-de-problemes-non-lineaires">

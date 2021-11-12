@@ -1187,8 +1187,284 @@ _ = ax.legend()
 #
 # ### Importance du prétraitement
 #
+# #### Effet des données non-traîtées
+#
 # Pour conclure sur la présentation des modèles linéaires, nous allons nous
-# intéresser à la question de prétratement et son effet sur l'optimisation.
+# intéresser à la question de prétraitement et son effet sur l'optimisation.
+# Le prétraitement est particulièrement important avec les algorithmes
+# itératifs basés sur le gradient.
+#
+# Nous allons l'illustrer sur un problème de classification en utilisant
+# le modèle de `LogisticRegression`.
+
+# %%
+import pandas as pd
+
+donnees = pd.read_csv("../datasets/adult-census-numeric-all.csv")
+colonne_cible = "class"
+X, y = donnees.drop(columns=colonne_cible), donnees[colonne_cible]
+
+# %% [markdown]
+#
+# A des fins d'évaluation, nous allons seulement utiliser un séparation simple
+# afin d'obtenir un jeu de données pour d'entraînement et un autre pour le
+# test.
+
+# %%
+from sklearn.model_selection import train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, random_state=0, test_size=0.25
+)
+
+# %% [markdown]
+#
+# Dans les sections précédentes, nous avons utilisé un modèle de la manière
+# suivante :
+
+# %%
+import time
+from sklearn.linear_model import LogisticRegression
+
+modele = LogisticRegression(random_state=0)
+debut = time.time()
+modele.fit(X_train, y_train)
+temps_entrainement = time.time() - debut
+modele.score(X_test, y_test)
+
+# %% [markdown]
+#
+# Avec cette approche, nous avons directement entraîné notre modèle sur les
+# données originales. Nous pouvon vérifier le temps pris par l'algorithme
+# pour trouver les meilleurs coefficients. Nous pouvons également vérifier
+# le nombre d'itérations de l'algorithme.
+
+# %%
+print(f"Temps d'entrainement : {temps_entrainement:.2f} secondes")
+print(f"Nombre d'itérations : {modele.n_iter_}")
+_ = pd.Series(modele.coef_[0], index=X.columns).plot.barh()
+
+# %% [markdown]
+#
+# L'algorithme utilisé pour optimiser les coefficients est basé sur le gradient
+# de la fonction de coût. Dans ce contexte, l'espace de cette fonction de coût
+# est particulièrement important. Nous pouvons nous attarder sur une
+# statistique tel que la moyenne et l'écart-type des différentes variables
+# prédictives.
+
+# %%
+X_train.aggregate(["mean", "std"])
+
+# %% [markdown]
+#
+# Nous pouvons observer que les données ne sont pas centrées car la moyenne des
+# différentes variables prédictives est différente. Ceci n'est pas forcément le
+# plus problématique. En revanche, les écart-types sont très différents. Ceci
+# signifie que les coefficients seront donc très différents également. Cela
+# sera un problème lors de l'estimation du gradient car des coefficients de
+# plus grandes valeurs domineront la descente du gradient et freinerons
+# l'algorithme. Il est donc possible de normaliser les données pour quelles
+# soient centrées et dans le même ordre de grandeur. Ceci aura donc un impact
+# sur la valeur des coefficients trouvés.
+#
+# La normalisation consiste donc à retrancher la moyenne de chaque variable
+# prédictive et de diviser par l'écart-type. En revanche, pour ne pas utiliser
+# d'information du jeu de test, il est important de calculer les statistiques
+# sur le jeu de données d'entraînement seulement.
+
+# %%
+X_train_mean = X_train.mean()
+X_train_std = X_train.std()
+
+# %%
+X_train_normalise = (X_train - X_train_mean) / X_train_std
+X_test_normalise = (X_test - X_train_mean) / X_train_std
+
+# %% [markdown]
+#
+# Nous pouvons donc maintenant observer que nous avons des données avec une
+# moyenne nulle et un écart-type unitaire.
+
+# %%
+X_train_normalise.aggregate(["mean", "std"])
+
+# %%
+X_test_normalise.aggregate(["mean", "std"])
+
+# %% [markdown]
+#
+# Nous pouvons réitérer l'expérience précédente et observer l'effet sur les
+# performance de l'algorithme d'optimisation mais également sur la valeur des
+# coefficients.
+
+# %%
+debut = time.time()
+modele.fit(X_train_normalise, y_train)
+temps_entrainement = time.time() - debut
+modele.score(X_test_normalise, y_test)
+
+# %% [markdown]
+#
+# En ce qui concerne les performances statistiques, notre modèle obtient
+# un score similaire.
+
+# %%
+print(f"Temps d'entrainement : {temps_entrainement:.2f} secondes")
+print(f"Nombre d'itérations : {modele.n_iter_}")
+_ = pd.Series(modele.coef_[0], index=X.columns).plot.barh()
+
+# %% [markdown]
+#
+# En revanche, le temps pour effectuer l'entraînement ainsi que le nombre
+# d'itérations sont plus failbles. En outre, nous pouvons observer que les
+# valeurs des coefficients sont plus proches car nous opérons sur des données
+# qui sont dans le même ordre de grandeur.
+#
+# #### Prétraitement intégré dans `scikit-learn`
+#
+# Dans la procédure que nous avons dévoilé dans la section précédente, nous
+# manuellement créer un jeu de données qui ensuite a été délégué au modèle
+# `scikit-learn`. Cette opération est très souvent réalisée. A cet essort,
+# `scikit-learn` propose le concept de "pipeline" qui permet d'enchainer des
+# étapes de prétraitement successives finissant par l'entraînement d'un modèle
+# prédictif. De plus, ce pipeline expose la même interface de programmation que
+# les modèles que nous avons déjà utilisés (i.e. `fit` + `predict`).
+#
+# Dans cette section, nous allons brièvement présenter l'interface des classes
+# de prétraitement disponibles dans `scikit-learn`. Par la suite, nous
+# introduirons les pipelines ce qui nous permettra d'effectuer des
+# prétraitements suivient d'un apprentrissage de modèle prédictif.
+#
+# `scikit-learn` propose une classes permettant d'effectuer le centrage
+# et la normalisation des données.
+
+# %%
+from sklearn.preprocessing import StandardScaler
+
+scaler = StandardScaler()
+scaler.fit(X_train)
+
+# %% [markdown]
+#
+# L'appelle à la méthode `fit` permet de calculer les paramètres de
+# normalisation : la moyenne et l'écart-type.
+
+# %%
+print(f"Les moyennes par variable sont\n{scaler.mean_}")
+print(f"Les écart-types par variable sont\n {scaler.scale_}")
+
+# %% [markdown]
+#
+# La méthode `transform` permet de normaliser les données en utilisant les
+# statistiques calculées lors de l'appel à la méthode `fit`.
+
+# %%
+X_train_normalise = scaler.transform(X_train)
+
+# %% [markdown]
+#
+# Cette opération est donc équivalente à l'opération manuelle que nous avons
+# déjà vu. En revanche, il est important d'observer que `scikit-learn` peut
+# consommer des dataframes, mais que celles-ci seront automatiquement
+# converties en matrices `numpy`. De pus, le résultat d'une opération comme
+# `transform` nous donnera une matrice `numpy` en sortie. La raison est que les
+# méthodes utilisées dans `scikit-learn` requiert de l'optmisation numérique
+# pour lequel `numpy` est plus adapté que `pandas`.
+#
+# Pour l'instant, nous n'avons pas encore utilisé les pipelines. Cette classe
+# est une pièce maîtresse dans `scikit-learn` et est généralement ignoré.
+# Un pipeline permet de créer une séquence d'opération de type transformation
+# suivi d'un apprentissage de modèle prédictif. Nous allons le mettre en
+# pratique sur notre exemple précédent.
+
+# %%
+import sklearn
+# pour obtenir des diagrams pour les pipelines
+sklearn.set_config(display="diagram")
+
+# %%
+from sklearn.pipeline import Pipeline
+
+modele = Pipeline(
+    steps=[
+        ("normalisation", StandardScaler()),
+        ("classification", LogisticRegression()),
+    ]
+)
+modele
+
+# %% [markdown]
+#
+# Ce nouveau modèle prédictif expose la même interface que l'estimateur
+# `LogisticRegression`. Lorsque que la méthode `fit` est appelée, le
+# `StandardScaler` appèlera ca propre méthode `fit` et transformera les données
+# d'entrée. Ensuite, le modèle sera entraîné sur ces données prétraitées.
+
+# %%
+modele.fit(X_train, y_train)
+
+# %% [markdown]
+#
+# Nous pouvons donc inspecter chacun des estimateurs entraînés dans le
+# pipeline.
+
+# %%
+print(f"Les moyennes par variable sont\n{modele[0].mean_}")
+print(f"Les écart-types par variable sont\n {modele[0].scale_}")
+
+# %%
+print(f"Nombre d'itérations : {modele[1].n_iter_}")
+_ = pd.Series(modele[1].coef_[0], index=X.columns).plot.barh()
+
+# %% [markdown]
+#
+# Finalement, ce pipeline peut-être utilisé pour prédire. Dans un premier
+# temps, les données seront normalisées et seront ensuite données à la méthode
+# de classification qui appèlera la méthode `predict`.
+
+# %%
+y_pred = modele.predict(X_test)
+
+# %%
+from sklearn.metrics import accuracy_score
+
+accuracy_score(y_test, y_pred)
+
+# %% [markdown]
+#
+# Nous pouvons donc même utiliser ce type de pipeline dans une validation
+# croisée.
+
+# %%
+cv_results = cross_validate(modele, X, y, cv=5, return_train_score=True)
+cv_results = pd.DataFrame(cv_results)
+cv_results
+
+# %% [markdown]
+#
+# #### Problème de convergence
+#
+# Nous avons donc montré dans les sections précédentes que le prétraitement
+# des données peut accélérer l'apprentissage de modèle prédictif. Il est même
+# possible qu'un modèle prédictif n'est pas forcément le temps de converger
+# dans le budget d'itération donné. Nous allons illuster ces propos :
+
+# %%
+modele = LogisticRegression(max_iter=20)
+modele.fit(X_train, y_train)
+
+# %% [markdown]
+#
+# Nous pouvons observer un warning de type `ConvergenceWarning`. Cela signifie
+# que nous n'avons pas trouver le minimum de notre fonction de coût. Sur le
+# problème que nous avons maintenant, nous avons pu voir que 20 itérations sont
+# suffisantes pour converger, si nous prétraitons les données à l'avance. Ici,
+# la solution serait donc de normaliser nos données. En revanche, il peut
+# arriver qu'un algorithme est besoin de plus de temps pour converger. Dans ce
+# cas, il sera donc nécessaire d'augmenter le nombre d'itérations en augmentant
+# la valeur du paramètre `max_iter`.
+
+# %% [markdown]
 #
 # ## Résolution de problèmes non-linéaires
 #
