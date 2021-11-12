@@ -389,7 +389,7 @@ pouvons l’illustrer sur le même jeu de données que nous avons utilisé dans
 le chapitre précédent. Tout d’abord, nous chargeons les données.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="n">donnees</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;../datasets/penguins_regression.csv&quot;</span><span class="p">)</span>
 <span class="n">X</span> <span class="o">=</span> <span class="n">donnees</span><span class="p">[[</span><span class="s2">&quot;Longueur Aileron (mm)&quot;</span><span class="p">]]</span>
@@ -401,13 +401,16 @@ le chapitre précédent. Tout d’abord, nous chargeons les données.</p>
 <p>Et nous pouvons visualaliser la relation entre <span class="math notranslate nohighlight">\(X\)</span> et <span class="math notranslate nohighlight">\(y\)</span> :</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 
 <span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;poster&quot;</span><span class="p">)</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Masse corporelle en fonction de</span><span class="se">\n</span><span class="s2">la longueur d&#39;aileron&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/file_01_3_0.png" src="../_images/file_01_3_0.png" />
 </div>
 </div>
 <p>Il existe une infinité de modèle linéaire qui pourraient être utilisés pour
@@ -416,7 +419,7 @@ Python générique qui permet de prédire la masse corporelle de notre pinguoin
 en fonction de la longueur d’aileron.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">modele_lineaire</span><span class="p">(</span><span class="n">longueur_aileron</span><span class="p">,</span> <span class="n">parametres</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">modele_lineaire</span><span class="p">(</span><span class="n">longueur_aileron</span><span class="p">,</span> <span class="n">parametres</span><span class="p">):</span>
     <span class="c1"># notre modèle est défini par: y = beta_0 + x_1 * beta_1</span>
     <span class="k">return</span> <span class="n">parametres</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">parametres</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">longueur_aileron</span>
 </pre></div>
@@ -427,7 +430,7 @@ en fonction de la longueur d’aileron.</p>
 modèles avec différents paramètres.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">predictions_modele_1</span> <span class="o">=</span> <span class="n">modele_lineaire</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">3_000</span><span class="p">,</span> <span class="mi">30</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">predictions_modele_1</span> <span class="o">=</span> <span class="n">modele_lineaire</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">3_000</span><span class="p">,</span> <span class="mi">30</span><span class="p">])</span>
 <span class="n">predictions_modele_2</span> <span class="o">=</span> <span class="n">modele_lineaire</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">6_000</span><span class="p">,</span> <span class="mi">50</span><span class="p">])</span>
 <span class="n">predictions_modele_3</span> <span class="o">=</span> <span class="n">modele_lineaire</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">2_000</span><span class="p">,</span> <span class="mi">30</span><span class="p">])</span>
 </pre></div>
@@ -436,7 +439,7 @@ modèles avec différents paramètres.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
     <span class="n">x</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span>
 <span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">predictions_modele_1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Modèle #1&quot;</span><span class="p">)</span>
@@ -446,6 +449,9 @@ modèles avec différents paramètres.</p>
 <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Quel modèle est le meilleur?&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/file_01_8_0.png" src="../_images/file_01_8_0.png" />
 </div>
 </div>
 <p>A partir de ce graphique, la question que nous pourrions avoir est de savoir
@@ -458,11 +464,18 @@ méthodes qui calculaient une erreur. Nous pouvons ici calculer une erreur
 donnée : l’erreur quadratique moyenne.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">mean_squared_error</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">mean_squared_error</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Erreur du modèle #1: </span><span class="si">{</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">predictions_modele_1</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Erreur du modèle #2: </span><span class="si">{</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">predictions_modele_2</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Erreur du modèle #3: </span><span class="si">{</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">predictions_modele_3</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Erreur du modèle #1: 1609923.83
+Erreur du modèle #2: 178899.85
+Erreur du modèle #3: 261327.34
 </pre></div>
 </div>
 </div>
@@ -513,10 +526,15 @@ permet de minimser cette fonction de coût. Nous allons la mettre en pratique
 dès maintenant.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
 
 <span class="n">modele</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
 <span class="n">modele</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>LinearRegression()
 </pre></div>
 </div>
 </div>
@@ -525,14 +543,14 @@ dès maintenant.</p>
 observer visuellement quels sont les prédictions produites par ce modèle.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">predictions</span> <span class="o">=</span> <span class="n">modele</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">predictions</span> <span class="o">=</span> <span class="n">modele</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
     <span class="n">x</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span>
 <span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Regression linéaire&quot;</span><span class="p">)</span>
@@ -541,20 +559,33 @@ observer visuellement quels sont les prédictions produites par ce modèle.</p>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../_images/file_01_15_0.png" src="../_images/file_01_15_0.png" />
+</div>
 </div>
 <p>Ce modèle semble donc bien minimiser la fonction de coût et est
 qualititivement correct. Nous pouvons donc maintenant nous pencher sur notre
 modèle et obtenir la valeurs des paramètres.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">modele</span><span class="o">.</span><span class="n">coef_</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">modele</span><span class="o">.</span><span class="n">coef_</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([49.68556641])
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">modele</span><span class="o">.</span><span class="n">intercept_</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">modele</span><span class="o">.</span><span class="n">intercept_</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-5780.831358077066
 </pre></div>
 </div>
 </div>
@@ -593,7 +624,7 @@ pinguoin qui aura un aileron de longueur de 230 mm et une masse corporelle de
 est manquant.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">donnees</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">donnees</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
     <span class="p">{</span><span class="s2">&quot;Longueur Aileron (mm)&quot;</span><span class="p">:</span> <span class="mi">230</span><span class="p">,</span> <span class="s2">&quot;Masse Corporelle (g)&quot;</span><span class="p">:</span> <span class="mi">300</span><span class="p">},</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">)</span>
 <span class="n">donnees</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
@@ -605,12 +636,15 @@ est manquant.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
     <span class="n">x</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span>
 <span class="p">)</span>
 <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Nos données avec une</span><span class="se">\n</span><span class="s2">erreur de saisie&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/file_01_21_0.png" src="../_images/file_01_21_0.png" />
 </div>
 </div>
 <p>Nous pouvons observer que nous avons un nouveau échantillon dans le cadrant
@@ -621,7 +655,7 @@ assignant des poids à chaque échantillon : tous les échantillons auront un
 poids de 1, sauf le nouvel échantillon qui aura un poids de 10.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="n">poids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
 <span class="n">poids</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span>
@@ -631,7 +665,7 @@ poids de 1, sauf le nouvel échantillon qui aura un poids de 10.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">modele</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">modele</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
 <span class="n">predictions_err_quadratique</span> <span class="o">=</span> <span class="n">modele</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="n">poids</span><span class="p">)</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -639,7 +673,7 @@ poids de 1, sauf le nouvel échantillon qui aura un poids de 10.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
     <span class="n">x</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span>
 <span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">predictions_err_quadratique</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Regression linéaire&quot;</span><span class="p">)</span>
@@ -648,6 +682,9 @@ poids de 1, sauf le nouvel échantillon qui aura un poids de 10.</p>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../_images/file_01_25_0.png" src="../_images/file_01_25_0.png" />
+</div>
 </div>
 <p>Nous pouvons donc observer que le faite d’avoir des erreurs de saisie à une
 influence non négligeable sur la qualité de notre modèle. Ceci peut-être
@@ -655,7 +692,7 @@ expliqué par le type de fonction de coût que nous utilisons. Il sera plus
 facile d’obtenir une intuition en représentant graphiquement cette fonction.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">erreur_quadratique</span><span class="p">(</span><span class="n">cible</span><span class="p">,</span> <span class="n">prediction</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">erreur_quadratique</span><span class="p">(</span><span class="n">cible</span><span class="p">,</span> <span class="n">prediction</span><span class="p">):</span>
     <span class="n">cout</span> <span class="o">=</span> <span class="p">(</span><span class="n">cible</span> <span class="o">-</span> <span class="n">prediction</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
     <span class="k">return</span> <span class="n">cout</span>
 </pre></div>
@@ -664,7 +701,7 @@ facile d’obtenir une intuition en représentant graphiquement cette fonction.<
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
 <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">=</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span>
 <span class="n">xx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
@@ -673,6 +710,9 @@ facile d’obtenir une intuition en représentant graphiquement cette fonction.<
 <span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/file_01_28_0.png" src="../_images/file_01_28_0.png" />
 </div>
 </div>
 <p>Nous pouvons donc observer que le faite d’élever au carré l’erreur pénalise
@@ -691,7 +731,7 @@ peut-être formulée comme suit :</p>
 avec la représentation de la fonction d’erreur quadratique.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">erreur_absolue</span><span class="p">(</span><span class="n">cible</span><span class="p">,</span> <span class="n">prediction</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">erreur_absolue</span><span class="p">(</span><span class="n">cible</span><span class="p">,</span> <span class="n">prediction</span><span class="p">):</span>
     <span class="n">cout</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">cible</span> <span class="o">-</span> <span class="n">prediction</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">cout</span>
 </pre></div>
@@ -700,12 +740,15 @@ avec la représentation de la fonction d’erreur quadratique.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">erreur_quadratique</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">xx</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Erreur quadratique&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">erreur_quadratique</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">xx</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Erreur quadratique&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">erreur_absolue</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">xx</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Erreur absolue&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Comparaison des fonctions de coût&quot;</span><span class="p">)</span>
 <span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/file_01_31_0.png" src="../_images/file_01_31_0.png" />
 </div>
 </div>
 <p>On peut donc observer que l’erreur absolue pénalisera les échantillons avec
@@ -730,7 +773,7 @@ y_i - f(X_i, \beta) \right| &lt; \epsilon \\
 \end{split}\]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fonction_huber</span><span class="p">(</span><span class="n">cible</span><span class="p">,</span> <span class="n">prediction</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">1.35</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fonction_huber</span><span class="p">(</span><span class="n">cible</span><span class="p">,</span> <span class="n">prediction</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">1.35</span><span class="p">):</span>
     <span class="n">cout_absolue</span> <span class="o">=</span> <span class="n">erreur_absolue</span><span class="p">(</span><span class="n">cible</span><span class="p">,</span> <span class="n">prediction</span><span class="p">)</span>
     <span class="n">cout_quadratique</span> <span class="o">=</span> <span class="n">erreur_quadratique</span><span class="p">(</span><span class="n">cible</span><span class="p">,</span> <span class="n">prediction</span><span class="p">)</span>
 
@@ -748,7 +791,7 @@ y_i - f(X_i, \beta) \right| &lt; \epsilon \\
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">erreur_quadratique</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">xx</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Erreur quadratique&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">erreur_quadratique</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">xx</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Erreur quadratique&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">erreur_absolue</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">xx</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Erreur absolue&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
     <span class="n">xx</span><span class="p">,</span> <span class="n">fonction_huber</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">xx</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Fonction de Huber&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span>
@@ -758,6 +801,9 @@ y_i - f(X_i, \beta) \right| &lt; \epsilon \\
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../_images/file_01_34_0.png" src="../_images/file_01_34_0.png" />
+</div>
 </div>
 <p>Nous pouvons donc observer que la fonction de Huber a les avantages des deux
 fonctions de coût précédentes. <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code> propose une classe appelée
@@ -766,7 +812,7 @@ allons donc utiliser ce modèle sur notre jeu de données et observer la
 différence sur les prédictions.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">HuberRegressor</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">HuberRegressor</span>
 
 <span class="n">modele</span> <span class="o">=</span> <span class="n">HuberRegressor</span><span class="p">()</span>
 <span class="n">predictions_err_huber</span> <span class="o">=</span> <span class="n">modele</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="n">poids</span><span class="p">)</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
@@ -776,7 +822,7 @@ différence sur les prédictions.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
     <span class="n">x</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span>
 <span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">predictions_err_quadratique</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Quadratique&quot;</span><span class="p">)</span>
@@ -786,6 +832,9 @@ différence sur les prédictions.</p>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../_images/file_01_37_0.png" src="../_images/file_01_37_0.png" />
+</div>
 </div>
 <p>Nous pouvons donc constater que le modèle linéaire minimisant la fonction de
 Huber permet d’obtenir un meilleur modèle que celui minimisant la fonction
@@ -793,7 +842,7 @@ de coût quadratique.</p>
 <p>Pour confirmer de manière quantitative, nous pourrions calculer des erreurs.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">mean_absolute_error</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">mean_absolute_error</span>
 
 <span class="nb">print</span><span class="p">(</span>
     <span class="s2">&quot;Modèle linéaire quadratique:</span><span class="se">\n</span><span class="s2">&quot;</span>
@@ -812,6 +861,16 @@ de coût quadratique.</p>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Modèle linéaire quadratique:
+  Erreur quadratique moyenne : 313313.17
+  Erreur absolue moyenne : 412.61
+Modèle linéaire Huber:
+  Erreur quadratique moyenne : 236451.75
+  Erreur absolue moyenne : 328.44
+</pre></div>
+</div>
+</div>
 </div>
 <p>Nous pouvons confirmer que le modèle linéaire quadratique a une erreur
 quadratique moins élevèe que le modèle linéaire Huber. En revanche, nous
@@ -826,7 +885,7 @@ médiane de nos données. <code class="docutils literal notranslate"><span class
 notemment la médiane.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">QuantileRegressor</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">QuantileRegressor</span>
 
 <span class="n">modele</span> <span class="o">=</span> <span class="n">QuantileRegressor</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">solver</span><span class="o">=</span><span class="s2">&quot;highs&quot;</span><span class="p">)</span>
 <span class="n">predictions_err_absolue</span> <span class="o">=</span> <span class="n">modele</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="n">poids</span><span class="p">)</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
@@ -836,7 +895,7 @@ notemment la médiane.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
     <span class="n">x</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">donnees</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span>
 <span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">predictions_err_quadratique</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Quadratique&quot;</span><span class="p">)</span>
@@ -846,6 +905,9 @@ notemment la médiane.</p>
 <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Comparaison modèle linéaire&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/file_01_42_0.png" src="../_images/file_01_42_0.png" />
 </div>
 </div>
 <p>Nous pouvons donc constater que l’estimateur basé sur la fonction de coût de
@@ -873,7 +935,7 @@ problème plus réaliste, nous allons ajouter un bruit Gaussien à la cible.</p>
 tel jeu de données.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_regression</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_regression</span>
 
 <span class="n">n_features</span> <span class="o">=</span> <span class="mi">6</span>
 <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">true_coef</span> <span class="o">=</span> <span class="n">make_regression</span><span class="p">(</span>
@@ -894,19 +956,31 @@ coefficients de la combinaison linéaire. Nous pouvons visualiser ces
 coefficients.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nom_colonnes</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;Colonne #</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_features</span><span class="p">)]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nom_colonnes</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;Colonne #</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_features</span><span class="p">)]</span>
 <span class="n">true_coef</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">true_coef</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">nom_colonnes</span><span class="p">)</span>
 <span class="n">true_coef</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">barh</span><span class="p">()</span>
 <span class="n">true_coef</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Colonne #0    44.145196
+Colonne #1    63.006149
+Colonne #2     0.000000
+Colonne #3     0.000000
+Colonne #4     0.000000
+Colonne #5     0.000000
+dtype: float64
+</pre></div>
+</div>
+<img alt="../_images/file_01_47_1.png" src="../_images/file_01_47_1.png" />
+</div>
 </div>
 <p>Nous pouvons également visualiser les liens marginales entre la cible <code class="docutils literal notranslate"><span class="pre">y</span></code> et
 chacune des variables composant notre jeu de données <code class="docutils literal notranslate"><span class="pre">X</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">donnees</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">nom_colonnes</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">donnees</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">nom_colonnes</span><span class="p">)</span>
 <span class="n">donnees</span><span class="p">[</span><span class="s2">&quot;Cible&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span>
 <span class="n">donnees</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">melt</span><span class="p">(</span><span class="n">id_vars</span><span class="o">=</span><span class="s2">&quot;Cible&quot;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s2">&quot;Variable&quot;</span><span class="p">,</span> <span class="n">value_name</span><span class="o">=</span><span class="s2">&quot;Valeur&quot;</span><span class="p">)</span>
 </pre></div>
@@ -915,7 +989,7 @@ chacune des variables composant notre jeu de données <code class="docutils lite
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">lmplot</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">lmplot</span><span class="p">(</span>
     <span class="n">x</span><span class="o">=</span><span class="s2">&quot;Valeur&quot;</span><span class="p">,</span>
     <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Cible&quot;</span><span class="p">,</span>
     <span class="n">col</span><span class="o">=</span><span class="s2">&quot;Variable&quot;</span><span class="p">,</span>
@@ -927,6 +1001,9 @@ chacune des variables composant notre jeu de données <code class="docutils lite
 <span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/file_01_50_0.png" src="../_images/file_01_50_0.png" />
 </div>
 </div>
 <p>Sur ce graphique, nous pouvons donc confirmer qu’il existe une lien entre les
@@ -940,7 +1017,7 @@ evaluer notre modèle (ce score est une mesure de la qualité du modèle où le
 maximum score est 1).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">cross_validate</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">cross_validate</span>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">RepeatedKFold</span>
 
 <span class="n">modele</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
@@ -955,10 +1032,13 @@ maximum score est 1).</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">cv_results</span><span class="p">[[</span><span class="s2">&quot;train_score&quot;</span><span class="p">,</span> <span class="s2">&quot;test_score&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">cv_results</span><span class="p">[[</span><span class="s2">&quot;train_score&quot;</span><span class="p">,</span> <span class="s2">&quot;test_score&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/file_01_53_0.png" src="../_images/file_01_53_0.png" />
 </div>
 </div>
 <p>Nous pouvons donc constater que notre modèle nous permet d’obtenir de bonnes
@@ -966,7 +1046,7 @@ prédictions. Nous pouvons inspecter les coefficients des différents modèles
 obtenus pendant la validation croisée.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">coef</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coef</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
     <span class="p">[</span><span class="n">modele_cv</span><span class="o">.</span><span class="n">coef_</span> <span class="k">for</span> <span class="n">modele_cv</span> <span class="ow">in</span> <span class="n">cv_results</span><span class="p">[</span><span class="s2">&quot;estimator&quot;</span><span class="p">]],</span>
     <span class="n">columns</span><span class="o">=</span><span class="n">nom_colonnes</span><span class="p">,</span>
 <span class="p">)</span>
@@ -974,6 +1054,9 @@ obtenus pendant la validation croisée.</p>
 <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Coefficients des modèles linéaires </span><span class="se">\n</span><span class="s2">obtenus par validation croisée&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/file_01_55_0.png" src="../_images/file_01_55_0.png" />
 </div>
 </div>
 <p>Nous pouvons donc observer en utilisant une représentation graphique sous
@@ -988,7 +1071,7 @@ appliqué.</p>
 plusieurs fois.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="n">X</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="n">X</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -997,7 +1080,7 @@ plusieurs fois.</p>
 les coefficients des modèles obtenus.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cv</span> <span class="o">=</span> <span class="n">RepeatedKFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_repeats</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cv</span> <span class="o">=</span> <span class="n">RepeatedKFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_repeats</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">cv_results</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span>
     <span class="n">modele</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">cv</span><span class="p">,</span> <span class="n">return_train_score</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_estimator</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">)</span>
@@ -1007,7 +1090,7 @@ les coefficients des modèles obtenus.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nom_colonnes</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;Colonne #</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nom_colonnes</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;Colonne #</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
 <span class="n">coef</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
     <span class="p">[</span><span class="n">modele_cv</span><span class="o">.</span><span class="n">coef_</span> <span class="k">for</span> <span class="n">modele_cv</span> <span class="ow">in</span> <span class="n">cv_results</span><span class="p">[</span><span class="s2">&quot;estimator&quot;</span><span class="p">]],</span>
     <span class="n">columns</span><span class="o">=</span><span class="n">nom_colonnes</span><span class="p">,</span>
@@ -1016,6 +1099,9 @@ les coefficients des modèles obtenus.</p>
 <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Coefficients des modèles linéaires </span><span class="se">\n</span><span class="s2">obtenus par validation croisée&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/file_01_60_0.png" src="../_images/file_01_60_0.png" />
 </div>
 </div>
 <p>Nous pouvons remarquer que les coefficients des modèles obtenus sont
@@ -1033,7 +1119,12 @@ l’impossibilité de calculer les coefficients du modèle. Une manière de
 vérifier est de calculer le déterminant de cette matrice.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">X</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0
 </pre></div>
 </div>
 </div>
@@ -1041,10 +1132,15 @@ vérifier est de calculer le déterminant de cette matrice.</p>
 <p>Le déterminant étant nul, il n’est donc pas possible d’inverser la matrice :</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
     <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">X</span><span class="p">)</span>
 <span class="k">except</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">LinAlgError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Singular matrix
 </pre></div>
 </div>
 </div>
@@ -1076,7 +1172,7 @@ suite en oeuvre en utilisant <code class="docutils literal notranslate"><span cl
 précédente.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">Ridge</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">Ridge</span>
 
 <span class="n">modele</span> <span class="o">=</span> <span class="n">Ridge</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
 <span class="n">cv</span> <span class="o">=</span> <span class="n">RepeatedKFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_repeats</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -1089,7 +1185,7 @@ précédente.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nom_colonnes</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;Colonne #</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nom_colonnes</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;Colonne #</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
 <span class="n">coef</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
     <span class="p">[</span><span class="n">modele_cv</span><span class="o">.</span><span class="n">coef_</span> <span class="k">for</span> <span class="n">modele_cv</span> <span class="ow">in</span> <span class="n">cv_results</span><span class="p">[</span><span class="s2">&quot;estimator&quot;</span><span class="p">]],</span>
     <span class="n">columns</span><span class="o">=</span><span class="n">nom_colonnes</span><span class="p">,</span>
@@ -1098,6 +1194,9 @@ précédente.</p>
 <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Coefficients des modèles linéaires </span><span class="se">\n</span><span class="s2">obtenus par validation croisée&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/file_01_67_0.png" src="../_images/file_01_67_0.png" />
 </div>
 </div>
 <p>Nous pouvons remarquer que nos modèles ne souffrent pas d’instabilité
@@ -1109,14 +1208,36 @@ originales sont répétées trois fois, les coefficients des modèles <code clas
 sont trois fois moins importantes.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">true_coef</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">true_coef</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Colonne #0    44.145196
+Colonne #1    63.006149
+Colonne #2     0.000000
+Colonne #3     0.000000
+Colonne #4     0.000000
+Colonne #5     0.000000
+dtype: float64
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">coef</span><span class="p">[</span><span class="n">true_coef</span><span class="o">.</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">*</span> <span class="mi">3</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coef</span><span class="p">[</span><span class="n">true_coef</span><span class="o">.</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">*</span> <span class="mi">3</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Colonne #0    46.273055
+Colonne #1    61.795346
+Colonne #2    -0.509359
+Colonne #3     0.018563
+Colonne #4    -0.933461
+Colonne #5     4.129136
+dtype: float64
 </pre></div>
 </div>
 </div>
@@ -1126,7 +1247,7 @@ sont trois fois moins importantes.</p>
 une valeur très faible et une valeur très élevée.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 
 <span class="n">alphas</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1e-14</span><span class="p">,</span> <span class="mf">1e5</span><span class="p">]</span>
 <span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">alpha</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">alphas</span><span class="p">):</span>
@@ -1146,6 +1267,9 @@ une valeur très faible et une valeur très élevée.</p>
 <span class="n">_</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Effect of the parameter $\alpha$&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/file_01_72_0.png" src="../_images/file_01_72_0.png" />
 </div>
 </div>
 <p>Nous pouvons donc confirmer nos premières intuitions. Plus <span class="math notranslate nohighlight">\(\alpha\)</span> augmente,
@@ -1170,7 +1294,7 @@ minimizer la norme L1 sur les coefficients. Rien de tel que de répéter
 l’expérience précédente pour le modèle <code class="docutils literal notranslate"><span class="pre">Lasso</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">Lasso</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">Lasso</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 
@@ -1193,6 +1317,13 @@ l’expérience précédente pour le modèle <code class="docutils literal notra
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.8.12/x64/lib/python3.8/site-packages/sklearn/linear_model/_coordinate_descent.py:647: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations, check the scale of the features or consider increasing regularisation. Duality gap: 1.232e+04, tolerance: 5.513e+02
+  model = cd_fast.enet_coordinate_descent(
+</pre></div>
+</div>
+<img alt="../_images/file_01_74_1.png" src="../_images/file_01_74_1.png" />
+</div>
 </div>
 <p>Nous pouvons constater que la minimiser la norme L1 forcera certains
 coefficients à devenir nuls. Si le paramètre <span class="math notranslate nohighlight">\(\alpha\)</span> est trop grand, les
@@ -1203,7 +1334,7 @@ colinéaires. En renvanche, il est intéressant que le choix de cette variable
 parmi les variables colinéaires peut-être arbitraire.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">modele</span> <span class="o">=</span> <span class="n">Lasso</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">selection</span><span class="o">=</span><span class="s2">&quot;random&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">modele</span> <span class="o">=</span> <span class="n">Lasso</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">selection</span><span class="o">=</span><span class="s2">&quot;random&quot;</span><span class="p">)</span>
 <span class="n">cv</span> <span class="o">=</span> <span class="n">RepeatedKFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_repeats</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">cv_results</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span>
     <span class="n">modele</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">cv</span><span class="p">,</span> <span class="n">return_train_score</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_estimator</span><span class="o">=</span><span class="kc">True</span>
@@ -1217,6 +1348,9 @@ parmi les variables colinéaires peut-être arbitraire.</p>
 <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Effet du paramètre selection&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/file_01_76_0.png" src="../_images/file_01_76_0.png" />
 </div>
 </div>
 <p>Dans ce graphique, nous pouvons observer que la variation des valeurs des
@@ -1248,7 +1382,7 @@ permet de définir si nous favorison un modèle de type <code class="docutils li
 type <code class="docutils literal notranslate"><span class="pre">Ridge</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">ElasticNet</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">ElasticNet</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 
@@ -1271,6 +1405,9 @@ type <code class="docutils literal notranslate"><span class="pre">Ridge</span></
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../_images/file_01_78_0.png" src="../_images/file_01_78_0.png" />
+</div>
 </div>
 <p>Nous pouvons constater que quand le paramètre <code class="docutils literal notranslate"><span class="pre">l1_ratio</span></code> est plus élevé,
 alors nour avons un modèle qui force les variables random (e.g. colonne 2 à
@@ -1292,11 +1429,69 @@ introduire un jeu de données de classification pour observer les différences
 avec le jeu de données de utilisé pour la régression.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">donnees</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;../datasets/penguins_classification.csv&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">donnees</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;../datasets/penguins_classification.csv&quot;</span><span class="p">)</span>
 <span class="n">donnees</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Longueur Bec (mm)</th>
+      <th>Epaisseur Bec (mm)</th>
+      <th>Especes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>39.1</td>
+      <td>18.7</td>
+      <td>Adelie</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>39.5</td>
+      <td>17.4</td>
+      <td>Adelie</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>40.3</td>
+      <td>18.0</td>
+      <td>Adelie</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>36.7</td>
+      <td>19.3</td>
+      <td>Adelie</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>39.3</td>
+      <td>20.6</td>
+      <td>Adelie</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 <p>Dans ce jeu de données le but est de prédire l’espèce de pingouin à partir de
 la morphologie de son bec (longueur et épaisseur). La particularité est que
@@ -1304,7 +1499,15 @@ l’espèce à prédire est une catégorie et non une valeur numérique continue
 comme dans le problème de régression précédent :</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">donnees</span><span class="p">[</span><span class="s2">&quot;Especes&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">donnees</span><span class="p">[</span><span class="s2">&quot;Especes&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Adelie       151
+Gentoo       123
+Chinstrap     68
+Name: Especes, dtype: int64
 </pre></div>
 </div>
 </div>
@@ -1318,7 +1521,7 @@ ce problème est appelé <strong>classification binaire</strong>. Nous allons si
 notre problème à un problème binaire à des fins didactiques.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">donnees</span> <span class="o">=</span> <span class="n">donnees</span><span class="p">[</span><span class="n">donnees</span><span class="p">[</span><span class="s2">&quot;Especes&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s2">&quot;Adelie&quot;</span><span class="p">,</span> <span class="s2">&quot;Chinstrap&quot;</span><span class="p">])]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">donnees</span> <span class="o">=</span> <span class="n">donnees</span><span class="p">[</span><span class="n">donnees</span><span class="p">[</span><span class="s2">&quot;Especes&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s2">&quot;Adelie&quot;</span><span class="p">,</span> <span class="s2">&quot;Chinstrap&quot;</span><span class="p">])]</span>
 <span class="n">donnees</span><span class="p">[</span><span class="s2">&quot;Especes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">donnees</span><span class="p">[</span><span class="s2">&quot;Especes&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;category&quot;</span><span class="p">)</span>
 <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">donnees</span><span class="p">[[</span><span class="s2">&quot;Longueur Bec (mm)&quot;</span><span class="p">,</span> <span class="s2">&quot;Epaisseur Bec (mm)&quot;</span><span class="p">]],</span> <span class="n">donnees</span><span class="p">[</span><span class="s2">&quot;Especes&quot;</span><span class="p">]</span>
 </pre></div>
@@ -1327,7 +1530,7 @@ notre problème à un problème binaire à des fins didactiques.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 <span class="n">_</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
     <span class="n">x</span><span class="o">=</span><span class="s2">&quot;Longueur Bec (mm)&quot;</span><span class="p">,</span>
     <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Epaisseur Bec (mm)&quot;</span><span class="p">,</span>
@@ -1339,6 +1542,9 @@ notre problème à un problème binaire à des fins didactiques.</p>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../_images/file_01_86_0.png" src="../_images/file_01_86_0.png" />
+</div>
 </div>
 <p>Dans ce problème de classification, nous essayons donc de trouver une
 séparation entre les deux espèces de pingouins. Il semble que nous pourrions
@@ -1349,7 +1555,7 @@ discrète. Une manière est d’utiliser la fonction logistique pour transformer
 les prédictions dans un intervalle entre 0 et 1.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">logistic_function</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">logistic_function</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">))</span>
 </pre></div>
 </div>
@@ -1357,13 +1563,16 @@ les prédictions dans un intervalle entre 0 et 1.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">xx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">xx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">logistic_function</span><span class="p">(</span><span class="n">xx</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
 <span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Logistic function&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/file_01_89_0.png" src="../_images/file_01_89_0.png" />
 </div>
 </div>
 <p>Notre modèle est donc formuler de la manière suivante :</p>
@@ -1396,7 +1605,7 @@ l’opposé du paramètre <span class="math notranslate nohighlight">\(\alpha\)<
 classification avec une régularisation de type L2.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
 <span class="kn">from</span> <span class="nn">helper.plotting</span> <span class="kn">import</span> <span class="n">DecisionBoundaryDisplay</span>
 
 <span class="n">Cs</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1e-5</span><span class="p">,</span> <span class="mf">1e5</span><span class="p">]</span>
@@ -1429,6 +1638,12 @@ classification avec une régularisation de type L2.</p>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../_images/file_01_91_0.png" src="../_images/file_01_91_0.png" />
+<img alt="../_images/file_01_91_1.png" src="../_images/file_01_91_1.png" />
+<img alt="../_images/file_01_91_2.png" src="../_images/file_01_91_2.png" />
+<img alt="../_images/file_01_91_3.png" src="../_images/file_01_91_3.png" />
+</div>
 </div>
 <p>Nous pouvons donc confirmer que plus <span class="math notranslate nohighlight">\(C\)</span> est petit, plus les coefficients
 sont contraints et donc petits. Nous pouvons également observer, de manière
@@ -1445,7 +1660,7 @@ différente, en utilisant une approche géométrique.</p>
 allons utiliser un jeu de données synthétique.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_blobs</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_blobs</span>
 
 <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_blobs</span><span class="p">(</span>
     <span class="n">n_samples</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">n_features</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">centers</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">cluster_std</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span>
@@ -1464,12 +1679,18 @@ allons utiliser un jeu de données synthétique.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 <span class="n">donnees</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
     <span class="n">x</span><span class="o">=</span><span class="s2">&quot;Colonne #0&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Colonne #1&quot;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;Cible&quot;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">RdBu</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span>
 <span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot:xlabel=&#39;Colonne #0&#39;, ylabel=&#39;Colonne #1&#39;&gt;
+</pre></div>
+</div>
+<img alt="../_images/file_01_94_1.png" src="../_images/file_01_94_1.png" />
 </div>
 </div>
 <p>Ce jeu de données est simple puisqu’il est composé de deux nuages de points
@@ -1480,10 +1701,15 @@ entraîner un modèle SVM sur ce jeu de données et expliquer les intuitions
 derrière l’optimisation réalisée.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">SVC</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">SVC</span>
 
 <span class="n">modele</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">modele</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SVC(kernel=&#39;linear&#39;, random_state=0)
 </pre></div>
 </div>
 </div>
@@ -1492,7 +1718,7 @@ derrière l’optimisation réalisée.</p>
 échantillons qui constituent les vecteurs support.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 <span class="n">display</span> <span class="o">=</span> <span class="n">DecisionBoundaryDisplay</span><span class="o">.</span><span class="n">from_estimator</span><span class="p">(</span>
     <span class="n">modele</span><span class="p">,</span>
     <span class="n">X</span><span class="p">,</span>
@@ -1516,6 +1742,9 @@ derrière l’optimisation réalisée.</p>
 <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/file_01_98_0.png" src="../_images/file_01_98_0.png" />
 </div>
 </div>
 <p>Nous pouvons remarquer que les vecteurs support sont les plus proches de la
@@ -1566,7 +1795,7 @@ itératifs basés sur le gradient.</p>
 le modèle de <code class="docutils literal notranslate"><span class="pre">LogisticRegression</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">donnees</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;../datasets/adult-census-numeric-all.csv&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">donnees</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;../datasets/adult-census-numeric-all.csv&quot;</span><span class="p">)</span>
 <span class="n">colonne_cible</span> <span class="o">=</span> <span class="s2">&quot;class&quot;</span>
 <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">donnees</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">colonne_cible</span><span class="p">),</span> <span class="n">donnees</span><span class="p">[</span><span class="n">colonne_cible</span><span class="p">]</span>
 </pre></div>
@@ -1578,7 +1807,7 @@ afin d’obtenir un jeu de données pour d’entraînement et un autre pour le
 test.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
 
 <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
     <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.25</span>
@@ -1591,7 +1820,7 @@ test.</p>
 suivante :</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
 
 <span class="n">modele</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -1602,6 +1831,21 @@ suivante :</p>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.8.12/x64/lib/python3.8/site-packages/sklearn/linear_model/_logistic.py:814: ConvergenceWarning: lbfgs failed to converge (status=1):
+STOP: TOTAL NO. of ITERATIONS REACHED LIMIT.
+
+Increase the number of iterations (max_iter) or scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+Please also refer to the documentation for alternative solver options:
+    https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
+  n_iter_i = _check_optimize_result(
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.8117271312750799
+</pre></div>
+</div>
+</div>
 </div>
 <p>Avec cette approche, nous avons directement entraîné notre modèle sur les
 données originales. Nous pouvon vérifier le temps pris par l’algorithme
@@ -1609,11 +1853,18 @@ pour trouver les meilleurs coefficients. Nous pouvons également vérifier
 le nombre d’itérations de l’algorithme.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Temps d&#39;entrainement : </span><span class="si">{</span><span class="n">temps_entrainement</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> secondes&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Temps d&#39;entrainement : </span><span class="si">{</span><span class="n">temps_entrainement</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> secondes&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Nombre d&#39;itérations : </span><span class="si">{</span><span class="n">modele</span><span class="o">.</span><span class="n">n_iter_</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="n">_</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">modele</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">barh</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Temps d&#39;entrainement : 0.34 secondes
+Nombre d&#39;itérations : [100]
+</pre></div>
+</div>
+<img alt="../_images/file_01_107_1.png" src="../_images/file_01_107_1.png" />
 </div>
 </div>
 <p>L’algorithme utilisé pour optimiser les coefficients est basé sur le gradient
@@ -1623,10 +1874,56 @@ statistique tel que la moyenne et l’écart-type des différentes variables
 prédictives.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X_train</span><span class="o">.</span><span class="n">aggregate</span><span class="p">([</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="s2">&quot;std&quot;</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_train</span><span class="o">.</span><span class="n">aggregate</span><span class="p">([</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="s2">&quot;std&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>education-num</th>
+      <th>capital-gain</th>
+      <th>capital-loss</th>
+      <th>hours-per-week</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>mean</th>
+      <td>38.685458</td>
+      <td>10.073271</td>
+      <td>1063.206929</td>
+      <td>86.779831</td>
+      <td>40.422484</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>13.730130</td>
+      <td>2.571369</td>
+      <td>7374.547590</td>
+      <td>401.559034</td>
+      <td>12.425426</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 <p>Nous pouvons observer que les données ne sont pas centrées car la moyenne des
 différentes variables prédictives est différente. Ceci n’est pas forcément le
@@ -1643,7 +1940,7 @@ d’information du jeu de test, il est important de calculer les statistiques
 sur le jeu de données d’entraînement seulement.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X_train_mean</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_train_mean</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 <span class="n">X_train_std</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1651,7 +1948,7 @@ sur le jeu de données d’entraînement seulement.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X_train_normalise</span> <span class="o">=</span> <span class="p">(</span><span class="n">X_train</span> <span class="o">-</span> <span class="n">X_train_mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">X_train_std</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_train_normalise</span> <span class="o">=</span> <span class="p">(</span><span class="n">X_train</span> <span class="o">-</span> <span class="n">X_train_mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">X_train_std</span>
 <span class="n">X_test_normalise</span> <span class="o">=</span> <span class="p">(</span><span class="n">X_test</span> <span class="o">-</span> <span class="n">X_train_mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">X_train_std</span>
 </pre></div>
 </div>
@@ -1661,27 +1958,124 @@ sur le jeu de données d’entraînement seulement.</p>
 moyenne nulle et un écart-type unitaire.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X_train_normalise</span><span class="o">.</span><span class="n">aggregate</span><span class="p">([</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="s2">&quot;std&quot;</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_train_normalise</span><span class="o">.</span><span class="n">aggregate</span><span class="p">([</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="s2">&quot;std&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>education-num</th>
+      <th>capital-gain</th>
+      <th>capital-loss</th>
+      <th>hours-per-week</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>mean</th>
+      <td>-7.177003e-17</td>
+      <td>2.211293e-16</td>
+      <td>3.724283e-17</td>
+      <td>2.676828e-17</td>
+      <td>8.146869e-18</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>1.000000e+00</td>
+      <td>1.000000e+00</td>
+      <td>1.000000e+00</td>
+      <td>1.000000e+00</td>
+      <td>1.000000e+00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X_test_normalise</span><span class="o">.</span><span class="n">aggregate</span><span class="p">([</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="s2">&quot;std&quot;</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_test_normalise</span><span class="o">.</span><span class="n">aggregate</span><span class="p">([</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="s2">&quot;std&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>education-num</th>
+      <th>capital-gain</th>
+      <th>capital-loss</th>
+      <th>hours-per-week</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>mean</th>
+      <td>-0.012198</td>
+      <td>0.007493</td>
+      <td>0.008603</td>
+      <td>0.007196</td>
+      <td>-0.000033</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.994257</td>
+      <td>0.999403</td>
+      <td>1.041399</td>
+      <td>1.014344</td>
+      <td>0.989056</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 <p>Nous pouvons réitérer l’expérience précédente et observer l’effet sur les
 performance de l’algorithme d’optimisation mais également sur la valeur des
 coefficients.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">debut</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">debut</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="n">modele</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_normalise</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 <span class="n">temps_entrainement</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">debut</span>
 <span class="n">modele</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test_normalise</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.8118909180247318
 </pre></div>
 </div>
 </div>
@@ -1690,11 +2084,18 @@ coefficients.</p>
 un score similaire.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Temps d&#39;entrainement : </span><span class="si">{</span><span class="n">temps_entrainement</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> secondes&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Temps d&#39;entrainement : </span><span class="si">{</span><span class="n">temps_entrainement</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> secondes&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Nombre d&#39;itérations : </span><span class="si">{</span><span class="n">modele</span><span class="o">.</span><span class="n">n_iter_</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="n">_</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">modele</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">barh</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Temps d&#39;entrainement : 0.11 secondes
+Nombre d&#39;itérations : [13]
+</pre></div>
+</div>
+<img alt="../_images/file_01_119_1.png" src="../_images/file_01_119_1.png" />
 </div>
 </div>
 <p>En revanche, le temps pour effectuer l’entraînement ainsi que le nombre
@@ -1719,10 +2120,15 @@ prétraitements suivient d’un apprentrissage de modèle prédictif.</p>
 et la normalisation des données.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
 
 <span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
 <span class="n">scaler</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>StandardScaler()
 </pre></div>
 </div>
 </div>
@@ -1731,8 +2137,17 @@ et la normalisation des données.</p>
 normalisation : la moyenne et l’écart-type.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Les moyennes par variable sont</span><span class="se">\n</span><span class="si">{</span><span class="n">scaler</span><span class="o">.</span><span class="n">mean_</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Les moyennes par variable sont</span><span class="se">\n</span><span class="si">{</span><span class="n">scaler</span><span class="o">.</span><span class="n">mean_</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Les écart-types par variable sont</span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">scaler</span><span class="o">.</span><span class="n">scale_</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Les moyennes par variable sont
+[  38.68545767   10.07327127 1063.20692856   86.77983129   40.42248369]
+Les écart-types par variable sont
+ [1.37299421e+01 2.57133407e+00 7.37444693e+03 4.01553553e+02
+ 1.24252559e+01]
 </pre></div>
 </div>
 </div>
@@ -1741,7 +2156,7 @@ normalisation : la moyenne et l’écart-type.</p>
 statistiques calculées lors de l’appel à la méthode <code class="docutils literal notranslate"><span class="pre">fit</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X_train_normalise</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_train_normalise</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1760,7 +2175,7 @@ suivi d’un apprentissage de modèle prédictif. Nous allons le mettre en
 pratique sur notre exemple précédent.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sklearn</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sklearn</span>
 
 <span class="c1"># pour obtenir des diagrams pour les pipelines</span>
 <span class="n">sklearn</span><span class="o">.</span><span class="n">set_config</span><span class="p">(</span><span class="n">display</span><span class="o">=</span><span class="s2">&quot;diagram&quot;</span><span class="p">)</span>
@@ -1770,7 +2185,7 @@ pratique sur notre exemple précédent.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
 
 <span class="n">modele</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span>
     <span class="n">steps</span><span class="o">=</span><span class="p">[</span>
@@ -1782,6 +2197,9 @@ pratique sur notre exemple précédent.</p>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style>#sk-1b96d806-2dc7-4185-9831-adccbbdf2e2e {color: black;background-color: white;}#sk-1b96d806-2dc7-4185-9831-adccbbdf2e2e pre{padding: 0;}#sk-1b96d806-2dc7-4185-9831-adccbbdf2e2e div.sk-toggleable {background-color: white;}#sk-1b96d806-2dc7-4185-9831-adccbbdf2e2e label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-1b96d806-2dc7-4185-9831-adccbbdf2e2e div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-1b96d806-2dc7-4185-9831-adccbbdf2e2e div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-1b96d806-2dc7-4185-9831-adccbbdf2e2e input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-1b96d806-2dc7-4185-9831-adccbbdf2e2e div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-1b96d806-2dc7-4185-9831-adccbbdf2e2e div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-1b96d806-2dc7-4185-9831-adccbbdf2e2e input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-1b96d806-2dc7-4185-9831-adccbbdf2e2e div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-1b96d806-2dc7-4185-9831-adccbbdf2e2e div.sk-estimator:hover {background-color: #d4ebff;}#sk-1b96d806-2dc7-4185-9831-adccbbdf2e2e div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-1b96d806-2dc7-4185-9831-adccbbdf2e2e div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-1b96d806-2dc7-4185-9831-adccbbdf2e2e div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 2em;bottom: 0;left: 50%;}#sk-1b96d806-2dc7-4185-9831-adccbbdf2e2e div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;}#sk-1b96d806-2dc7-4185-9831-adccbbdf2e2e div.sk-item {z-index: 1;}#sk-1b96d806-2dc7-4185-9831-adccbbdf2e2e div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;}#sk-1b96d806-2dc7-4185-9831-adccbbdf2e2e div.sk-parallel::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 2em;bottom: 0;left: 50%;}#sk-1b96d806-2dc7-4185-9831-adccbbdf2e2e div.sk-parallel-item {display: flex;flex-direction: column;position: relative;background-color: white;}#sk-1b96d806-2dc7-4185-9831-adccbbdf2e2e div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-1b96d806-2dc7-4185-9831-adccbbdf2e2e div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-1b96d806-2dc7-4185-9831-adccbbdf2e2e div.sk-parallel-item:only-child::after {width: 0;}#sk-1b96d806-2dc7-4185-9831-adccbbdf2e2e div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;position: relative;}#sk-1b96d806-2dc7-4185-9831-adccbbdf2e2e div.sk-label label {font-family: monospace;font-weight: bold;background-color: white;display: inline-block;line-height: 1.2em;}#sk-1b96d806-2dc7-4185-9831-adccbbdf2e2e div.sk-label-container {position: relative;z-index: 2;text-align: center;}#sk-1b96d806-2dc7-4185-9831-adccbbdf2e2e div.sk-container {display: inline-block;position: relative;}</style><div id="sk-1b96d806-2dc7-4185-9831-adccbbdf2e2e" class"sk-top-container"><div class="sk-container"><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="5e8ba4c4-4039-4763-8e2c-ddd52bf22451" type="checkbox" ><label class="sk-toggleable__label" for="5e8ba4c4-4039-4763-8e2c-ddd52bf22451">Pipeline</label><div class="sk-toggleable__content"><pre>Pipeline(steps=[('normalisation', StandardScaler()),
+                ('classification', LogisticRegression())])</pre></div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="e6771664-604c-4e7c-93b7-44bf0b92ff43" type="checkbox" ><label class="sk-toggleable__label" for="e6771664-604c-4e7c-93b7-44bf0b92ff43">StandardScaler</label><div class="sk-toggleable__content"><pre>StandardScaler()</pre></div></div></div><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="fa0a2039-1ae0-48c5-8cf6-0f8df8b4b2d6" type="checkbox" ><label class="sk-toggleable__label" for="fa0a2039-1ae0-48c5-8cf6-0f8df8b4b2d6">LogisticRegression</label><div class="sk-toggleable__content"><pre>LogisticRegression()</pre></div></div></div></div></div></div></div></div></div>
 </div>
 <p>Ce nouveau modèle prédictif expose la même interface que l’estimateur
 <code class="docutils literal notranslate"><span class="pre">LogisticRegression</span></code>. Lorsque que la méthode <code class="docutils literal notranslate"><span class="pre">fit</span></code> est appelée, le
@@ -1789,27 +2207,45 @@ pratique sur notre exemple précédent.</p>
 d’entrée. Ensuite, le modèle sera entraîné sur ces données prétraitées.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">modele</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">modele</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style>#sk-556a585a-ee23-4ae7-a326-43815f22be4f {color: black;background-color: white;}#sk-556a585a-ee23-4ae7-a326-43815f22be4f pre{padding: 0;}#sk-556a585a-ee23-4ae7-a326-43815f22be4f div.sk-toggleable {background-color: white;}#sk-556a585a-ee23-4ae7-a326-43815f22be4f label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-556a585a-ee23-4ae7-a326-43815f22be4f div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-556a585a-ee23-4ae7-a326-43815f22be4f div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-556a585a-ee23-4ae7-a326-43815f22be4f input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-556a585a-ee23-4ae7-a326-43815f22be4f div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-556a585a-ee23-4ae7-a326-43815f22be4f div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-556a585a-ee23-4ae7-a326-43815f22be4f input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-556a585a-ee23-4ae7-a326-43815f22be4f div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-556a585a-ee23-4ae7-a326-43815f22be4f div.sk-estimator:hover {background-color: #d4ebff;}#sk-556a585a-ee23-4ae7-a326-43815f22be4f div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-556a585a-ee23-4ae7-a326-43815f22be4f div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-556a585a-ee23-4ae7-a326-43815f22be4f div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 2em;bottom: 0;left: 50%;}#sk-556a585a-ee23-4ae7-a326-43815f22be4f div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;}#sk-556a585a-ee23-4ae7-a326-43815f22be4f div.sk-item {z-index: 1;}#sk-556a585a-ee23-4ae7-a326-43815f22be4f div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;}#sk-556a585a-ee23-4ae7-a326-43815f22be4f div.sk-parallel::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 2em;bottom: 0;left: 50%;}#sk-556a585a-ee23-4ae7-a326-43815f22be4f div.sk-parallel-item {display: flex;flex-direction: column;position: relative;background-color: white;}#sk-556a585a-ee23-4ae7-a326-43815f22be4f div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-556a585a-ee23-4ae7-a326-43815f22be4f div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-556a585a-ee23-4ae7-a326-43815f22be4f div.sk-parallel-item:only-child::after {width: 0;}#sk-556a585a-ee23-4ae7-a326-43815f22be4f div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;position: relative;}#sk-556a585a-ee23-4ae7-a326-43815f22be4f div.sk-label label {font-family: monospace;font-weight: bold;background-color: white;display: inline-block;line-height: 1.2em;}#sk-556a585a-ee23-4ae7-a326-43815f22be4f div.sk-label-container {position: relative;z-index: 2;text-align: center;}#sk-556a585a-ee23-4ae7-a326-43815f22be4f div.sk-container {display: inline-block;position: relative;}</style><div id="sk-556a585a-ee23-4ae7-a326-43815f22be4f" class"sk-top-container"><div class="sk-container"><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="1bc58a7a-827d-4569-8283-8d198af5b5c8" type="checkbox" ><label class="sk-toggleable__label" for="1bc58a7a-827d-4569-8283-8d198af5b5c8">Pipeline</label><div class="sk-toggleable__content"><pre>Pipeline(steps=[('normalisation', StandardScaler()),
+                ('classification', LogisticRegression())])</pre></div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="e0a0e01a-35ca-4c07-915d-37125c20ab1c" type="checkbox" ><label class="sk-toggleable__label" for="e0a0e01a-35ca-4c07-915d-37125c20ab1c">StandardScaler</label><div class="sk-toggleable__content"><pre>StandardScaler()</pre></div></div></div><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="38ef022b-a0a4-4827-ba57-bc528301956f" type="checkbox" ><label class="sk-toggleable__label" for="38ef022b-a0a4-4827-ba57-bc528301956f">LogisticRegression</label><div class="sk-toggleable__content"><pre>LogisticRegression()</pre></div></div></div></div></div></div></div></div></div>
 </div>
 <p>Nous pouvons donc inspecter chacun des estimateurs entraînés dans le
 pipeline.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Les moyennes par variable sont</span><span class="se">\n</span><span class="si">{</span><span class="n">modele</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">mean_</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Les moyennes par variable sont</span><span class="se">\n</span><span class="si">{</span><span class="n">modele</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">mean_</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Les écart-types par variable sont</span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">modele</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scale_</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Les moyennes par variable sont
+[  38.68545767   10.07327127 1063.20692856   86.77983129   40.42248369]
+Les écart-types par variable sont
+ [1.37299421e+01 2.57133407e+00 7.37444693e+03 4.01553553e+02
+ 1.24252559e+01]
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Nombre d&#39;itérations : </span><span class="si">{</span><span class="n">modele</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">n_iter_</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Nombre d&#39;itérations : </span><span class="si">{</span><span class="n">modele</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">n_iter_</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="n">_</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">modele</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">barh</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Nombre d&#39;itérations : [13]
+</pre></div>
+</div>
+<img alt="../_images/file_01_133_1.png" src="../_images/file_01_133_1.png" />
 </div>
 </div>
 <p>Finalement, ce pipeline peut-être utilisé pour prédire. Dans un premier
@@ -1817,16 +2253,21 @@ temps, les données seront normalisées et seront ensuite données à la méthod
 de classification qui appèlera la méthode <code class="docutils literal notranslate"><span class="pre">predict</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">y_pred</span> <span class="o">=</span> <span class="n">modele</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y_pred</span> <span class="o">=</span> <span class="n">modele</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span>
 
 <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.8118909180247318
 </pre></div>
 </div>
 </div>
@@ -1835,12 +2276,76 @@ de classification qui appèlera la méthode <code class="docutils literal notran
 croisée.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cv_results</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span><span class="n">modele</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">return_train_score</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cv_results</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span><span class="n">modele</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">return_train_score</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">cv_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv_results</span><span class="p">)</span>
 <span class="n">cv_results</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>fit_time</th>
+      <th>score_time</th>
+      <th>test_score</th>
+      <th>train_score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.113776</td>
+      <td>0.020821</td>
+      <td>0.812161</td>
+      <td>0.814706</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.117651</td>
+      <td>0.019968</td>
+      <td>0.809602</td>
+      <td>0.815243</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.111480</td>
+      <td>0.021072</td>
+      <td>0.813370</td>
+      <td>0.814429</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.111407</td>
+      <td>0.021554</td>
+      <td>0.813268</td>
+      <td>0.814429</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.111235</td>
+      <td>0.021569</td>
+      <td>0.822072</td>
+      <td>0.812484</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 </div>
 <div class="section" id="probleme-de-convergence">
@@ -1851,11 +2356,23 @@ possible qu’un modèle prédictif n’est pas forcément le temps de converger
 dans le budget d’itération donné. Nous allons illuster ces propos :</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">modele</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">max_iter</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">modele</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">max_iter</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
 <span class="n">modele</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.8.12/x64/lib/python3.8/site-packages/sklearn/linear_model/_logistic.py:814: ConvergenceWarning: lbfgs failed to converge (status=1):
+STOP: TOTAL NO. of ITERATIONS REACHED LIMIT.
+
+Increase the number of iterations (max_iter) or scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+Please also refer to the documentation for alternative solver options:
+    https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
+  n_iter_i = _check_optimize_result(
+</pre></div>
+</div>
+<div class="output text_html"><style>#sk-c4366c3f-a19e-429a-90a8-c73cd181aff4 {color: black;background-color: white;}#sk-c4366c3f-a19e-429a-90a8-c73cd181aff4 pre{padding: 0;}#sk-c4366c3f-a19e-429a-90a8-c73cd181aff4 div.sk-toggleable {background-color: white;}#sk-c4366c3f-a19e-429a-90a8-c73cd181aff4 label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-c4366c3f-a19e-429a-90a8-c73cd181aff4 div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-c4366c3f-a19e-429a-90a8-c73cd181aff4 div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-c4366c3f-a19e-429a-90a8-c73cd181aff4 input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-c4366c3f-a19e-429a-90a8-c73cd181aff4 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-c4366c3f-a19e-429a-90a8-c73cd181aff4 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-c4366c3f-a19e-429a-90a8-c73cd181aff4 input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-c4366c3f-a19e-429a-90a8-c73cd181aff4 div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-c4366c3f-a19e-429a-90a8-c73cd181aff4 div.sk-estimator:hover {background-color: #d4ebff;}#sk-c4366c3f-a19e-429a-90a8-c73cd181aff4 div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-c4366c3f-a19e-429a-90a8-c73cd181aff4 div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-c4366c3f-a19e-429a-90a8-c73cd181aff4 div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 2em;bottom: 0;left: 50%;}#sk-c4366c3f-a19e-429a-90a8-c73cd181aff4 div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;}#sk-c4366c3f-a19e-429a-90a8-c73cd181aff4 div.sk-item {z-index: 1;}#sk-c4366c3f-a19e-429a-90a8-c73cd181aff4 div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;}#sk-c4366c3f-a19e-429a-90a8-c73cd181aff4 div.sk-parallel::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 2em;bottom: 0;left: 50%;}#sk-c4366c3f-a19e-429a-90a8-c73cd181aff4 div.sk-parallel-item {display: flex;flex-direction: column;position: relative;background-color: white;}#sk-c4366c3f-a19e-429a-90a8-c73cd181aff4 div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-c4366c3f-a19e-429a-90a8-c73cd181aff4 div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-c4366c3f-a19e-429a-90a8-c73cd181aff4 div.sk-parallel-item:only-child::after {width: 0;}#sk-c4366c3f-a19e-429a-90a8-c73cd181aff4 div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;position: relative;}#sk-c4366c3f-a19e-429a-90a8-c73cd181aff4 div.sk-label label {font-family: monospace;font-weight: bold;background-color: white;display: inline-block;line-height: 1.2em;}#sk-c4366c3f-a19e-429a-90a8-c73cd181aff4 div.sk-label-container {position: relative;z-index: 2;text-align: center;}#sk-c4366c3f-a19e-429a-90a8-c73cd181aff4 div.sk-container {display: inline-block;position: relative;}</style><div id="sk-c4366c3f-a19e-429a-90a8-c73cd181aff4" class"sk-top-container"><div class="sk-container"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="5a6c4a4c-48bc-4374-b95a-24411025f233" type="checkbox" checked><label class="sk-toggleable__label" for="5a6c4a4c-48bc-4374-b95a-24411025f233">LogisticRegression</label><div class="sk-toggleable__content"><pre>LogisticRegression(max_iter=20)</pre></div></div></div></div></div></div></div>
 </div>
 <p>Nous pouvons observer un warning de type <code class="docutils literal notranslate"><span class="pre">ConvergenceWarning</span></code>. Cela signifie
 que nous n’avons pas trouver le minimum de notre fonction de coût. Sur le
