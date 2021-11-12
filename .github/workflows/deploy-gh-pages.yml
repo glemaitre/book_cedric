@@ -27,8 +27,7 @@ jobs:
         pip install -r requirements.txt
 
     - name: Build the JupyterBook
-      run: |
-        jupyter-book build book
+      run: ./.github/workflows/build_book.sh
 
     - name: Create folder for gh-pages
       run: |

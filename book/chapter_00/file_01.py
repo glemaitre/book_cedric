@@ -1198,8 +1198,6 @@ _ = ax.legend()
 # le modèle de `LogisticRegression`.
 
 # %%
-import pandas as pd
-
 donnees = pd.read_csv("../datasets/adult-census-numeric-all.csv")
 colonne_cible = "class"
 X, y = donnees.drop(columns=colonne_cible), donnees[colonne_cible]
@@ -1379,6 +1377,7 @@ X_train_normalise = scaler.transform(X_train)
 
 # %%
 import sklearn
+
 # pour obtenir des diagrams pour les pipelines
 sklearn.set_config(display="diagram")
 
